@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TONI&GUY AI Customer Concierge
 
-## Getting Started
+Production-quality digital customer experience and AI concierge system for TONI&GUY.
 
-First, run the development server:
+---
+
+## Quick Start (Single Command)
+
+To run **both the Next.js frontend and the NestJS backend simultaneously** in development mode:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev:all
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Frontend:** [http://localhost:3000](http://localhost:3000)
+- **Backend API:** [http://localhost:4000/api/v1](http://localhost:4000/api/v1)
+- **Health Check:** [http://localhost:4000/api/v1/health](http://localhost:4000/api/v1/health)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Running Individually
 
-## Learn More
+If you prefer running services in separate terminal windows:
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend (Next.js 16 + React 19 + Tailwind CSS)
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Backend (NestJS + TypeScript)
+```bash
+npm run backend:dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Testing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. Booking Engine & State Machine QA Suite (126 Tests)
+Validates all 17 booking scenarios, context preservation, and state convergence:
+```bash
+npx tsx src/__tests__/qa-booking-engine.ts
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. Backend E2E Test Suite
+Validates backend routing, security CORS, and health endpoints:
+```bash
+npm run backend:test:e2e
+```
+
+### 3. Production Builds & Type-Checking
+```bash
+npm run build          # Next.js frontend build
+npm run backend:build  # NestJS backend compilation
+```
+
+---
+
+## Project Structure
+
+```
+.
+├── src/                    # Next.js Frontend Application
+│   ├── app/                # App Router pages (/services, /offers, /salons, /consultation, /book)
+│   ├── components/         # Luxury UI component library
+│   ├── data/               # 64 outlets, 22 services, 8 combos, 256 staff
+│   ├── features/           # Adaptive booking reducer & AI concierge logic
+│   └── lib/                # Formatting and utility functions
+├── backend/                # Modular NestJS Backend Application
+│   ├── src/
+│   │   ├── modules/        # Outlets, Services, Bookings, Consultations, Health
+│   │   ├── common/         # Filters, interceptors, validation pipes
+│   │   └── config/         # Environment configuration
+│   └── test/               # Backend E2E test suites
+└── package.json            # Root workspace scripts & dependencies
+```
