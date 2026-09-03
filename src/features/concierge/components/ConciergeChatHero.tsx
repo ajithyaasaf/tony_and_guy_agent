@@ -106,121 +106,151 @@ export function ConciergeChatHero() {
   };
 
   return (
-    <div className="w-full bg-white border border-[#E5E5E5] rounded-2xl shadow-sm overflow-hidden flex flex-col">
+    <div className="w-full bg-white border border-[#E5E5E5] rounded-2xl shadow-xl overflow-hidden flex flex-col transition-all">
       {/* Header bar */}
-      <div className="bg-[#F7F7F7] border-b border-[#E5E5E5] px-4 sm:px-6 py-3.5 flex items-center justify-between">
-        <div className="flex items-center space-x-2.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse" />
-          <span className="text-xs font-bold uppercase tracking-wider text-black">
-            TONI&amp;GUY AI Salon Concierge
-          </span>
+      <div className="bg-black text-white px-4 sm:px-6 py-3.5 flex items-center justify-between shadow-md">
+        <div className="flex items-center space-x-3">
+          <div className="relative flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-700 flex items-center justify-center text-[#D92D20] shadow-inner">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-black animate-pulse" />
+          </div>
+          <div>
+            <div className="text-xs font-black uppercase tracking-wider text-white flex items-center space-x-2">
+              <span>TONI&amp;GUY AI Concierge</span>
+              <span className="bg-[#D92D20] text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider text-white">
+                Live AI
+              </span>
+            </div>
+            <div className="text-[10px] text-neutral-400 font-medium">
+              Real-time slot availability &amp; smart booking
+            </div>
+          </div>
         </div>
-        <div className="flex items-center space-x-2 text-[11px] text-[#666666]">
-          <ShieldCheck className="w-3.5 h-3.5 text-black" />
-          <span>Real-time availability engine</span>
+
+        <div className="flex items-center space-x-2 text-[11px] text-neutral-400">
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="hidden sm:inline">Encrypted Booking</span>
         </div>
       </div>
 
       {/* Messages area */}
-      <div className="p-3 sm:p-6 min-h-[280px] sm:min-h-[340px] max-h-[360px] sm:max-h-[480px] overflow-y-auto space-y-4">
+      <div className="p-4 sm:p-6 min-h-[300px] sm:min-h-[360px] max-h-[380px] sm:max-h-[460px] overflow-y-auto space-y-4 bg-neutral-50/50">
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} animate-fade-in`}
+            className={`flex items-start space-x-2.5 ${msg.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''} animate-fade-in`}
           >
-            <div
-              className={`max-w-[92%] sm:max-w-[78%] rounded-2xl p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed ${
-                msg.sender === 'user'
-                  ? 'bg-black text-white rounded-tr-none'
-                  : 'bg-[#F7F7F7] text-[#111111] border border-[#E5E5E5] rounded-tl-none'
-              }`}
-            >
-              <div className="whitespace-pre-wrap">{msg.text}</div>
+            {/* Avatar icon */}
+            {msg.sender === 'assistant' ? (
+              <div className="w-7 h-7 rounded-full bg-black text-[#D92D20] flex items-center justify-center shrink-0 border border-neutral-800 shadow-sm mt-0.5">
+                <Sparkles className="w-3.5 h-3.5" />
+              </div>
+            ) : (
+              <div className="w-7 h-7 rounded-full bg-[#D92D20] text-white flex items-center justify-center text-xs font-black shrink-0 shadow-sm mt-0.5">
+                U
+              </div>
+            )}
 
-              {/* Render Structured UI inline when data is extracted */}
-              {msg.intentData && (
-                <div className="mt-3.5 pt-3 border-t border-neutral-200/60 space-y-2.5 text-xs">
-                  {/* Extracted service pill */}
-                  {msg.intentData.services.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <span className="font-semibold text-neutral-500">Selected Services:</span>
-                      {msg.intentData.services.map((s) => (
-                        <span key={s.id} className="bg-white border border-neutral-300 text-black px-2 py-1 rounded-md font-medium">
-                          {s.name} ({formatPrice(s.price)})
-                        </span>
-                      ))}
-                    </div>
-                  )}
+            <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[88%] sm:max-w-[78%]`}>
+              <div
+                className={`rounded-2xl p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed ${
+                  msg.sender === 'user'
+                    ? 'bg-black text-white rounded-tr-none shadow-md font-medium'
+                    : 'bg-white text-neutral-900 border border-neutral-200/80 rounded-tl-none shadow-sm'
+                }`}
+              >
+                <div className="whitespace-pre-wrap">{msg.text}</div>
 
-                  {/* Extracted outlet pill */}
-                  {msg.intentData.outlet && (
-                    <div className="flex items-center space-x-1.5 text-neutral-700">
-                      <MapPin className="w-3.5 h-3.5 text-black shrink-0" />
-                      <span><strong>Outlet:</strong> {msg.intentData.outlet.name}</span>
-                    </div>
-                  )}
-
-                  {/* Extracted date */}
-                  {msg.intentData.date && (
-                    <div className="flex items-center space-x-1.5 text-neutral-700">
-                      <Calendar className="w-3.5 h-3.5 text-black shrink-0" />
-                      <span><strong>Date:</strong> {msg.intentData.dateLabel || msg.intentData.date}</span>
-                    </div>
-                  )}
-
-                  {/* Extracted offer */}
-                  {msg.intentData.offer && (
-                    <div className="p-3 bg-red-50/60 border border-[#D92D20]/30 rounded-xl">
-                      <div className="flex items-center justify-between">
-                        <div className="font-extrabold text-black">{msg.intentData.offer.name}</div>
-                        <span className="bg-[#D92D20] text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
-                          Save {formatPrice(msg.intentData.offer.savings)}
-                        </span>
+                {/* Render Structured UI inline when data is extracted */}
+                {msg.intentData && (
+                  <div className="mt-3.5 pt-3 border-t border-neutral-200 space-y-2.5 text-xs">
+                    {/* Extracted service pill */}
+                    {msg.intentData.services.length > 0 && (
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="font-semibold text-neutral-500">Selected Services:</span>
+                        {msg.intentData.services.map((s) => (
+                          <span key={s.id} className="bg-neutral-100 border border-neutral-300 text-black px-2 py-1 rounded-md font-bold">
+                            {s.name} ({formatPrice(s.price)})
+                          </span>
+                        ))}
                       </div>
-                      <div className="text-xs text-[#D92D20] font-bold mt-1">
-                        Exclusive Price: {formatPrice(msg.intentData.offer.offerPrice)}
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* Action CTA inside conversation */}
-                  <div className="pt-2">
-                    <button
-                      onClick={() => router.push('/book')}
-                      className="inline-flex items-center space-x-2 bg-[#D92D20] text-white px-4 py-2.5 rounded-full font-bold hover:bg-[#B91C1C] transition text-xs uppercase tracking-wider min-h-[44px] shadow-md shadow-red-900/15"
-                    >
-                      <span>Proceed with this Booking</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    {/* Extracted outlet pill */}
+                    {msg.intentData.outlet && (
+                      <div className="flex items-center space-x-1.5 text-neutral-700">
+                        <MapPin className="w-3.5 h-3.5 text-[#D92D20] shrink-0" />
+                        <span><strong>Outlet:</strong> {msg.intentData.outlet.name}</span>
+                      </div>
+                    )}
+
+                    {/* Extracted date */}
+                    {msg.intentData.date && (
+                      <div className="flex items-center space-x-1.5 text-neutral-700">
+                        <Calendar className="w-3.5 h-3.5 text-black shrink-0" />
+                        <span><strong>Date:</strong> {msg.intentData.dateLabel || msg.intentData.date}</span>
+                      </div>
+                    )}
+
+                    {/* Extracted offer */}
+                    {msg.intentData.offer && (
+                      <div className="p-3 bg-red-50/80 border border-[#D92D20]/30 rounded-xl">
+                        <div className="flex items-center justify-between">
+                          <div className="font-extrabold text-black">{msg.intentData.offer.name}</div>
+                          <span className="bg-[#D92D20] text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
+                            Save {formatPrice(msg.intentData.offer.savings)}
+                          </span>
+                        </div>
+                        <div className="text-xs text-[#D92D20] font-bold mt-1">
+                          Exclusive Price: {formatPrice(msg.intentData.offer.offerPrice)}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Action CTA inside conversation */}
+                    <div className="pt-2">
+                      <button
+                        onClick={() => router.push('/book')}
+                        className="inline-flex items-center space-x-2 bg-[#D92D20] text-white px-5 py-2.5 rounded-full font-bold hover:bg-[#B91C1C] transition text-xs uppercase tracking-wider min-h-[44px] shadow-md shadow-red-900/20 active:scale-95"
+                      >
+                        <span>Proceed with this Booking</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+              <span className="text-[10px] text-neutral-400 mt-1 px-1">{msg.timestamp}</span>
             </div>
-            <span className="text-[10px] text-[#888888] mt-1 px-1">{msg.timestamp}</span>
           </div>
         ))}
 
         {isTyping && (
-          <div className="flex items-center space-x-2 text-xs text-neutral-400 pl-2">
-            <div className="w-2 h-2 rounded-full bg-neutral-400 animate-bounce" />
-            <div className="w-2 h-2 rounded-full bg-neutral-400 animate-bounce [animation-delay:0.2s]" />
-            <div className="w-2 h-2 rounded-full bg-neutral-400 animate-bounce [animation-delay:0.4s]" />
-            <span>Concierge is organizing your appointment...</span>
+          <div className="flex items-center space-x-2.5 text-xs text-neutral-500 pl-9 animate-fade-in">
+            <div className="flex space-x-1 items-center">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#D92D20] animate-bounce" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#D92D20] animate-bounce [animation-delay:0.2s]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#D92D20] animate-bounce [animation-delay:0.4s]" />
+            </div>
+            <span className="font-medium text-neutral-600">TONI&amp;GUY AI is organizing your schedule...</span>
           </div>
         )}
         <div ref={chatBottomRef} />
       </div>
 
       {/* Suggestion prompt chips with horizontal scroll hint */}
-      <div className="px-3 sm:px-6 py-2 bg-white border-t border-[#F0F0F0] overflow-x-auto flex space-x-2 scrollbar-none items-center">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 whitespace-nowrap mr-1 shrink-0">
-          Try saying:
+      <div className="px-3 sm:px-5 py-2.5 bg-white border-t border-neutral-200 overflow-x-auto flex space-x-2 scrollbar-none items-center">
+        <span className="text-[11px] font-black uppercase tracking-wider text-[#D92D20] whitespace-nowrap mr-1 shrink-0 flex items-center space-x-1">
+          <Sparkles className="w-3 h-3" />
+          <span>Try saying:</span>
         </span>
         {samplePrompts.map((prompt, i) => (
           <button
             key={i}
             onClick={() => handleSend(prompt)}
-            className="text-[11px] bg-[#F7F7F7] hover:bg-[#D92D20] hover:text-white transition text-neutral-700 border border-[#E5E5E5] px-3.5 py-2 rounded-full whitespace-nowrap shrink-0 min-h-[36px] flex items-center"
+            className="text-[11px] bg-neutral-100 hover:bg-[#D92D20] hover:text-white transition text-neutral-800 border border-neutral-200 px-3.5 py-1.5 rounded-full whitespace-nowrap shrink-0 min-h-[34px] flex items-center font-medium shadow-2xs active:scale-95"
           >
             &quot;{prompt}&quot;
           </button>
@@ -228,19 +258,19 @@ export function ConciergeChatHero() {
       </div>
 
       {/* Input container */}
-      <div className="p-3 sm:p-4 bg-[#FAFAFA] border-t border-[#E5E5E5] flex items-center space-x-2">
+      <div className="p-3 sm:p-4 bg-white border-t border-neutral-200 flex items-center space-x-2">
         <input
           type="text"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder="E.g., I want a haircut tomorrow at Anna Nagar at 7 PM..."
-          className="flex-1 bg-white border border-[#E5E5E5] rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:border-[#D92D20] focus:ring-1 focus:ring-[#D92D20] text-black placeholder:text-neutral-400 min-h-[44px]"
+          className="flex-1 bg-neutral-50 border border-neutral-300 rounded-full px-4 sm:px-5 py-3 text-xs sm:text-sm focus:outline-none focus:bg-white focus:border-[#D92D20] focus:ring-2 focus:ring-[#D92D20]/20 text-black placeholder:text-neutral-400 min-h-[44px] transition-all shadow-inner"
         />
         <button
           onClick={() => handleSend()}
           disabled={!inputText.trim()}
-          className="bg-[#D92D20] text-white p-3 rounded-xl hover:bg-[#B91C1C] disabled:opacity-30 disabled:cursor-not-allowed transition min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0 shadow-md shadow-red-900/15"
+          className="bg-[#D92D20] text-white p-3 rounded-full hover:bg-[#B91C1C] disabled:opacity-30 disabled:cursor-not-allowed transition min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0 shadow-md shadow-red-900/25 active:scale-95"
           aria-label="Send message"
         >
           <Send className="w-4 h-4" />
