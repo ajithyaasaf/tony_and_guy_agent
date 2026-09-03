@@ -98,7 +98,7 @@ export default function OffersPage() {
 
                 <button
                   onClick={() => handleBookOffer(offer)}
-                  className="bg-black text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full hover:bg-neutral-800 transition-all flex items-center space-x-2 shadow-sm"
+                  className="bg-[#D92D20] text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full hover:bg-[#B91C1C] transition-all flex items-center space-x-2 shadow-md shadow-red-900/15"
                 >
                   <span>Book This Combo</span>
                   <ArrowRight className="w-4 h-4" />

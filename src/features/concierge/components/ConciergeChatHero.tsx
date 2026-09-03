@@ -122,14 +122,14 @@ export function ConciergeChatHero() {
       </div>
 
       {/* Messages area */}
-      <div className="p-4 sm:p-6 min-h-[340px] max-h-[480px] overflow-y-auto space-y-4">
+      <div className="p-3 sm:p-6 min-h-[280px] sm:min-h-[340px] max-h-[360px] sm:max-h-[480px] overflow-y-auto space-y-4">
         {messages.map((msg) => (
           <div
             key={msg.id}
             className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} animate-fade-in`}
           >
             <div
-              className={`max-w-[88%] sm:max-w-[78%] rounded-2xl p-4 text-sm leading-relaxed ${
+              className={`max-w-[92%] sm:max-w-[78%] rounded-2xl p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed ${
                 msg.sender === 'user'
                   ? 'bg-black text-white rounded-tr-none'
                   : 'bg-[#F7F7F7] text-[#111111] border border-[#E5E5E5] rounded-tl-none'
@@ -145,7 +145,7 @@ export function ConciergeChatHero() {
                     <div className="flex flex-wrap items-center gap-1.5">
                       <span className="font-semibold text-neutral-500">Selected Services:</span>
                       {msg.intentData.services.map((s) => (
-                        <span key={s.id} className="bg-white border border-neutral-300 text-black px-2 py-0.5 rounded-md font-medium">
+                        <span key={s.id} className="bg-white border border-neutral-300 text-black px-2 py-1 rounded-md font-medium">
                           {s.name} ({formatPrice(s.price)})
                         </span>
                       ))}
@@ -155,7 +155,7 @@ export function ConciergeChatHero() {
                   {/* Extracted outlet pill */}
                   {msg.intentData.outlet && (
                     <div className="flex items-center space-x-1.5 text-neutral-700">
-                      <MapPin className="w-3.5 h-3.5 text-black" />
+                      <MapPin className="w-3.5 h-3.5 text-black shrink-0" />
                       <span><strong>Outlet:</strong> {msg.intentData.outlet.name}</span>
                     </div>
                   )}
@@ -163,17 +163,22 @@ export function ConciergeChatHero() {
                   {/* Extracted date */}
                   {msg.intentData.date && (
                     <div className="flex items-center space-x-1.5 text-neutral-700">
-                      <Calendar className="w-3.5 h-3.5 text-black" />
+                      <Calendar className="w-3.5 h-3.5 text-black shrink-0" />
                       <span><strong>Date:</strong> {msg.intentData.dateLabel || msg.intentData.date}</span>
                     </div>
                   )}
 
                   {/* Extracted offer */}
                   {msg.intentData.offer && (
-                    <div className="p-2.5 bg-white border border-neutral-300 rounded-lg">
-                      <div className="font-bold text-black">{msg.intentData.offer.name}</div>
-                      <div className="text-emerald-700 font-semibold mt-0.5">
-                        Offer Price: {formatPrice(msg.intentData.offer.offerPrice)} (Save {formatPrice(msg.intentData.offer.savings)})
+                    <div className="p-3 bg-red-50/60 border border-[#D92D20]/30 rounded-xl">
+                      <div className="flex items-center justify-between">
+                        <div className="font-extrabold text-black">{msg.intentData.offer.name}</div>
+                        <span className="bg-[#D92D20] text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
+                          Save {formatPrice(msg.intentData.offer.savings)}
+                        </span>
+                      </div>
+                      <div className="text-xs text-[#D92D20] font-bold mt-1">
+                        Exclusive Price: {formatPrice(msg.intentData.offer.offerPrice)}
                       </div>
                     </div>
                   )}
@@ -182,7 +187,7 @@ export function ConciergeChatHero() {
                   <div className="pt-2">
                     <button
                       onClick={() => router.push('/book')}
-                      className="inline-flex items-center space-x-2 bg-black text-white px-4 py-2 rounded-full font-semibold hover:bg-neutral-800 transition text-xs uppercase tracking-wider"
+                      className="inline-flex items-center space-x-2 bg-[#D92D20] text-white px-4 py-2.5 rounded-full font-bold hover:bg-[#B91C1C] transition text-xs uppercase tracking-wider min-h-[44px] shadow-md shadow-red-900/15"
                     >
                       <span>Proceed with this Booking</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -206,16 +211,16 @@ export function ConciergeChatHero() {
         <div ref={chatBottomRef} />
       </div>
 
-      {/* Suggestion prompt chips */}
-      <div className="px-4 sm:px-6 py-2 bg-white border-t border-[#F0F0F0] overflow-x-auto flex space-x-2 scrollbar-none">
-        <span className="text-[11px] font-semibold text-neutral-400 whitespace-nowrap self-center mr-1">
+      {/* Suggestion prompt chips with horizontal scroll hint */}
+      <div className="px-3 sm:px-6 py-2 bg-white border-t border-[#F0F0F0] overflow-x-auto flex space-x-2 scrollbar-none items-center">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 whitespace-nowrap mr-1 shrink-0">
           Try saying:
         </span>
         {samplePrompts.map((prompt, i) => (
           <button
             key={i}
             onClick={() => handleSend(prompt)}
-            className="text-[11px] bg-[#F7F7F7] hover:bg-black hover:text-white transition text-neutral-700 border border-[#E5E5E5] px-3 py-1.5 rounded-full whitespace-nowrap"
+            className="text-[11px] bg-[#F7F7F7] hover:bg-[#D92D20] hover:text-white transition text-neutral-700 border border-[#E5E5E5] px-3.5 py-2 rounded-full whitespace-nowrap shrink-0 min-h-[36px] flex items-center"
           >
             &quot;{prompt}&quot;
           </button>
@@ -230,12 +235,12 @@ export function ConciergeChatHero() {
           onChange={(e) => setInputText(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder="E.g., I want a haircut tomorrow at Anna Nagar at 7 PM..."
-          className="flex-1 bg-white border border-[#E5E5E5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black text-black placeholder:text-neutral-400"
+          className="flex-1 bg-white border border-[#E5E5E5] rounded-xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:border-[#D92D20] focus:ring-1 focus:ring-[#D92D20] text-black placeholder:text-neutral-400 min-h-[44px]"
         />
         <button
           onClick={() => handleSend()}
           disabled={!inputText.trim()}
-          className="bg-black text-white p-3 rounded-xl hover:bg-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed transition"
+          className="bg-[#D92D20] text-white p-3 rounded-xl hover:bg-[#B91C1C] disabled:opacity-30 disabled:cursor-not-allowed transition min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0 shadow-md shadow-red-900/15"
           aria-label="Send message"
         >
           <Send className="w-4 h-4" />

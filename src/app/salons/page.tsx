@@ -233,7 +233,12 @@ export default function SalonsPage() {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Phone className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                        <span>{outlet.phone}</span>
+                        <a
+                          href={`tel:${outlet.phone.replace(/[^0-9+]/g, '')}`}
+                          className="hover:underline text-black font-semibold flex items-center space-x-1 py-1"
+                        >
+                          <span>{outlet.phone}</span>
+                        </a>
                       </div>
                     </div>
 
@@ -247,7 +252,7 @@ export default function SalonsPage() {
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between">
+                  <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between min-h-[44px]">
                     <div className="flex items-center space-x-1 text-xs font-semibold text-black">
                       <Star className="w-3.5 h-3.5 fill-black text-black" />
                       <span>{outlet.rating}</span>
@@ -256,7 +261,7 @@ export default function SalonsPage() {
 
                     <button
                       onClick={() => handleSelectOutlet(outlet)}
-                      className={`px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition ${
+                      className={`px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition min-h-[44px] ${
                         isSelected
                           ? 'bg-black text-white'
                           : 'border border-black text-black hover:bg-black hover:text-white'

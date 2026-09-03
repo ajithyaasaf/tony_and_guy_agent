@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useBooking } from '@/features/booking/context/BookingContext';
 import { formatPrice } from '@/lib/utils';
-import { Sparkles, Calendar, MapPin, Tag, Scissors, MessageSquare, Menu, X, ArrowRight } from 'lucide-react';
+import { Sparkles, Calendar, MapPin, Tag, Scissors, MessageSquare, Menu, X, ArrowRight, ShoppingBag, ShieldCheck } from 'lucide-react';
 
 export function Header() {
   const pathname = usePathname();
@@ -15,9 +15,9 @@ export function Header() {
   const navLinks = [
     { name: 'Concierge AI', href: '/', icon: Sparkles },
     { name: 'Services', href: '/services', icon: Scissors },
-    { name: 'Offers & Combos', href: '/offers', icon: Tag },
-    { name: 'Find a Salon', href: '/salons', icon: MapPin },
-    { name: 'Pre-Consultation', href: '/consultation', icon: MessageSquare },
+    { name: 'Offers', href: '/offers', icon: Tag },
+    { name: 'My Orders', href: '/orders', icon: ShoppingBag },
+    { name: 'Find Salon', href: '/salons', icon: MapPin },
   ];
 
   const hasPendingBooking = state.services.length > 0 || state.outlet;
@@ -26,14 +26,14 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E5E5E5] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          
+
           {/* Logo & Brand */}
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-2 group">
               <span className="text-xl sm:text-2xl font-black tracking-widest text-black uppercase font-sans">
                 TONI&amp;GUY
               </span>
-              <span className="hidden sm:inline-block text-[10px] font-semibold tracking-widest bg-black text-white px-2 py-0.5 uppercase">
+              <span className="hidden sm:inline-block text-[10px] font-extrabold tracking-widest bg-[#D92D20] text-white px-2 py-0.5 uppercase rounded-sm shadow-sm">
                 Concierge
               </span>
             </Link>
@@ -48,13 +48,12 @@ export function Header() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`text-sm font-medium tracking-wide transition-colors flex items-center space-x-1.5 ${
-                    isActive
-                      ? 'text-black font-semibold border-b-2 border-black pb-1'
-                      : 'text-[#666666] hover:text-black'
-                  }`}
+                  className={`text-sm font-medium tracking-wide transition-colors flex items-center space-x-1.5 ${isActive
+                      ? 'text-[#D92D20] font-bold border-b-2 border-[#D92D20] pb-1'
+                      : 'text-[#666666] hover:text-[#D92D20]'
+                    }`}
                 >
-                  <Icon className="w-3.5 h-3.5" />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#D92D20]' : 'text-neutral-400'}`} />
                   <span>{link.name}</span>
                 </Link>
               );
@@ -66,7 +65,7 @@ export function Header() {
             {hasPendingBooking ? (
               <Link
                 href="/book"
-                className="bg-black text-white text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-neutral-800 transition-all flex items-center space-x-2 shadow-sm"
+                className="bg-[#D92D20] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-[#B91C1C] transition-all flex items-center space-x-2 shadow-md shadow-red-900/20"
               >
                 <span>Complete Booking ({state.services.length} srv)</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -74,7 +73,7 @@ export function Header() {
             ) : (
               <Link
                 href="/book"
-                className="border border-black text-black text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-black hover:text-white transition-all flex items-center space-x-2"
+                className="bg-[#D92D20] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-[#B91C1C] transition-all flex items-center space-x-2 shadow-md shadow-red-900/20"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 <span>Book Appointment</span>
@@ -87,14 +86,14 @@ export function Header() {
             {hasPendingBooking && (
               <Link
                 href="/book"
-                className="bg-black text-white text-[11px] font-bold px-3 py-1.5 rounded-full uppercase"
+                className="bg-[#D92D20] text-white text-[11px] font-bold px-3 py-1.5 rounded-full uppercase shadow-sm"
               >
                 Book ({state.services.length})
               </Link>
             )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-black focus:outline-none"
+              className="p-2 text-black focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -114,12 +113,16 @@ export function Header() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm ${
-                  isActive ? 'bg-neutral-100 font-semibold text-black' : 'text-neutral-700 hover:bg-neutral-50'
-                }`}
+                className={`flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition ${isActive ? 'bg-neutral-100 font-semibold text-black' : 'text-neutral-700 hover:bg-neutral-50'
+                  }`}
               >
-                <Icon className="w-4 h-4 text-neutral-500" />
+                <Icon className={`w-4 h-4 ${link.href === '/offers' ? 'text-[#D92D20]' : 'text-neutral-500'}`} />
                 <span>{link.name}</span>
+                {link.href === '/offers' && (
+                  <span className="bg-[#D92D20] text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ml-auto">
+                    OFFERS
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -127,20 +130,54 @@ export function Header() {
             <Link
               href="/book"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full bg-black text-white py-3 rounded-lg text-center text-xs font-bold uppercase tracking-wider block"
+              className="w-full bg-black text-white py-3.5 rounded-lg text-center text-xs font-bold uppercase tracking-wider block shadow-sm"
             >
               Start Direct Booking
             </Link>
           </div>
         </div>
       )}
+
+      {/* Mobile Sticky Bottom Navigation Bar */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-[#E5E5E5] px-2 py-1.5 flex items-center justify-around shadow-lg">
+        {navLinks.map((link) => {
+          const Icon = link.icon;
+          const isActive = pathname === link.href;
+          return (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[10px] font-semibold transition min-h-[44px] ${isActive ? 'text-[#D92D20] font-extrabold' : 'text-neutral-500 hover:text-black'
+                }`}
+            >
+              <Icon className={`w-5 h-5 mb-0.5 ${isActive ? 'text-[#D92D20] scale-110' : link.href === '/offers' ? 'text-[#D92D20]' : 'text-neutral-400'}`} />
+              <span>{link.name.replace('Concierge AI', 'AI Chat').replace('Offers & Combos', 'Offers')}</span>
+            </Link>
+          );
+        })}
+        <Link
+          href="/book"
+          className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[10px] font-semibold transition min-h-[44px] relative ${pathname === '/book' ? 'text-[#D92D20] font-extrabold' : 'text-neutral-500 hover:text-black'
+            }`}
+        >
+          <div className="relative">
+            <Calendar className={`w-5 h-5 mb-0.5 ${pathname === '/book' ? 'text-[#D92D20] scale-110' : 'text-neutral-400'}`} />
+            {hasPendingBooking && (
+              <span className="absolute -top-1 -right-2 bg-[#D92D20] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">
+                {state.services.length || 1}
+              </span>
+            )}
+          </div>
+          <span>Book</span>
+        </Link>
+      </div>
     </header>
   );
 }
 
 export function Footer() {
   return (
-    <footer className="bg-[#111111] text-white border-t border-neutral-800 py-12 px-4 sm:px-6 lg:px-8 mt-20">
+    <footer className="bg-[#111111] text-white border-t border-neutral-800 py-12 px-4 sm:px-6 lg:px-8 mt-20 pb-24 md:pb-12">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="space-y-4">
           <div className="text-xl font-black tracking-widest uppercase">TONI&amp;GUY</div>

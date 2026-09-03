@@ -101,8 +101,8 @@ export default function ServicesPage() {
               onClick={() => setSelectedCategory('all')}
               className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition ${
                 selectedCategory === 'all'
-                  ? 'bg-black text-white'
-                  : 'bg-white border border-[#E5E5E5] text-neutral-700 hover:border-black'
+                  ? 'bg-[#D92D20] text-white shadow-sm font-bold'
+                  : 'bg-white border border-[#E5E5E5] text-neutral-700 hover:border-[#D92D20]'
               }`}
             >
               All Categories ({MOCK_SERVICES.length})
@@ -115,8 +115,8 @@ export default function ServicesPage() {
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition ${
                     selectedCategory === cat.id
-                      ? 'bg-black text-white'
-                      : 'bg-white border border-[#E5E5E5] text-neutral-700 hover:border-black'
+                      ? 'bg-[#D92D20] text-white shadow-sm font-bold'
+                      : 'bg-white border border-[#E5E5E5] text-neutral-700 hover:border-[#D92D20]'
                   }`}
                 >
                   {cat.name} ({count})
@@ -127,15 +127,65 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Services Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <div className="flex items-center justify-between mb-6">
+      {/* Services Grid & Mobile Compact View */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        
+        {/* Fast-Track Popular Haircut Strip for Quick Booking */}
+        <div className="mb-6 bg-red-50/70 border border-[#D92D20]/20 rounded-2xl p-3.5 sm:p-4 shadow-sm">
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center space-x-2">
+              <span className="bg-[#D92D20] text-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm">
+                FAST-TRACK
+              </span>
+              <span className="text-xs font-black uppercase tracking-wider text-black">
+                Most Popular Haircuts
+              </span>
+            </div>
+            <span className="text-[11px] font-bold text-[#D92D20]">1-Tap Add</span>
+          </div>
+          <div className="flex space-x-3 overflow-x-auto scrollbar-none pb-1 -mx-1 px-1">
+            {MOCK_SERVICES.filter(s => s.popular && s.name.toLowerCase().includes('cut')).map((srv) => {
+              const selected = isSelected(srv.id);
+              return (
+                <div
+                  key={srv.id}
+                  className={`shrink-0 w-[240px] p-3 rounded-xl border transition flex flex-col justify-between ${
+                    selected ? 'bg-white border-[#D92D20] ring-1 ring-[#D92D20]' : 'bg-white border-[#E5E5E5]'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between text-[10px] text-neutral-400 font-bold mb-1">
+                      <span>{srv.categoryName}</span>
+                      <span>{formatDuration(srv.durationMinutes)}</span>
+                    </div>
+                    <div className="text-xs font-extrabold text-black truncate">{srv.name}</div>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-neutral-100 flex items-center justify-between">
+                    <span className="text-xs font-black text-black">{formatPrice(srv.price)}</span>
+                    <button
+                      onClick={() => handleToggleService(srv)}
+                      className={`px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wider transition ${
+                        selected
+                          ? 'bg-[#D92D20] text-white'
+                          : 'bg-black text-white hover:bg-neutral-800'
+                      }`}
+                    >
+                      {selected ? 'Added ✓' : '+ Add'}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#E5E5E5]">
           <div className="text-xs font-bold uppercase tracking-wider text-neutral-500">
             Showing {filteredServices.length} Services
           </div>
           {state.services.length > 0 && (
-            <div className="text-xs font-semibold text-neutral-800">
-              {state.services.length} selected in current booking
+            <div className="text-xs font-black text-[#D92D20]">
+              {state.services.length} selected in booking
             </div>
           )}
         </div>
@@ -147,84 +197,144 @@ export default function ServicesPage() {
             <p className="text-xs text-neutral-500 mt-1">Try clearing your search query or filters.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredServices.map((service) => {
-              const selected = isSelected(service.id);
-              return (
-                <div
-                  key={service.id}
-                  className={`bg-white border rounded-xl p-6 flex flex-col justify-between transition-all ${
-                    selected
-                      ? 'border-black ring-1 ring-black bg-[#FAFAFA]'
-                      : 'border-[#E5E5E5] hover:border-neutral-400'
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                        {service.categoryName}
-                      </span>
-                      {service.popular && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded">
-                          Popular
-                        </span>
-                      )}
-                    </div>
-
-                    <h3 className="text-base font-bold text-black">{service.name}</h3>
-                    <p className="text-xs text-[#666666] mt-2 leading-relaxed">
-                      {service.description}
-                    </p>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <div className="text-xs text-neutral-400">
-                        {formatDuration(service.durationMinutes)}
+          <>
+            {/* =========================================================
+                MOBILE VIEW: Compact, High-Density Rows (3x Less Scrolling!)
+               ========================================================= */}
+            <div className="block sm:hidden space-y-2.5">
+              {filteredServices.map((service) => {
+                const selected = isSelected(service.id);
+                return (
+                  <div
+                    key={service.id}
+                    className={`bg-white border rounded-xl p-3.5 flex items-center justify-between gap-3 transition-all shadow-sm ${
+                      selected
+                        ? 'border-[#D92D20] ring-1 ring-[#D92D20] bg-red-50/20'
+                        : 'border-[#E5E5E5]'
+                    }`}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center space-x-1.5 mb-0.5">
+                        <h3 className="text-xs font-extrabold text-black truncate">{service.name}</h3>
+                        {service.popular && (
+                          <span className="text-[9px] font-black uppercase bg-[#D92D20] text-white px-1.5 py-0.2 rounded shrink-0">
+                            🔥 Popular
+                          </span>
+                        )}
                       </div>
-                      <div className="text-base font-black text-black">
+                      <div className="text-black font-black text-xs mt-0.5">
                         {formatPrice(service.price)}
                       </div>
+                      <p className="text-[10px] text-neutral-400 truncate mt-0.5">{service.description}</p>
                     </div>
 
                     <button
                       onClick={() => handleToggleService(service)}
-                      className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition ${
+                      className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider shrink-0 transition min-h-[44px] flex items-center space-x-1 ${
                         selected
-                          ? 'bg-black text-white hover:bg-neutral-800'
-                          : 'border border-black text-black hover:bg-black hover:text-white'
+                          ? 'bg-[#D92D20] text-white'
+                          : 'border border-[#D92D20] text-[#D92D20] bg-white hover:bg-[#D92D20] hover:text-white'
                       }`}
                     >
                       {selected ? (
                         <>
                           <Check className="w-3.5 h-3.5" />
-                          <span>Selected</span>
+                          <span>Added</span>
                         </>
                       ) : (
                         <>
                           <Plus className="w-3.5 h-3.5" />
-                          <span>Add to Booking</span>
+                          <span>Add</span>
                         </>
                       )}
                     </button>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+
+            {/* =========================================================
+                DESKTOP VIEW: Spacious 3-Column Card Grid
+               ========================================================= */}
+            <div className="hidden sm:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredServices.map((service) => {
+                const selected = isSelected(service.id);
+                return (
+                  <div
+                    key={service.id}
+                    className={`bg-white border rounded-xl p-6 flex flex-col justify-between transition-all ${
+                      selected
+                        ? 'border-[#D92D20] ring-1 ring-[#D92D20] bg-red-50/20'
+                        : 'border-[#E5E5E5] hover:border-neutral-400'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                          {service.categoryName}
+                        </span>
+                        {service.popular && (
+                          <span className="text-[9px] font-extrabold uppercase tracking-wider bg-[#D92D20] text-white px-2 py-0.5 rounded-full shadow-sm">
+                            🔥 Popular
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 className="text-base font-bold text-black">{service.name}</h3>
+                      <p className="text-xs text-[#666666] mt-2 leading-relaxed">
+                        {service.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between">
+                      <div>
+                        <div className="text-xs text-neutral-400">
+                          {formatDuration(service.durationMinutes)}
+                        </div>
+                        <div className="text-base font-black text-black">
+                          {formatPrice(service.price)}
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => handleToggleService(service)}
+                        className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition ${
+                          selected
+                            ? 'bg-[#D92D20] text-white hover:bg-[#B91C1C]'
+                            : 'border border-[#D92D20] text-[#D92D20] hover:bg-[#D92D20] hover:text-white'
+                        }`}
+                      >
+                        {selected ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" />
+                            <span>Selected</span>
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="w-3.5 h-3.5" />
+                            <span>Add to Booking</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
 
       {/* Floating Bottom Booking Bar if items are selected */}
       {state.services.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-black text-white p-4 sm:p-5 shadow-2xl border-t border-neutral-800 animate-fade-in">
+        <div className="fixed bottom-14 md:bottom-0 left-0 right-0 z-30 bg-black text-white p-3.5 sm:p-5 shadow-2xl border-t border-neutral-800 animate-fade-in">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-white text-black font-bold flex items-center justify-center text-xs">
+              <div className="w-8 h-8 rounded-full bg-[#D92D20] text-white font-black flex items-center justify-center text-xs shrink-0 shadow-md">
                 {state.services.length}
               </div>
               <div>
-                <div className="text-xs font-bold uppercase tracking-wider">
+                <div className="text-xs font-bold uppercase tracking-wider text-neutral-200">
                   {state.services.length} Service{state.services.length > 1 ? 's' : ''} Selected · {formatDuration(state.totalDuration)}
                 </div>
                 <div className="text-sm text-neutral-300">
@@ -242,7 +352,7 @@ export default function ServicesPage() {
               </button>
               <button
                 onClick={handleProceedToBooking}
-                className="flex-1 sm:flex-none bg-white text-black px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-100 transition flex items-center justify-center space-x-2 shadow-lg"
+                className="flex-1 sm:flex-none bg-[#D92D20] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#B91C1C] transition flex items-center justify-center space-x-2 shadow-lg shadow-red-900/20"
               >
                 <span>Continue to Salon &amp; Time</span>
                 <ArrowRight className="w-4 h-4" />
