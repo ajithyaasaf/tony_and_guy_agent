@@ -568,7 +568,7 @@ export default function AdaptiveBookingPage() {
 
             {/* Mobile Sticky Action Bar for Step 1 */}
             {state.services.length > 0 && (
-              <div className="sm:hidden fixed bottom-14 left-0 right-0 z-30 bg-black text-white p-3.5 shadow-2xl border-t border-neutral-800 flex items-center justify-between animate-fade-in">
+              <div className="sm:hidden fixed bottom-16 left-3 right-3 z-50 bg-black/95 text-white p-3.5 rounded-2xl shadow-2xl border border-neutral-800 flex items-center justify-between backdrop-blur-md animate-fade-in">
                 <div>
                   <div className="text-[11px] font-bold uppercase tracking-wider">
                     {state.services.length} Service{state.services.length > 1 ? 's' : ''} Selected

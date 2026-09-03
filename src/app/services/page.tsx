@@ -327,23 +327,23 @@ export default function ServicesPage() {
 
       {/* Floating Bottom Booking Bar if items are selected */}
       {state.services.length > 0 && (
-        <div className="fixed bottom-14 md:bottom-0 left-0 right-0 z-30 bg-black text-white p-3.5 sm:p-5 shadow-2xl border-t border-neutral-800 animate-fade-in">
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="fixed bottom-16 md:bottom-4 left-3 right-3 sm:left-6 sm:right-6 z-50 max-w-5xl mx-auto bg-black/95 text-white p-3.5 sm:p-4 rounded-2xl shadow-2xl border border-neutral-800 backdrop-blur-md animate-fade-in">
+          <div className="flex items-center justify-between gap-3">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 rounded-full bg-[#D92D20] text-white font-black flex items-center justify-center text-xs shrink-0 shadow-md">
                 {state.services.length}
               </div>
               <div>
-                <div className="text-xs font-bold uppercase tracking-wider text-neutral-200">
-                  {state.services.length} Service{state.services.length > 1 ? 's' : ''} Selected · {formatDuration(state.totalDuration)}
+                <div className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-neutral-200">
+                  {state.services.length} Service{state.services.length > 1 ? 's' : ''} · {formatDuration(state.totalDuration)}
                 </div>
-                <div className="text-sm text-neutral-300">
+                <div className="text-xs sm:text-sm text-neutral-300">
                   Total: <strong className="text-white font-black">{formatPrice(state.totalPrice)}</strong>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 w-full sm:w-auto">
+            <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
               <button
                 onClick={() => dispatch({ type: 'SET_SERVICES', payload: [] })}
                 className="text-xs text-neutral-400 hover:text-white underline px-2 py-1"
@@ -352,7 +352,7 @@ export default function ServicesPage() {
               </button>
               <button
                 onClick={handleProceedToBooking}
-                className="flex-1 sm:flex-none bg-[#D92D20] text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#B91C1C] transition flex items-center justify-center space-x-2 shadow-lg shadow-red-900/20"
+                className="bg-[#D92D20] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#B91C1C] transition flex items-center space-x-2 shadow-lg shadow-red-900/20"
               >
                 <span>Continue to Salon &amp; Time</span>
                 <ArrowRight className="w-4 h-4" />
