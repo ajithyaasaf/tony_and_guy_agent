@@ -327,35 +327,37 @@ export default function ServicesPage() {
 
       {/* Floating Bottom Booking Bar if items are selected */}
       {state.services.length > 0 && (
-        <div className="fixed bottom-16 md:bottom-4 left-3 right-3 sm:left-6 sm:right-6 z-50 max-w-5xl mx-auto bg-black/95 text-white p-3.5 sm:p-4 rounded-2xl shadow-2xl border border-neutral-800 backdrop-blur-md animate-fade-in">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-full bg-[#D92D20] text-white font-black flex items-center justify-center text-xs shrink-0 shadow-md">
+        <div className="fixed bottom-16 md:bottom-4 left-3 right-3 sm:left-6 sm:right-6 z-50 max-w-4xl mx-auto bg-black text-white p-3 sm:p-4 rounded-2xl shadow-2xl border border-neutral-800 animate-fade-in">
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
+            {/* Left: Badge + Details */}
+            <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#D92D20] text-white font-extrabold flex items-center justify-center text-xs shrink-0 shadow-md">
                 {state.services.length}
               </div>
-              <div>
-                <div className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-neutral-200">
+              <div className="min-w-0">
+                <div className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-neutral-300 whitespace-nowrap truncate">
                   {state.services.length} Service{state.services.length > 1 ? 's' : ''} · {formatDuration(state.totalDuration)}
                 </div>
-                <div className="text-xs sm:text-sm text-neutral-300">
+                <div className="text-xs sm:text-sm text-neutral-300 whitespace-nowrap truncate">
                   Total: <strong className="text-white font-black">{formatPrice(state.totalPrice)}</strong>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
+            {/* Right: Actions (Clear + CTA Button) */}
+            <div className="flex items-center space-x-2 shrink-0">
               <button
                 onClick={() => dispatch({ type: 'SET_SERVICES', payload: [] })}
-                className="text-xs text-neutral-400 hover:text-white underline px-2 py-1"
+                className="text-[11px] sm:text-xs text-neutral-400 hover:text-white underline px-1 sm:px-2 py-1 shrink-0"
               >
                 Clear
               </button>
               <button
                 onClick={handleProceedToBooking}
-                className="bg-[#D92D20] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#B91C1C] transition flex items-center space-x-2 shadow-lg shadow-red-900/20"
+                className="bg-[#D92D20] text-white px-3.5 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#B91C1C] transition flex items-center space-x-1.5 shrink-0 shadow-md shadow-red-900/20"
               >
-                <span>Continue to Salon &amp; Time</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Continue <span className="hidden sm:inline">to Salon &amp; Time</span></span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>

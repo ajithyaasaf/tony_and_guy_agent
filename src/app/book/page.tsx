@@ -568,16 +568,18 @@ export default function AdaptiveBookingPage() {
 
             {/* Mobile Sticky Action Bar for Step 1 */}
             {state.services.length > 0 && (
-              <div className="sm:hidden fixed bottom-16 left-3 right-3 z-50 bg-black/95 text-white p-3.5 rounded-2xl shadow-2xl border border-neutral-800 flex items-center justify-between backdrop-blur-md animate-fade-in">
-                <div>
-                  <div className="text-[11px] font-bold uppercase tracking-wider">
+              <div className="sm:hidden fixed bottom-16 left-3 right-3 z-50 bg-black text-white p-3 rounded-2xl shadow-2xl border border-neutral-800 flex items-center justify-between gap-2 animate-fade-in">
+                <div className="min-w-0">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-300 whitespace-nowrap truncate">
                     {state.services.length} Service{state.services.length > 1 ? 's' : ''} Selected
                   </div>
-                  <div className="text-xs text-neutral-300">Total: <strong className="text-white font-black">{formatPrice(state.totalPrice)}</strong></div>
+                  <div className="text-xs text-neutral-300 whitespace-nowrap truncate">
+                    Total: <strong className="text-white font-black">{formatPrice(state.totalPrice)}</strong>
+                  </div>
                 </div>
                 <button
                   onClick={() => setActiveStepTab('outlet')}
-                  className="bg-[#D92D20] text-white px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider flex items-center space-x-1.5 min-h-[44px] shadow-lg shadow-red-900/30"
+                  className="bg-[#D92D20] text-white px-3.5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center space-x-1.5 shrink-0 shadow-md shadow-red-900/30"
                 >
                   <span>Select Salon &amp; Slot</span>
                   <ArrowRight className="w-3.5 h-3.5" />
