@@ -134,22 +134,14 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-2.5 w-full sm:w-auto">
-                  <button
-                    onClick={() => setIsChatOpen(true)}
-                    className="flex-1 sm:flex-none bg-black text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition flex items-center justify-center space-x-2 min-h-[44px] shadow-sm"
-                  >
-                    <MessageSquare className="w-4 h-4 text-[#D92D20]" />
-                    <span>Chat with AI</span>
-                  </button>
-                  <Link
-                    href="/concierge"
-                    className="border border-[#E5E5E5] text-black px-4 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider hover:border-black transition flex items-center justify-center space-x-1 min-h-[44px] bg-white"
-                  >
-                    <span>Full Screen</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
+                <button
+                  onClick={() => setIsChatOpen(true)}
+                  className="w-full sm:w-auto bg-black text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition flex items-center justify-center space-x-2 min-h-[44px] shadow-md"
+                >
+                  <MessageSquare className="w-4 h-4 text-[#D92D20]" />
+                  <span>Chat with AI Agent</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-neutral-400" />
+                </button>
               </div>
             ) : (
               <div className="space-y-3 animate-fade-in">
