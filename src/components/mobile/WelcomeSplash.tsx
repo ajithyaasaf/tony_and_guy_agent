@@ -52,9 +52,8 @@ export function WelcomeSplash({ onStartBooking, onOpenChat }: WelcomeSplashProps
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden bg-brand-black transition-all duration-300 ${
-        isClosing ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'
-      }`}
+      className={`fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden bg-brand-black transition-all duration-300 ${isClosing ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'
+        }`}
     >
       {/* Background High-Fashion Editorial Imagery */}
       <div
