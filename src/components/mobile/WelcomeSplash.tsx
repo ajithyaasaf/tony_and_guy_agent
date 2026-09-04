@@ -111,8 +111,8 @@ export function WelcomeSplash({ onStartBooking, onOpenChat }: WelcomeSplashProps
           Stops.
         </h1>
 
-        <p className="text-xs sm:text-sm text-brand-white/80 font-medium leading-relaxed mb-8 max-w-sm drop-shadow">
-          64 bespoke salons across India. Instant live slot availability and personalized AI concierge assistance.
+        <p className="text-xs sm:text-sm text-brand-white/85 font-medium leading-relaxed mb-8 max-w-sm drop-shadow">
+          Instant salon booking across Chennai. Real-time slots, zero waiting.
         </p>
 
         {/* Primary CTA: "Let's Start" / "Start Booking" */}
@@ -138,7 +138,7 @@ export function WelcomeSplash({ onStartBooking, onOpenChat }: WelcomeSplashProps
         {/* Trust Seal */}
         <div className="mt-6 flex items-center justify-center space-x-2 text-[10px] text-brand-white/60 font-semibold uppercase tracking-wider">
           <ShieldCheck className="w-3.5 h-3.5" />
-          <span>Official TONI&amp;GUY India Digital Experience</span>
+          <span>Official TONI&amp;GUY Chennai Digital Experience</span>
         </div>
       </div>
     </div>
