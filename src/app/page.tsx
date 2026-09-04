@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ConciergeChatHero } from '@/features/concierge/components/ConciergeChatHero';
+import { WelcomeSplash } from '@/components/mobile/WelcomeSplash';
 import { MOCK_OFFERS } from '@/data/offers';
 import { MOCK_SERVICES } from '@/data/services';
 import { MOCK_OUTLETS } from '@/data/outlets';
@@ -34,6 +35,14 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Editorial Welcome Splash for Mobile / First-Time Visitors */}
+      <WelcomeSplash
+        onStartBooking={() => router.push('/book')}
+        onOpenChat={() => {
+          setIsChatOpen(true);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
       
       {/* 1. Hero Editorial Section */}
       <section className="bg-brand-white border-b sm:border-b-0 border-brand-border pt-8 sm:pt-14 pb-8 sm:pb-16 px-4 sm:px-6 lg:px-8">

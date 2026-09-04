@@ -115,13 +115,15 @@ export function Header() {
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition ${
-                  isActive ? 'bg-brand-subtle font-semibold text-brand-black' : 'text-brand-muted hover:bg-brand-surface'
+                  isActive ? 'bg-brand-red-subtle text-brand-red font-bold' : 'text-brand-muted hover:bg-brand-surface'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${link.href === '/offers' ? 'text-brand-red' : 'text-brand-muted'}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-brand-red' : 'text-brand-muted'}`} />
                 <span>{link.name}</span>
                 {link.href === '/offers' && (
-                  <span className="bg-brand-red text-brand-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ml-auto">
+                  <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ml-auto ${
+                    isActive ? 'bg-brand-red text-brand-white' : 'bg-brand-surface text-brand-muted border border-brand-border'
+                  }`}>
                     OFFERS
                   </span>
                 )}
@@ -153,7 +155,7 @@ export function Header() {
                 isActive ? 'text-brand-red font-extrabold' : 'text-brand-muted hover:text-brand-black'
               }`}
             >
-              <Icon className={`w-5 h-5 mb-0.5 ${isActive ? 'text-brand-red scale-110' : link.href === '/offers' ? 'text-brand-red' : 'text-brand-muted'}`} />
+              <Icon className={`w-5 h-5 mb-0.5 transition-transform duration-200 ${isActive ? 'text-brand-red scale-110' : 'text-brand-muted'}`} />
               <span>{link.name.replace('Concierge AI', 'AI Chat').replace('Offers & Combos', 'Offers')}</span>
             </Link>
           );
@@ -165,7 +167,7 @@ export function Header() {
           }`}
         >
           <div className="relative">
-            <Calendar className={`w-5 h-5 mb-0.5 ${pathname === '/book' ? 'text-brand-red scale-110' : 'text-brand-muted'}`} />
+            <Calendar className={`w-5 h-5 mb-0.5 transition-transform duration-200 ${pathname === '/book' ? 'text-brand-red scale-110' : 'text-brand-muted'}`} />
             {hasPendingBooking && (
               <span className="absolute -top-1 -right-2 bg-brand-red text-brand-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-brand-white">
                 {state.services.length || 1}
@@ -217,7 +219,13 @@ export function Footer() {
       </div>
       <div className="max-w-7xl mx-auto border-t border-neutral-800 mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-neutral-500">
         <div>&copy; {new Date().getFullYear()} TONI&amp;GUY Salon Concierge. All rights reserved.</div>
-        <div className="flex space-x-4 mt-2 sm:mt-0">
+        <div className="flex items-center space-x-4 mt-2 sm:mt-0">
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('toniguy:open-welcome'))}
+            className="hover:text-brand-white transition text-[11px] text-neutral-400 underline underline-offset-2"
+          >
+            Preview Welcome Screen
+          </button>
           <span>Privacy Policy</span>
           <span>Terms of Service</span>
           <span>Salon Protocol</span>
