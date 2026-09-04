@@ -222,15 +222,57 @@ export function ConciergeChatHero() {
                       </div>
                     )}
 
+                    {/* Sister Salon Smart Fallback Card */}
+                    {msg.intentData.sisterFallback && (
+                      <div className="p-3.5 bg-brand-surface border border-brand-red/30 rounded-xl space-y-2.5 mt-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-black uppercase tracking-wider bg-brand-red text-brand-white px-2 py-0.5 rounded-full">
+                            Nearby Salon Alternative
+                          </span>
+                          <span className="text-[11px] font-extrabold text-brand-muted">
+                            📍 {msg.intentData.sisterFallback.distanceFormatted}
+                          </span>
+                        </div>
+                        <div className="text-xs font-bold text-brand-black">
+                          {msg.intentData.sisterFallback.sisterOutlet.name}
+                        </div>
+                        <div className="text-[11px] text-brand-muted">
+                          Available Slot: <strong className="text-brand-black font-extrabold">{msg.intentData.sisterFallback.suggestedSlot.displayTime}</strong> ({msg.intentData.sisterFallback.date})
+                        </div>
+                        <button
+                          onClick={() => {
+                            if (msg.intentData?.sisterFallback) {
+                              dispatch({ type: 'SET_OUTLET', payload: msg.intentData.sisterFallback.sisterOutlet });
+                              dispatch({ type: 'SELECT_SLOT', payload: msg.intentData.sisterFallback.suggestedSlot });
+                              router.push('/book');
+                            }
+                          }}
+                          className="w-full bg-brand-black text-brand-white py-2.5 px-4 rounded-lg font-bold text-xs uppercase tracking-wider hover:bg-neutral-800 transition flex items-center justify-center space-x-2 shadow-sm active:scale-95"
+                        >
+                          <span>Switch to {msg.intentData.sisterFallback.sisterOutlet.area} ({msg.intentData.sisterFallback.suggestedSlot.displayTime})</span>
+                          <ArrowRight className="w-3.5 h-3.5 text-brand-red" />
+                        </button>
+                      </div>
+                    )}
+
                     {/* Action CTA inside conversation */}
                     <div className="pt-2">
-                      <button
-                        onClick={() => router.push('/book')}
-                        className="inline-flex items-center space-x-2 bg-brand-red text-brand-white px-5 py-2.5 rounded-full font-bold hover:bg-brand-red-hover transition text-xs uppercase tracking-wider min-h-[44px] shadow-md shadow-brand-red/20 active:scale-95"
-                      >
-                        <span>Proceed with this Booking</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
+                      {!msg.intentData.sisterFallback ? (
+                        <button
+                          onClick={() => router.push('/book')}
+                          className="inline-flex items-center space-x-2 bg-brand-red text-brand-white px-5 py-2.5 rounded-full font-bold hover:bg-brand-red-hover transition text-xs uppercase tracking-wider min-h-[44px] shadow-md shadow-brand-red/20 active:scale-95"
+                        >
+                          <span>Proceed with this Booking</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => router.push('/book')}
+                          className="text-xs text-brand-muted hover:text-brand-black underline uppercase font-bold tracking-wider"
+                        >
+                          View all slots at {msg.intentData.outlet?.area || 'original salon'} →
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}

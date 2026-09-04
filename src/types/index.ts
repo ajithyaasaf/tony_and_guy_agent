@@ -145,3 +145,14 @@ export interface PreConsultationData {
   status: 'draft' | 'submitted' | 'reviewed';
   createdAt: string;
 }
+
+export interface SisterSalonSuggestion {
+  originalOutlet: Outlet;
+  sisterOutlet: Outlet;
+  distanceKm: number;
+  distanceFormatted: string;
+  date: string;
+  suggestedSlot: TimeSlot;
+  requestedTime?: string;
+  headline: string;
+}

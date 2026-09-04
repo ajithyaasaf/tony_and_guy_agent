@@ -8,7 +8,8 @@ import { MOCK_SERVICES, SERVICE_CATEGORIES } from '@/data/services';
 import { MOCK_OUTLETS } from '@/data/outlets';
 import { MOCK_STAFF } from '@/data/staff';
 import { generateSlotsForDate, matchSlotToPreference } from '@/data/availability';
-import { Service, Outlet, Staff, TimeSlot, CustomerInfo } from '@/types';
+import { findNearbySisterSalons, findSisterSalonSlotFallback } from '@/features/booking/engine/sisterSalonFallback';
+import { Service, Outlet, Staff, TimeSlot, CustomerInfo, SisterSalonSuggestion } from '@/types';
 import { formatPrice, formatDuration } from '@/lib/utils';
 import { format, addDays } from 'date-fns';
 import { 
@@ -24,6 +25,7 @@ export default function AdaptiveBookingPage() {
   // Local state for interactive steps
   const [activeStepTab, setActiveStepTab] = useState<'services' | 'outlet' | 'datetime' | 'details' | 'review'>('services');
   const [selectedCity, setSelectedCity] = useState('all');
+  const [occupiedSlotNotice, setOccupiedSlotNotice] = useState<SisterSalonSuggestion | null>(null);
   const [customerForm, setCustomerForm] = useState<CustomerInfo>({
     name: state.customer?.name || '',
     phone: state.customer?.phone || '',
@@ -179,6 +181,22 @@ export default function AdaptiveBookingPage() {
     if (!state.outlet) return [];
     return MOCK_STAFF.filter((s) => s.outletId === state.outlet?.id);
   }, [state.outlet]);
+
+  // Nearby Sister Salons for smart proximity fallback
+  const nearbySisterSalons = useMemo(() => {
+    if (!state.outlet) return [];
+    return findNearbySisterSalons(state.outlet.id, 12, 3);
+  }, [state.outlet?.id]);
+
+  const handleOccupiedSlotClick = (slot: TimeSlot) => {
+    if (!state.outlet || !state.date) return;
+    const fallback = findSisterSalonSlotFallback({
+      outletId: state.outlet.id,
+      date: state.date,
+      requestedTime: slot.time,
+    });
+    setOccupiedSlotNotice(fallback);
+  };
 
   // If already confirmed, render the luxury confirmation voucher
   if (bookingConfirmed) {
@@ -795,10 +813,10 @@ export default function AdaptiveBookingPage() {
 
             {/* Time Slot Grid */}
             {state.date && (
-              <div>
+              <div className="space-y-4">
                 {/* Concierge Auto-Match Banner */}
                 {state.timePreference && state.selectedSlot && (
-                  <div className="bg-brand-red-subtle border border-brand-red/20 p-3.5 rounded-2xl flex items-center justify-between text-xs text-brand-black animate-fade-in mb-4">
+                  <div className="bg-brand-red-subtle border border-brand-red/20 p-3.5 rounded-2xl flex items-center justify-between text-xs text-brand-black animate-fade-in">
                     <div className="flex items-center space-x-2">
                       <Clock className="w-4 h-4 text-brand-red shrink-0" />
                       <span>
@@ -808,12 +826,50 @@ export default function AdaptiveBookingPage() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between mb-3">
+                {/* Nearby Salon Smart Fallback Callout on Occupied Slot Click */}
+                {occupiedSlotNotice && (
+                  <div className="bg-brand-black text-brand-white p-4 rounded-2xl border border-neutral-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fade-in shadow-xl">
+                    <div className="space-y-1">
+                      <div className="flex items-center space-x-2">
+                        <span className="bg-brand-red text-brand-white text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm">
+                          Nearby Salon Alternative
+                        </span>
+                        <span className="text-xs font-bold text-neutral-200">
+                          📍 {occupiedSlotNotice.sisterOutlet.name} ({occupiedSlotNotice.distanceFormatted})
+                        </span>
+                      </div>
+                      <p className="text-xs text-neutral-300 leading-relaxed">
+                        This slot is occupied at {occupiedSlotNotice.originalOutlet.name}, but <strong>{occupiedSlotNotice.sisterOutlet.area}</strong> has <strong>{occupiedSlotNotice.suggestedSlot.displayTime}</strong> open right now!
+                      </p>
+                    </div>
+                    <div className="flex items-center space-x-2 w-full sm:w-auto shrink-0">
+                      <button
+                        onClick={() => {
+                          dispatch({ type: 'SET_OUTLET', payload: occupiedSlotNotice.sisterOutlet });
+                          dispatch({ type: 'SELECT_SLOT', payload: occupiedSlotNotice.suggestedSlot });
+                          setOccupiedSlotNotice(null);
+                        }}
+                        className="flex-1 sm:flex-none bg-brand-white text-brand-black px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-wider hover:bg-neutral-100 transition whitespace-nowrap shadow-sm active:scale-95 min-h-[38px]"
+                      >
+                        Switch to {occupiedSlotNotice.sisterOutlet.area} ({occupiedSlotNotice.suggestedSlot.displayTime}) →
+                      </button>
+                      <button
+                        onClick={() => setOccupiedSlotNotice(null)}
+                        className="text-neutral-400 hover:text-brand-white text-xs px-2.5 py-1 rounded-md hover:bg-neutral-800"
+                        title="Dismiss"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between">
                   <div className="text-xs font-bold uppercase tracking-wider text-brand-muted">
                     Available Time Slots for {state.date}
                   </div>
                   <div className="text-[11px] text-neutral-400">
-                    Real-time capacity
+                    Click booked slot to see nearby salon alternatives
                   </div>
                 </div>
 
@@ -824,30 +880,91 @@ export default function AdaptiveBookingPage() {
                     return (
                       <button
                         key={slot.time}
-                        disabled={!slot.available}
                         onClick={() => {
-                          handleSelectSlot(slot);
+                          if (slot.available) {
+                            handleSelectSlot(slot);
+                            setOccupiedSlotNotice(null);
+                          } else {
+                            handleOccupiedSlotClick(slot);
+                          }
                         }}
                         className={`p-3 rounded-xl text-xs font-bold transition flex flex-col items-center justify-center min-h-[48px] ${
                           isSelected
-                            ? 'bg-brand-black text-brand-white ring-2 ring-brand-black'
+                            ? 'bg-brand-black text-brand-white ring-2 ring-brand-black shadow-md'
                             : slot.available
-                            ? 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-black'
-                            : 'bg-brand-subtle text-neutral-300 border border-brand-border/40 cursor-not-allowed line-through'
+                            ? 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-black shadow-xs'
+                            : 'bg-brand-subtle text-neutral-400 border border-brand-border/40 hover:border-brand-red/50 hover:bg-brand-red-subtle/30 cursor-pointer'
                         }`}
                       >
-                        <span>{slot.displayTime}</span>
+                        <span className={!slot.available ? 'line-through' : ''}>{slot.displayTime}</span>
                         {isConciergeMatch ? (
                           <span className="text-[9px] font-bold text-brand-red mt-0.5">Concierge Pick ✓</span>
                         ) : isSelected ? (
                           <span className="text-[9px] font-bold text-brand-white mt-0.5">Selected ✓</span>
                         ) : slot.available ? (
                           <span className="text-[9px] font-normal opacity-70 mt-0.5">Available</span>
-                        ) : null}
+                        ) : (
+                          <span className="text-[8px] font-extrabold text-brand-red uppercase tracking-tighter mt-0.5">
+                            Check Nearby
+                          </span>
+                        )}
                       </button>
                     );
                   })}
                 </div>
+
+                {/* Nearby Salons Proximity & Quick Switch Strip */}
+                {nearbySisterSalons.length > 0 && (
+                  <div className="mt-8 bg-brand-surface border border-brand-border rounded-2xl p-4 sm:p-5 space-y-3 shadow-xs">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="w-4 h-4 text-brand-red" />
+                        <span className="text-xs font-black uppercase tracking-wider text-brand-black">
+                          Nearby Salons & Branches ({nearbySisterSalons.length} close locations)
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-brand-muted font-bold uppercase tracking-wider">
+                        Live Capacity Fallback
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-brand-muted leading-relaxed">
+                      Need a different time? Check real-time slots at our nearby branches:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                      {nearbySisterSalons.map((sister) => {
+                        const sisterSlots = state.date ? generateSlotsForDate(sister.outlet.id, state.date) : [];
+                        const availableCount = sisterSlots.filter((s) => s.available).length;
+                        return (
+                          <div
+                            key={sister.outlet.id}
+                            className="bg-brand-white border border-brand-border rounded-xl p-3.5 flex flex-col justify-between hover:border-brand-black transition shadow-xs"
+                          >
+                            <div>
+                              <div className="flex items-center justify-between mb-1.5">
+                                <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand-red">
+                                  {sister.distanceFormatted}
+                                </span>
+                                <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full bg-brand-subtle text-brand-black border border-brand-border">
+                                  {availableCount} slots open
+                                </span>
+                              </div>
+                              <div className="text-xs font-bold text-brand-black">{sister.outlet.name}</div>
+                              <div className="text-[10px] text-brand-muted mt-0.5">{sister.outlet.area}</div>
+                            </div>
+                            <button
+                              onClick={() => {
+                                dispatch({ type: 'SET_OUTLET', payload: sister.outlet });
+                              }}
+                              className="mt-3 w-full bg-brand-subtle border border-brand-border hover:bg-brand-black hover:text-brand-white text-brand-black text-[10px] font-black uppercase tracking-wider py-2 rounded-lg transition min-h-[34px]"
+                            >
+                              Switch to {sister.outlet.area} →
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 

@@ -627,6 +627,52 @@ console.log('══════════════════════�
 }
 
 // ============================================================
+// SISTER SALON SMART SLOT FALLBACK ENGINE
+// ============================================================
+console.log('\n═══════════════════════════════════════════════════════');
+console.log('SISTER SALON FALLBACK: GPS proximity & slot alternative');
+console.log('═══════════════════════════════════════════════════════');
+{
+  const { 
+    calculateHaversineDistanceKm, 
+    formatDistance, 
+    findNearbySisterSalons, 
+    findSisterSalonSlotFallback 
+  } = require('../features/booking/engine/sisterSalonFallback');
+
+  // 1. Distance Calculation & Formatting
+  const dist = calculateHaversineDistanceKm(13.0064, 80.2575, 12.9992, 80.2689); // Adyar to Besant Nagar (~1.4km)
+  assert(dist > 0.5 && dist < 3.0, `Calculated distance: ${dist.toFixed(2)} km`);
+  assert(formatDistance(0.4) === '400m away', 'Format sub-km distance: 400m away');
+  assert(formatDistance(1.42) === '1.4 km away', 'Format km distance: 1.4 km away');
+
+  // 2. Sister Salons Discovery
+  const adyarOutlet = MOCK_OUTLETS.find(o => o.name.toLowerCase().includes('adyar'))!;
+  const nearbyToAdyar = findNearbySisterSalons(adyarOutlet.id, 10, 4);
+  assert(nearbyToAdyar.length > 0, `Found ${nearbyToAdyar.length} nearby sister salons to Adyar`);
+  assert(nearbyToAdyar[0].distanceKm <= nearbyToAdyar[1].distanceKm, 'Sister salons ordered by ascending distance');
+
+  // 3. Sister Salon Slot Fallback Function
+  const fallback = findSisterSalonSlotFallback({
+    outletId: adyarOutlet.id,
+    date: tomorrowISO,
+    requestedTime: '18:00',
+  });
+  assert(fallback !== null, 'Sister salon fallback generated when requested');
+  assert(fallback?.sisterOutlet.id !== adyarOutlet.id, 'Sister outlet is distinct from original');
+  assert(fallback?.suggestedSlot.available === true, 'Suggested slot at sister salon is open');
+  assert(fallback?.headline.includes(adyarOutlet.name), 'Headline includes original outlet name');
+
+  // 4. Intent Parser Sister Fallback Integration
+  const nlWithSlot = parseNaturalLanguageInput('I want a haircut at Adyar tomorrow at 6 PM', today);
+  assert(nlWithSlot.intent === 'BOOK_APPOINTMENT', 'Intent parsed as BOOK_APPOINTMENT');
+  assert(nlWithSlot.outlet?.area === 'Adyar', 'Outlet matched Adyar');
+  assert(nlWithSlot.date !== null, 'Date extracted');
+  assert(nlWithSlot.timePreference?.time === '18:00', 'Time preference 18:00 extracted');
+  assert(typeof nlWithSlot.responseMessage === 'string' && nlWithSlot.responseMessage.length > 10, 'Response message formulated');
+}
+
+// ============================================================
 // FINAL SUMMARY
 // ============================================================
 console.log('\n\n╔═══════════════════════════════════════════════════════╗');

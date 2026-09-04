@@ -1,7 +1,9 @@
-import { Service, Outlet, Offer, TimePreference } from '@/types';
+import { Service, Outlet, Offer, TimePreference, SisterSalonSuggestion } from '@/types';
 import { MOCK_SERVICES } from '@/data/services';
 import { MOCK_OUTLETS } from '@/data/outlets';
 import { MOCK_OFFERS } from '@/data/offers';
+import { generateSlotsForDate, matchSlotToPreference } from '@/data/availability';
+import { findSisterSalonSlotFallback } from '@/features/booking/engine/sisterSalonFallback';
 import { addDays, format, isSaturday, isSunday, nextSaturday, nextSunday, isMonday, nextMonday, isTuesday, nextTuesday, isWednesday, nextWednesday, isThursday, nextThursday, isFriday, nextFriday } from 'date-fns';
 
 export interface ExtractedBookingIntent {
@@ -14,6 +16,8 @@ export interface ExtractedBookingIntent {
   dateLabel?: string;
   timePreference: TimePreference | null;
   stylistPreference: 'any' | 'specific';
+  sisterFallback?: SisterSalonSuggestion | null;
+  targetSlotAvailable?: boolean;
   responseMessage: string;
 }
 
@@ -271,6 +275,8 @@ export function parseNaturalLanguageInput(input: string, today: Date = new Date(
 
   // 8. Formulate Conversational Response
   let responseMessage = 'Welcome to TONI&GUY! How may I assist with your appointment today?';
+  let sisterFallback: SisterSalonSuggestion | null = null;
+  let targetSlotAvailable = true;
 
   if (intent === 'GREETING') {
     responseMessage = 'Hello! Welcome to TONI&GUY. I can help you reserve haircuts, hair spa, colouring, or book an appointment at your nearest salon. What would you like to schedule?';
@@ -279,6 +285,7 @@ export function parseNaturalLanguageInput(input: string, today: Date = new Date(
     responseMessage = `I found the exclusive package: **${offerObj.name}** at the offer price of ₹${offerObj.offerPrice.toLocaleString('en-IN')} (Save ₹${offerObj.savings.toLocaleString('en-IN')}). Let's select your salon and date.`;
   } else if (matchedServices.length > 0) {
     const srvNames = matchedServices.map((s) => s.name).join(' and ');
+
     if (matchedOutlet && extractedDate && timePreference) {
       let formattedTimeDisplay = timePreference.time || 'your preferred time';
       if (timePreference.time) {
@@ -289,7 +296,30 @@ export function parseNaturalLanguageInput(input: string, today: Date = new Date(
         const prefix = timePreference.type === 'AFTER' ? 'after ' : timePreference.type === 'BEFORE' ? 'before ' : '';
         formattedTimeDisplay = `${prefix}${displayHour}:${m} ${period}`;
       }
-      responseMessage = `Understood! **${srvNames}** at **${matchedOutlet.name}** for **${dateLabel || extractedDate}** around **${formattedTimeDisplay}**. Checking availability now...`;
+
+      // Check slot availability at target outlet
+      const targetSlots = generateSlotsForDate(matchedOutlet.id, extractedDate);
+      const matchedSlot = matchSlotToPreference(targetSlots, timePreference);
+
+      if (matchedSlot && matchedSlot.available) {
+        targetSlotAvailable = true;
+        responseMessage = `Understood! **${srvNames}** at **${matchedOutlet.name}** for **${dateLabel || extractedDate}** around **${formattedTimeDisplay}**. Slot is available!`;
+      } else {
+        targetSlotAvailable = false;
+        // Search for sister salon fallback
+        sisterFallback = findSisterSalonSlotFallback({
+          outletId: matchedOutlet.id,
+          date: extractedDate,
+          requestedTime: timePreference.time,
+          timePreference,
+        });
+
+        if (sisterFallback) {
+          responseMessage = `**${matchedOutlet.name}** is fully booked at **${formattedTimeDisplay}**, but our nearby salon **${sisterFallback.sisterOutlet.name}** (${sisterFallback.distanceFormatted}) has an open slot at **${sisterFallback.suggestedSlot.displayTime}**! Would you like to reserve that instead?`;
+        } else {
+          responseMessage = `**${matchedOutlet.name}** is fully booked around **${formattedTimeDisplay}** on **${dateLabel || extractedDate}**. Please choose from the other available slots below.`;
+        }
+      }
     } else if (matchedOutlet && extractedDate) {
       responseMessage = `Great! Setting up **${srvNames}** at **${matchedOutlet.name}** on **${dateLabel || extractedDate}**. Please choose your preferred time slot below.`;
     } else if (matchedOutlet) {
@@ -323,6 +353,8 @@ export function parseNaturalLanguageInput(input: string, today: Date = new Date(
     dateLabel,
     timePreference,
     stylistPreference,
+    sisterFallback: (sisterFallback as SisterSalonSuggestion | null) ?? null,
+    targetSlotAvailable,
     responseMessage,
   };
 }
