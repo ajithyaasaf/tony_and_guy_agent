@@ -180,18 +180,18 @@ export default function SalonAdminPortalPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <span className="text-xl font-black tracking-widest uppercase">TONI&amp;GUY</span>
-            <span className="bg-brand-red text-brand-white text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded">
+            <span className="bg-brand-red text-brand-white text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded shadow-sm">
               Manager Portal
             </span>
           </div>
 
           <div className="flex items-center space-x-4">
-            <span className="hidden sm:inline-block text-xs text-neutral-400 font-medium">
+            <span className="hidden sm:inline-block text-xs text-brand-muted font-medium">
               Salon Operations Manager
             </span>
             <Link
               href="/"
-              className="bg-white/10 hover:bg-white/20 text-brand-white text-xs font-bold px-3 py-1.5 rounded-lg transition"
+              className="bg-brand-white/10 hover:bg-brand-white/20 text-brand-white text-xs font-bold px-3 py-1.5 rounded-lg transition"
             >
               View Mobile App →
             </Link>
@@ -236,7 +236,7 @@ export default function SalonAdminPortalPage() {
 
             <Link
               href="/book"
-              className="bg-brand-red text-brand-white px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center space-x-1.5 shadow-md min-h-[40px]"
+              className="bg-brand-red text-brand-white px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center space-x-1.5 shadow-brand-cta min-h-[40px]"
             >
               <Scissors className="w-3.5 h-3.5" />
               <span>+ New Walk-In</span>
@@ -297,7 +297,7 @@ export default function SalonAdminPortalPage() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition ${
                   selectedOutlet === 'all'
                     ? 'bg-brand-black text-brand-white'
-                    : 'bg-brand-subtle border border-brand-border text-neutral-600 hover:border-brand-black'
+                    : 'bg-brand-subtle border border-brand-border text-brand-muted hover:border-brand-black'
                 }`}
               >
                 All Salons ({appointments.length})
@@ -310,7 +310,7 @@ export default function SalonAdminPortalPage() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition ${
                     selectedOutlet === outlet.id
                       ? 'bg-brand-black text-brand-white'
-                      : 'bg-brand-subtle border border-brand-border text-neutral-600 hover:border-brand-black'
+                      : 'bg-brand-subtle border border-brand-border text-brand-muted hover:border-brand-black'
                   }`}
                 >
                   {outlet.area}
@@ -332,7 +332,7 @@ export default function SalonAdminPortalPage() {
           </div>
 
           {/* Status Tabs */}
-          <div className="flex space-x-1.5 border-t border-neutral-100 pt-3 overflow-x-auto scrollbar-none">
+          <div className="flex space-x-1.5 border-t border-brand-border/60 pt-3 overflow-x-auto scrollbar-none">
             {(['all', 'Confirmed', 'In-Service', 'Completed', 'Cancelled'] as const).map((st) => (
               <button
                 key={st}
@@ -341,7 +341,7 @@ export default function SalonAdminPortalPage() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition whitespace-nowrap ${
                   selectedStatus === st
                     ? 'bg-brand-red text-brand-white shadow-sm'
-                    : 'bg-neutral-50 text-neutral-600 hover:text-brand-black'
+                    : 'bg-brand-subtle text-brand-muted hover:text-brand-black'
                 }`}
               >
                 {st === 'all' ? 'All Status' : st}
@@ -356,7 +356,7 @@ export default function SalonAdminPortalPage() {
             <div className="bg-brand-white border border-dashed border-brand-border rounded-2xl p-12 text-center space-y-2">
               <Building className="w-10 h-10 text-neutral-300 mx-auto" />
               <div className="text-sm font-bold text-brand-black">No incoming appointments match the selected branch or status</div>
-              <p className="text-xs text-neutral-500">Try switching your branch or status filters above.</p>
+              <p className="text-xs text-brand-muted">Try switching your branch or status filters above.</p>
             </div>
           ) : (
             filteredAppointments.map((apt) => (
@@ -371,7 +371,7 @@ export default function SalonAdminPortalPage() {
                 }`}
               >
                 {/* Top Card Row */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-neutral-100 gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-brand-border/60 gap-2">
                   <div className="flex items-center space-x-3">
                     <span className="font-mono text-xs font-black bg-brand-black text-brand-white px-3 py-1 rounded-md">
                       {apt.bookingRef}
@@ -387,12 +387,12 @@ export default function SalonAdminPortalPage() {
                     <span
                       className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full ${
                         apt.status === 'Confirmed'
-                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                          ? 'bg-emerald-50 text-brand-green border border-emerald-300'
                           : apt.status === 'In-Service'
-                          ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                          ? 'bg-amber-50 text-brand-amber border border-amber-300'
                           : apt.status === 'Completed'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-rose-100 text-rose-800'
+                          ? 'bg-blue-50 text-blue-800 border border-blue-200'
+                          : 'bg-rose-50 text-rose-800 border border-rose-200'
                       }`}
                     >
                       {apt.status === 'Confirmed'
@@ -415,14 +415,14 @@ export default function SalonAdminPortalPage() {
                       <User className="w-3.5 h-3.5 text-brand-black" />
                       <span>{apt.customerName}</span>
                     </div>
-                    <div className="text-xs font-bold text-neutral-600 flex items-center space-x-1.5">
+                    <div className="text-xs font-bold text-brand-muted flex items-center space-x-1.5">
                       <Phone className="w-3 h-3 text-neutral-400" />
                       <a href={`tel:${apt.customerPhone}`} className="hover:underline text-brand-red">
                         {apt.customerPhone}
                       </a>
                     </div>
                     {apt.notes && (
-                      <p className="text-[11px] text-neutral-500 bg-brand-subtle border border-neutral-200/70 p-2 rounded-lg mt-1 italic">
+                      <p className="text-[11px] text-brand-muted bg-brand-subtle border border-brand-border p-2 rounded-lg mt-1 italic">
                         &quot;{apt.notes}&quot;
                       </p>
                     )}
@@ -435,14 +435,14 @@ export default function SalonAdminPortalPage() {
                       <Calendar className="w-3.5 h-3.5 text-brand-red" />
                       <span>{apt.date} at {apt.time}</span>
                     </div>
-                    <div className="text-xs text-neutral-600 flex items-center space-x-1.5 mt-0.5">
+                    <div className="text-xs text-brand-muted flex items-center space-x-1.5 mt-0.5">
                       <Scissors className="w-3 h-3 text-neutral-400" />
                       <span>Assigned Stylist: <strong>{apt.stylist}</strong></span>
                     </div>
                   </div>
 
                   {/* Services & Revenue */}
-                  <div className="bg-brand-subtle border border-neutral-200/60 p-3 rounded-xl flex flex-col justify-between">
+                  <div className="bg-brand-subtle border border-brand-border p-3 rounded-xl flex flex-col justify-between">
                     <div>
                       <div className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400 mb-1">
                         Booked Rituals
@@ -457,15 +457,15 @@ export default function SalonAdminPortalPage() {
                       </ul>
                     </div>
 
-                    <div className="mt-2 pt-2 border-t border-neutral-200 flex justify-between items-center text-xs">
-                      <span className="text-neutral-500 font-bold uppercase text-[10px]">Total Order Value</span>
+                    <div className="mt-2 pt-2 border-t border-brand-border flex justify-between items-center text-xs">
+                      <span className="text-brand-muted font-bold uppercase text-[10px]">Total Order Value</span>
                       <span className="text-sm font-black text-brand-red">{formatPrice(apt.totalPrice)}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Manager Action Toolbar */}
-                <div className="pt-3 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-2">
+                <div className="pt-3 border-t border-brand-border/60 flex flex-wrap items-center justify-between gap-2">
                   <div className="text-[11px] text-neutral-400 font-medium">
                     Order created {new Date(apt.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
@@ -475,7 +475,7 @@ export default function SalonAdminPortalPage() {
                       <button
                         type="button"
                         onClick={() => handleUpdateStatus(apt.id, 'In-Service')}
-                        className="bg-brand-amber hover:bg-amber-700 text-brand-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center space-x-1"
+                        className="bg-brand-amber hover:bg-amber-700 text-brand-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center space-x-1 shadow-sm"
                       >
                         <UserCheck className="w-3.5 h-3.5" />
                         <span>Check-In Guest</span>
@@ -486,7 +486,7 @@ export default function SalonAdminPortalPage() {
                       <button
                         type="button"
                         onClick={() => handleUpdateStatus(apt.id, 'Completed')}
-                        className="bg-brand-green hover:bg-emerald-700 text-brand-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center space-x-1"
+                        className="bg-brand-green hover:bg-emerald-700 text-brand-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center space-x-1 shadow-sm"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Complete &amp; Bill Order</span>

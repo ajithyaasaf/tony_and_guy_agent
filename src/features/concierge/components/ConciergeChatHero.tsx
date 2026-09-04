@@ -136,7 +136,7 @@ export function ConciergeChatHero() {
       </div>
 
       {/* Messages area */}
-      <div className="p-4 sm:p-6 min-h-[300px] sm:min-h-[360px] max-h-[380px] sm:max-h-[460px] overflow-y-auto space-y-4 bg-neutral-50/50">
+      <div className="p-4 sm:p-6 min-h-[300px] sm:min-h-[360px] max-h-[380px] sm:max-h-[460px] overflow-y-auto space-y-4 bg-brand-surface/60">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -158,20 +158,20 @@ export function ConciergeChatHero() {
                 className={`rounded-2xl p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed ${
                   msg.sender === 'user'
                     ? 'bg-brand-black text-brand-white rounded-tr-none shadow-md font-medium'
-                    : 'bg-brand-white text-neutral-900 border border-neutral-200/80 rounded-tl-none shadow-sm'
+                    : 'bg-brand-white text-brand-black border border-brand-border rounded-tl-none shadow-xs'
                 }`}
               >
                 <div className="whitespace-pre-wrap">{msg.text}</div>
 
                 {/* Render Structured UI inline when data is extracted */}
                 {msg.intentData && (
-                  <div className="mt-3.5 pt-3 border-t border-neutral-200 space-y-2.5 text-xs">
+                  <div className="mt-3.5 pt-3 border-t border-brand-border space-y-2.5 text-xs">
                     {/* Extracted service pill */}
                     {msg.intentData.services.length > 0 && (
                       <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="font-semibold text-neutral-500">Selected Services:</span>
+                        <span className="font-semibold text-brand-muted">Selected Services:</span>
                         {msg.intentData.services.map((s) => (
-                          <span key={s.id} className="bg-neutral-100 border border-neutral-300 text-brand-black px-2 py-1 rounded-md font-bold">
+                          <span key={s.id} className="bg-brand-subtle border border-brand-border text-brand-black px-2 py-1 rounded-md font-bold">
                             {s.name} ({formatPrice(s.price)})
                           </span>
                         ))}
@@ -180,7 +180,7 @@ export function ConciergeChatHero() {
 
                     {/* Extracted outlet pill */}
                     {msg.intentData.outlet && (
-                      <div className="flex items-center space-x-1.5 text-neutral-700">
+                      <div className="flex items-center space-x-1.5 text-brand-muted">
                         <MapPin className="w-3.5 h-3.5 text-brand-red shrink-0" />
                         <span><strong>Outlet:</strong> {msg.intentData.outlet.name}</span>
                       </div>
@@ -188,7 +188,7 @@ export function ConciergeChatHero() {
 
                     {/* Extracted date */}
                     {msg.intentData.date && (
-                      <div className="flex items-center space-x-1.5 text-neutral-700">
+                      <div className="flex items-center space-x-1.5 text-brand-muted">
                         <Calendar className="w-3.5 h-3.5 text-brand-black shrink-0" />
                         <span><strong>Date:</strong> {msg.intentData.dateLabel || msg.intentData.date}</span>
                       </div>
@@ -196,7 +196,7 @@ export function ConciergeChatHero() {
 
                     {/* Extracted time preference */}
                     {msg.intentData.timePreference && (
-                      <div className="flex items-center space-x-1.5 text-neutral-700">
+                      <div className="flex items-center space-x-1.5 text-brand-muted">
                         <Clock className="w-3.5 h-3.5 text-brand-red shrink-0" />
                         <span>
                           <strong>Time:</strong>{' '}
@@ -226,7 +226,7 @@ export function ConciergeChatHero() {
                     <div className="pt-2">
                       <button
                         onClick={() => router.push('/book')}
-                        className="inline-flex items-center space-x-2 bg-brand-red text-brand-white px-5 py-2.5 rounded-full font-bold hover:bg-brand-red-hover transition text-xs uppercase tracking-wider min-h-[44px] shadow-md shadow-red-900/20 active:scale-95"
+                        className="inline-flex items-center space-x-2 bg-brand-red text-brand-white px-5 py-2.5 rounded-full font-bold hover:bg-brand-red-hover transition text-xs uppercase tracking-wider min-h-[44px] shadow-md shadow-brand-red/20 active:scale-95"
                       >
                         <span>Proceed with this Booking</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -241,20 +241,20 @@ export function ConciergeChatHero() {
         ))}
 
         {isTyping && (
-          <div className="flex items-center space-x-2.5 text-xs text-neutral-500 pl-9 animate-fade-in">
+          <div className="flex items-center space-x-2.5 text-xs text-brand-muted pl-9 animate-fade-in">
             <div className="flex space-x-1 items-center">
               <div className="w-1.5 h-1.5 rounded-full bg-brand-red animate-bounce" />
               <div className="w-1.5 h-1.5 rounded-full bg-brand-red animate-bounce [animation-delay:0.2s]" />
               <div className="w-1.5 h-1.5 rounded-full bg-brand-red animate-bounce [animation-delay:0.4s]" />
             </div>
-            <span className="font-medium text-neutral-600">TONI&amp;GUY AI is organizing your schedule...</span>
+            <span className="font-medium text-brand-muted">TONI&amp;GUY AI is organizing your schedule...</span>
           </div>
         )}
         <div ref={chatBottomRef} />
       </div>
 
       {/* Suggestion prompt chips with horizontal scroll hint */}
-      <div className="px-3 sm:px-5 py-2.5 bg-brand-white border-t border-neutral-200 overflow-x-auto flex space-x-2 scrollbar-none items-center">
+      <div className="px-3 sm:px-5 py-2.5 bg-brand-white border-t border-brand-border overflow-x-auto flex space-x-2 scrollbar-none items-center">
         <span className="text-[11px] font-black uppercase tracking-wider text-brand-red whitespace-nowrap mr-1 shrink-0 flex items-center space-x-1">
           <Sparkles className="w-3 h-3" />
           <span>Try saying:</span>
@@ -263,7 +263,7 @@ export function ConciergeChatHero() {
           <button
             key={i}
             onClick={() => handleSend(prompt)}
-            className="text-[11px] bg-neutral-100 hover:bg-brand-red hover:text-brand-white transition text-neutral-800 border border-neutral-200 px-3.5 py-1.5 rounded-full whitespace-nowrap shrink-0 min-h-[34px] flex items-center font-medium shadow-2xs active:scale-95"
+            className="text-[11px] bg-brand-subtle hover:bg-brand-red hover:text-brand-white transition text-brand-black border border-brand-border px-3.5 py-1.5 rounded-full whitespace-nowrap shrink-0 min-h-[34px] flex items-center font-medium shadow-2xs active:scale-95"
           >
             &quot;{prompt}&quot;
           </button>
@@ -271,19 +271,19 @@ export function ConciergeChatHero() {
       </div>
 
       {/* Input container */}
-      <div className="p-3 sm:p-4 bg-brand-white border-t border-neutral-200 flex items-center space-x-2">
+      <div className="p-3 sm:p-4 bg-brand-white border-t border-brand-border flex items-center space-x-2">
         <input
           type="text"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder="E.g., I want a haircut tomorrow at Anna Nagar at 7 PM..."
-          className="flex-1 bg-neutral-50 border border-neutral-300 rounded-full px-4 sm:px-5 py-3 text-xs sm:text-sm focus:outline-none focus:bg-brand-white focus:border-brand-red focus:ring-2 focus:ring-brand-red/20 text-brand-black placeholder:text-neutral-400 min-h-[44px] transition-all shadow-inner"
+          className="flex-1 bg-brand-subtle border border-brand-border rounded-full px-4 sm:px-5 py-3 text-xs sm:text-sm focus:outline-none focus:bg-brand-white focus:border-brand-red focus:ring-2 focus:ring-brand-red/20 text-brand-black placeholder:text-brand-muted/70 min-h-[44px] transition-all shadow-inner"
         />
         <button
           onClick={() => handleSend()}
           disabled={!inputText.trim()}
-          className="bg-brand-red text-brand-white p-3 rounded-full hover:bg-brand-red-hover disabled:opacity-30 disabled:cursor-not-allowed transition min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0 shadow-md shadow-red-900/25 active:scale-95"
+          className="bg-brand-red text-brand-white p-3 rounded-full hover:bg-brand-red-hover disabled:opacity-30 disabled:cursor-not-allowed transition min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0 shadow-md shadow-brand-red/20 active:scale-95"
           aria-label="Send message"
         >
           <Send className="w-4 h-4" />

@@ -44,14 +44,14 @@ export default function OffersPage() {
           {MOCK_OFFERS.map((offer) => (
             <div
               key={offer.id}
-              className="bg-brand-white border border-brand-border rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-brand-black hover:shadow-lg transition-all group relative overflow-hidden"
+              className="bg-brand-white border border-brand-border rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-brand-black hover:shadow-brand-card transition-all group relative overflow-hidden"
             >
               {/* Savings Badge */}
               <div className="flex items-center justify-between mb-4">
-                <span className="bg-brand-red text-brand-white text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full">
+                <span className="bg-brand-red text-brand-white text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
                   Save {formatPrice(offer.savings)}
                 </span>
-                <span className="text-xs text-neutral-500 flex items-center space-x-1 font-medium">
+                <span className="text-xs text-brand-muted flex items-center space-x-1 font-medium">
                   <Clock className="w-3.5 h-3.5" />
                   <span>{formatDuration(offer.durationMinutes)}</span>
                 </span>
@@ -66,12 +66,12 @@ export default function OffersPage() {
                 </p>
 
                 {/* Included services breakdown */}
-                <div className="mt-6 pt-4 border-t border-neutral-100 space-y-2">
+                <div className="mt-6 pt-4 border-t border-brand-border/60 space-y-2">
                   <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">
                     Included Signature Rituals:
                   </div>
                   {offer.includedServices.map((srv, idx) => (
-                    <div key={idx} className="flex items-center space-x-2.5 text-xs text-neutral-800 font-medium">
+                    <div key={idx} className="flex items-center space-x-2.5 text-xs text-brand-black font-medium">
                       <Check className="w-4 h-4 text-brand-black shrink-0" />
                       <span>{srv}</span>
                     </div>
@@ -98,7 +98,7 @@ export default function OffersPage() {
 
                 <button
                   onClick={() => handleBookOffer(offer)}
-                  className="bg-brand-red text-brand-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full hover:bg-brand-red-hover transition-all flex items-center space-x-2 shadow-md shadow-red-900/15"
+                  className="bg-brand-red text-brand-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full hover:bg-brand-red-hover transition-all flex items-center space-x-2 shadow-brand-cta"
                 >
                   <span>Book This Combo</span>
                   <ArrowRight className="w-4 h-4" />

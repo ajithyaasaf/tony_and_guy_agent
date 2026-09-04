@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={poppins.variable}>
-      <body className={`${poppins.className} min-h-screen bg-brand-white text-brand-dark flex flex-col antialiased selection:bg-brand-black selection:text-brand-white`}>
+      <body className={`${poppins.className} min-h-screen bg-brand-white text-brand-black flex flex-col antialiased selection:bg-brand-black selection:text-brand-white`}>
         <BookingProvider>
           <Header />
           <main className="flex-1">

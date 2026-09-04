@@ -48,12 +48,13 @@ export function Header() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`text-sm font-medium tracking-wide transition-colors flex items-center space-x-1.5 ${isActive
+                  className={`text-sm font-medium tracking-wide transition-colors flex items-center space-x-1.5 ${
+                    isActive
                       ? 'text-brand-red font-bold border-b-2 border-brand-red pb-1'
                       : 'text-brand-muted hover:text-brand-red'
-                    }`}
+                  }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-brand-red' : 'text-neutral-400'}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-brand-red' : 'text-brand-muted'}`} />
                   <span>{link.name}</span>
                 </Link>
               );
@@ -65,7 +66,7 @@ export function Header() {
             {hasPendingBooking ? (
               <Link
                 href="/book"
-                className="bg-brand-red text-brand-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-brand-red-hover transition-all flex items-center space-x-2 shadow-md shadow-red-900/20"
+                className="bg-brand-red text-brand-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-brand-red-hover transition-all flex items-center space-x-2 shadow-md shadow-brand-red/20 active:scale-95"
               >
                 <span>Complete Booking ({state.services.length} srv)</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -73,7 +74,7 @@ export function Header() {
             ) : (
               <Link
                 href="/book"
-                className="bg-brand-red text-brand-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-brand-red-hover transition-all flex items-center space-x-2 shadow-md shadow-red-900/20"
+                className="bg-brand-red text-brand-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full hover:bg-brand-red-hover transition-all flex items-center space-x-2 shadow-md shadow-brand-red/20 active:scale-95"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 <span>Book Appointment</span>
@@ -113,10 +114,11 @@ export function Header() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition ${isActive ? 'bg-neutral-100 font-semibold text-brand-black' : 'text-neutral-700 hover:bg-neutral-50'
-                  }`}
+                className={`flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition ${
+                  isActive ? 'bg-brand-subtle font-semibold text-brand-black' : 'text-brand-muted hover:bg-brand-surface'
+                }`}
               >
-                <Icon className={`w-4 h-4 ${link.href === '/offers' ? 'text-brand-red' : 'text-neutral-500'}`} />
+                <Icon className={`w-4 h-4 ${link.href === '/offers' ? 'text-brand-red' : 'text-brand-muted'}`} />
                 <span>{link.name}</span>
                 {link.href === '/offers' && (
                   <span className="bg-brand-red text-brand-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ml-auto">
@@ -130,7 +132,7 @@ export function Header() {
             <Link
               href="/book"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full bg-brand-black text-brand-white py-3.5 rounded-lg text-center text-xs font-bold uppercase tracking-wider block shadow-sm"
+              className="w-full bg-brand-black text-brand-white py-3.5 rounded-lg text-center text-xs font-bold uppercase tracking-wider block shadow-sm hover:bg-brand-dark transition"
             >
               Start Direct Booking
             </Link>
@@ -147,21 +149,23 @@ export function Header() {
             <Link
               key={link.name}
               href={link.href}
-              className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[10px] font-semibold transition min-h-[44px] ${isActive ? 'text-brand-red font-extrabold' : 'text-neutral-500 hover:text-brand-black'
-                }`}
+              className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[10px] font-semibold transition min-h-[44px] ${
+                isActive ? 'text-brand-red font-extrabold' : 'text-brand-muted hover:text-brand-black'
+              }`}
             >
-              <Icon className={`w-5 h-5 mb-0.5 ${isActive ? 'text-brand-red scale-110' : link.href === '/offers' ? 'text-brand-red' : 'text-neutral-400'}`} />
+              <Icon className={`w-5 h-5 mb-0.5 ${isActive ? 'text-brand-red scale-110' : link.href === '/offers' ? 'text-brand-red' : 'text-brand-muted'}`} />
               <span>{link.name.replace('Concierge AI', 'AI Chat').replace('Offers & Combos', 'Offers')}</span>
             </Link>
           );
         })}
         <Link
           href="/book"
-          className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[10px] font-semibold transition min-h-[44px] relative ${pathname === '/book' ? 'text-brand-red font-extrabold' : 'text-neutral-500 hover:text-brand-black'
-            }`}
+          className={`flex flex-col items-center justify-center py-1 px-2 rounded-lg text-[10px] font-semibold transition min-h-[44px] relative ${
+            pathname === '/book' ? 'text-brand-red font-extrabold' : 'text-brand-muted hover:text-brand-black'
+          }`}
         >
           <div className="relative">
-            <Calendar className={`w-5 h-5 mb-0.5 ${pathname === '/book' ? 'text-brand-red scale-110' : 'text-neutral-400'}`} />
+            <Calendar className={`w-5 h-5 mb-0.5 ${pathname === '/book' ? 'text-brand-red scale-110' : 'text-brand-muted'}`} />
             {hasPendingBooking && (
               <span className="absolute -top-1 -right-2 bg-brand-red text-brand-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-brand-white">
                 {state.services.length || 1}

@@ -53,7 +53,7 @@ export default function ServicesPage() {
       <div className="bg-brand-surface border-b border-brand-border py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-500">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-brand-muted">
               Salon Service Catalog
             </span>
             <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-brand-black mt-2">
@@ -86,7 +86,7 @@ export default function ServicesPage() {
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition ${
                     audienceFilter === aud
                       ? 'bg-brand-black text-brand-white'
-                      : 'text-neutral-600 hover:text-brand-black'
+                      : 'text-brand-muted hover:text-brand-black'
                   }`}
                 >
                   {aud === 'all' ? 'All' : aud}
@@ -102,7 +102,7 @@ export default function ServicesPage() {
               className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition ${
                 selectedCategory === 'all'
                   ? 'bg-brand-red text-brand-white shadow-sm font-bold'
-                  : 'bg-brand-white border border-brand-border text-neutral-700 hover:border-brand-red'
+                  : 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-red'
               }`}
             >
               All Categories ({MOCK_SERVICES.length})
@@ -116,7 +116,7 @@ export default function ServicesPage() {
                   className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition ${
                     selectedCategory === cat.id
                       ? 'bg-brand-red text-brand-white shadow-sm font-bold'
-                      : 'bg-brand-white border border-brand-border text-neutral-700 hover:border-brand-red'
+                      : 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-red'
                   }`}
                 >
                   {cat.name} ({count})
@@ -160,7 +160,7 @@ export default function ServicesPage() {
                     </div>
                     <div className="text-xs font-extrabold text-brand-black truncate">{srv.name}</div>
                   </div>
-                  <div className="mt-3 pt-2 border-t border-neutral-100 flex items-center justify-between">
+                  <div className="mt-3 pt-2 border-t border-brand-border/60 flex items-center justify-between">
                     <span className="text-xs font-black text-brand-black">{formatPrice(srv.price)}</span>
                     <button
                       onClick={() => handleToggleService(srv)}
@@ -180,7 +180,7 @@ export default function ServicesPage() {
         </div>
 
         <div className="flex items-center justify-between mb-4 pb-2 border-b border-brand-border">
-          <div className="text-xs font-bold uppercase tracking-wider text-neutral-500">
+          <div className="text-xs font-bold uppercase tracking-wider text-brand-muted">
             Showing {filteredServices.length} Services
           </div>
           {state.services.length > 0 && (
@@ -194,7 +194,7 @@ export default function ServicesPage() {
           <div className="text-center py-16 border border-dashed border-brand-border rounded-2xl">
             <Scissors className="w-8 h-8 text-neutral-300 mx-auto mb-3" />
             <div className="text-sm font-bold text-brand-black">No services found</div>
-            <p className="text-xs text-neutral-500 mt-1">Try clearing your search query or filters.</p>
+            <p className="text-xs text-brand-muted mt-1">Try clearing your search query or filters.</p>
           </div>
         ) : (
           <>
@@ -265,7 +265,7 @@ export default function ServicesPage() {
                     className={`bg-brand-white border rounded-xl p-6 flex flex-col justify-between transition-all ${
                       selected
                         ? 'border-brand-red ring-1 ring-brand-red bg-brand-red-subtle/50'
-                        : 'border-brand-border hover:border-neutral-400'
+                        : 'border-brand-border hover:border-brand-black'
                     }`}
                   >
                     <div>
@@ -286,7 +286,7 @@ export default function ServicesPage() {
                       </p>
                     </div>
 
-                    <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between">
+                    <div className="mt-6 pt-4 border-t border-brand-border/60 flex items-center justify-between">
                       <div>
                         <div className="text-xs text-neutral-400">
                           {formatDuration(service.durationMinutes)}
@@ -354,7 +354,7 @@ export default function ServicesPage() {
               </button>
               <button
                 onClick={handleProceedToBooking}
-                className="bg-brand-red text-brand-white px-3.5 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center space-x-1.5 shrink-0 shadow-md shadow-red-900/20"
+                className="bg-brand-red text-brand-white px-3.5 sm:px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center space-x-1.5 shrink-0 shadow-brand-cta"
               >
                 <span>Continue <span className="hidden sm:inline">to Salon &amp; Time</span></span>
                 <ArrowRight className="w-3.5 h-3.5" />

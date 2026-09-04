@@ -100,7 +100,7 @@ export default function SalonsPage() {
       <div className="bg-brand-surface border-b border-brand-border py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-500">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-brand-muted">
               National Salon Network
             </span>
             <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-brand-black mt-2">
@@ -152,7 +152,7 @@ export default function SalonsPage() {
               className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition ${
                 selectedCity === 'all'
                   ? 'bg-brand-black text-brand-white'
-                  : 'bg-brand-white border border-brand-border text-neutral-700 hover:border-brand-black'
+                  : 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-black'
               }`}
             >
               All Cities ({MOCK_OUTLETS.length})
@@ -166,7 +166,7 @@ export default function SalonsPage() {
                   className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition ${
                     selectedCity === city
                       ? 'bg-brand-black text-brand-white'
-                      : 'bg-brand-white border border-brand-border text-neutral-700 hover:border-brand-black'
+                      : 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-black'
                   }`}
                 >
                   {city} ({count})
@@ -180,11 +180,11 @@ export default function SalonsPage() {
       {/* Outlets Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <div className="flex items-center justify-between mb-6">
-          <div className="text-xs font-bold uppercase tracking-wider text-neutral-500">
+          <div className="text-xs font-bold uppercase tracking-wider text-brand-muted">
             Showing {processedOutlets.length} Salons
           </div>
           {state.outlet && (
-            <div className="text-xs font-semibold text-neutral-800">
+            <div className="text-xs font-semibold text-brand-black">
               Selected in booking: <strong className="text-brand-black">{state.outlet.name}</strong>
             </div>
           )}
@@ -194,7 +194,7 @@ export default function SalonsPage() {
           <div className="text-center py-16 border border-dashed border-brand-border rounded-2xl">
             <MapPin className="w-8 h-8 text-neutral-300 mx-auto mb-3" />
             <div className="text-sm font-bold text-brand-black">No salons match your search</div>
-            <p className="text-xs text-neutral-500 mt-1">Try selecting another city or clearing your search term.</p>
+            <p className="text-xs text-brand-muted mt-1">Try selecting another city or clearing your search term.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -206,16 +206,16 @@ export default function SalonsPage() {
                   className={`bg-brand-white border rounded-2xl p-6 flex flex-col justify-between transition-all ${
                     isSelected
                       ? 'border-brand-black ring-1 ring-brand-black bg-brand-subtle'
-                      : 'border-brand-border hover:border-brand-black hover:shadow-md'
+                      : 'border-brand-border hover:border-brand-black hover:shadow-brand-card'
                   }`}
                 >
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-bold uppercase tracking-wider bg-brand-subtle text-brand-black px-2 py-0.5 rounded border border-brand-border/60">
                         {outlet.city} · {outlet.area}
                       </span>
                       {outlet.distance !== undefined && (
-                        <span className="text-xs font-extrabold text-brand-black bg-neutral-200/70 px-2 py-0.5 rounded-full">
+                        <span className="text-xs font-extrabold text-brand-black bg-brand-subtle border border-brand-border/60 px-2 py-0.5 rounded-full">
                           {outlet.distance} km away
                         </span>
                       )}
@@ -226,7 +226,7 @@ export default function SalonsPage() {
                       {outlet.address}, {outlet.city} - {outlet.pinCode}
                     </p>
 
-                    <div className="mt-4 pt-3 border-t border-neutral-100 space-y-2 text-xs text-neutral-600">
+                    <div className="mt-4 pt-3 border-t border-brand-border/60 space-y-2 text-xs text-brand-muted">
                       <div className="flex items-center space-x-2">
                         <Clock className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
                         <span>{outlet.openingHours.open} - {outlet.openingHours.close} ({outlet.openingHours.days})</span>
@@ -245,14 +245,14 @@ export default function SalonsPage() {
                     {/* Features pills */}
                     <div className="mt-4 flex flex-wrap gap-1.5">
                       {outlet.features.map((feat, i) => (
-                        <span key={i} className="text-[10px] bg-brand-surface border border-brand-border text-neutral-700 px-2 py-0.5 rounded">
+                        <span key={i} className="text-[10px] bg-brand-surface border border-brand-border text-brand-muted px-2 py-0.5 rounded">
                           {feat}
                         </span>
                       ))}
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between min-h-[44px]">
+                  <div className="mt-6 pt-4 border-t border-brand-border/60 flex items-center justify-between min-h-[44px]">
                     <div className="flex items-center space-x-1 text-xs font-semibold text-brand-black">
                       <Star className="w-3.5 h-3.5 fill-brand-black text-brand-black" />
                       <span>{outlet.rating}</span>

@@ -184,34 +184,34 @@ export default function AdaptiveBookingPage() {
   if (bookingConfirmed) {
     return (
       <div className="min-h-screen bg-brand-surface py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div className="max-w-2xl w-full bg-white border border-brand-border rounded-3xl shadow-xl overflow-hidden animate-fade-in">
-          <div className="bg-black text-white p-8 text-center relative">
-            <div className="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-3">
+        <div className="max-w-2xl w-full bg-brand-white border border-brand-border rounded-3xl shadow-xl overflow-hidden animate-fade-in">
+          <div className="bg-brand-black text-brand-white p-8 text-center relative">
+            <div className="w-14 h-14 bg-brand-white text-brand-black rounded-full flex items-center justify-center mx-auto mb-3">
               <Check className="w-7 h-7 text-brand-red" />
             </div>
-            <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-400">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-brand-muted">
               Appointment Confirmed
             </span>
             <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mt-1">
               Your TONI&amp;GUY Visit is Booked
             </h1>
-            <div className="mt-3 inline-block bg-neutral-900 border border-neutral-700 px-4 py-1.5 rounded-full text-xs font-mono text-neutral-200">
+            <div className="mt-3 inline-block bg-brand-dark border border-neutral-800 px-4 py-1.5 rounded-full text-xs font-mono text-neutral-200">
               Booking Ref: <strong>{bookingRef}</strong>
             </div>
           </div>
 
           <div className="p-6 sm:p-8 space-y-6">
             {/* Salon & Date details */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-6 border-b border-neutral-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-6 border-b border-brand-border">
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Salon Location</div>
-                <div className="text-sm font-bold text-black mt-1">{state.outlet?.name}</div>
-                <div className="text-xs text-neutral-500 mt-0.5">{state.outlet?.address}, {state.outlet?.city}</div>
+                <div className="text-[11px] font-bold uppercase tracking-wider text-brand-muted">Salon Location</div>
+                <div className="text-sm font-bold text-brand-black mt-1">{state.outlet?.name}</div>
+                <div className="text-xs text-brand-muted mt-0.5">{state.outlet?.address}, {state.outlet?.city}</div>
               </div>
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Date &amp; Time</div>
-                <div className="text-sm font-bold text-black mt-1">{state.date} at {state.selectedSlot?.displayTime}</div>
-                <div className="text-xs text-neutral-500 mt-0.5">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-brand-muted">Date &amp; Time</div>
+                <div className="text-sm font-bold text-brand-black mt-1">{state.date} at {state.selectedSlot?.displayTime}</div>
+                <div className="text-xs text-brand-muted mt-0.5">
                   Stylist: {state.selectedStaff ? state.selectedStaff.name : state.selectedSlot?.staffName || 'Any Available Senior Stylist'}
                 </div>
               </div>
@@ -219,41 +219,41 @@ export default function AdaptiveBookingPage() {
 
             {/* Booked Services */}
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 mb-3">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-brand-muted mb-3">
                 Booked Rituals &amp; Services
               </div>
               <div className="space-y-2.5">
                 {state.services.map((srv: Service) => (
                   <div key={srv.id} className="flex items-center justify-between text-xs sm:text-sm">
-                    <span className="font-medium text-neutral-800">{srv.name}</span>
-                    <span className="font-bold text-black">{formatPrice(srv.price)}</span>
+                    <span className="font-medium text-brand-black">{srv.name}</span>
+                    <span className="font-bold text-brand-black">{formatPrice(srv.price)}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between text-sm sm:text-base font-black text-black">
+              <div className="mt-4 pt-3 border-t border-brand-border flex items-center justify-between text-sm sm:text-base font-black text-brand-black">
                 <span>Total Amount ({formatDuration(state.totalDuration)})</span>
                 <span>{formatPrice(state.totalPrice)}</span>
               </div>
             </div>
 
             {/* Customer Details */}
-            <div className="bg-brand-subtle p-4 rounded-xl border border-neutral-200/70 text-xs space-y-1">
-              <div className="font-bold text-black">Guest: {state.customer?.name} ({state.customer?.phone})</div>
-              {state.customer?.email && <div className="text-neutral-500">Email: {state.customer.email}</div>}
-              <div className="text-neutral-500">An instant SMS confirmation has been scheduled for your visit.</div>
+            <div className="bg-brand-subtle p-4 rounded-xl border border-brand-border text-xs space-y-1">
+              <div className="font-bold text-brand-black">Guest: {state.customer?.name} ({state.customer?.phone})</div>
+              {state.customer?.email && <div className="text-brand-muted">Email: {state.customer.email}</div>}
+              <div className="text-brand-muted">An instant SMS confirmation has been scheduled for your visit.</div>
             </div>
 
             <div className="pt-2 flex flex-col sm:flex-row gap-3">
               <Link
                 href="/orders"
-                className="flex-1 bg-brand-red text-white text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition shadow-md shadow-red-900/20"
+                className="flex-1 bg-brand-red text-brand-white text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition shadow-md shadow-brand-red/20 active:scale-95"
               >
                 View My Orders &amp; Appointments
               </Link>
               <Link
                 href="/"
                 onClick={() => resetBooking()}
-                className="flex-1 bg-black text-white text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition"
+                className="flex-1 bg-brand-black text-brand-white text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-dark transition active:scale-95"
               >
                 Return to Concierge Home
               </Link>
@@ -265,7 +265,7 @@ export default function AdaptiveBookingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white pb-24">
+    <div className="min-h-screen bg-brand-white pb-24">
       {/* Top Breadcrumb / Stepper */}
       <div className="bg-brand-surface border-b border-brand-border py-4 px-4 sm:px-6 lg:px-8 sticky top-16 sm:top-20 z-30">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -286,10 +286,10 @@ export default function AdaptiveBookingPage() {
                   onClick={() => setActiveStepTab(step.id as any)}
                   className={`px-3 py-1.5 rounded-full whitespace-nowrap transition flex items-center space-x-1 font-semibold ${
                     isActive
-                      ? 'bg-black text-white'
+                      ? 'bg-brand-black text-brand-white'
                       : step.done
-                      ? 'bg-neutral-200 text-black hover:bg-neutral-300'
-                      : 'text-neutral-400 hover:text-black'
+                      ? 'bg-brand-subtle text-brand-black border border-brand-border hover:bg-brand-surface'
+                      : 'text-brand-muted hover:text-brand-black'
                   }`}
                 >
                   {step.done && <Check className="w-3 h-3" />}
@@ -300,7 +300,7 @@ export default function AdaptiveBookingPage() {
           </div>
 
           {/* Quick summary strip */}
-          <div className="flex items-center space-x-3 text-xs text-neutral-600">
+          <div className="flex items-center space-x-3 text-xs text-brand-muted">
             {state.services.length > 0 && (
               <span><strong>{state.services.length}</strong> srv ({formatPrice(state.totalPrice)})</span>
             )}
@@ -312,7 +312,7 @@ export default function AdaptiveBookingPage() {
             )}
             <button
               onClick={() => resetBooking()}
-              className="text-neutral-400 hover:text-black transition flex items-center space-x-1"
+              className="text-brand-muted hover:text-brand-black transition flex items-center space-x-1"
               title="Reset entire booking"
             >
               <RotateCcw className="w-3 h-3" />
@@ -328,12 +328,12 @@ export default function AdaptiveBookingPage() {
         {state.selectedOffer && (
           <div className="bg-brand-red-subtle border border-brand-red/30 rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs animate-fade-in">
             <div className="flex items-center space-x-2.5">
-              <span className="bg-brand-red text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shrink-0 shadow-sm">
+              <span className="bg-brand-red text-brand-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shrink-0 shadow-sm">
                 EXCLUSIVE OFFER APPLIED
               </span>
-              <span className="font-extrabold text-black">{state.selectedOffer.name}</span>
+              <span className="font-extrabold text-brand-black">{state.selectedOffer.name}</span>
             </div>
-            <div className="text-[11px] font-extrabold text-brand-red bg-white border border-brand-red/20 px-3 py-1 rounded-lg">
+            <div className="text-[11px] font-extrabold text-brand-red bg-brand-white border border-brand-red/20 px-3 py-1 rounded-lg">
               Bundle Savings: You Save {formatPrice(state.selectedOffer.savings)}!
             </div>
           </div>
@@ -346,7 +346,7 @@ export default function AdaptiveBookingPage() {
           <div className="space-y-6 animate-fade-in pb-16 md:pb-0">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-brand-border gap-3">
               <div>
-                <h2 className="text-2xl font-black uppercase tracking-tight text-black flex items-center space-x-2">
+                <h2 className="text-2xl font-black uppercase tracking-tight text-brand-black flex items-center space-x-2">
                   <span>Step 1: Choose Your Services</span>
                 </h2>
                 <p className="text-xs text-brand-muted mt-1">
@@ -357,7 +357,7 @@ export default function AdaptiveBookingPage() {
               {state.services.length > 0 && (
                 <button
                   onClick={() => setActiveStepTab('outlet')}
-                  className="hidden sm:flex bg-brand-red text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition items-center space-x-1.5 min-h-[44px] shadow-md shadow-red-900/15"
+                  className="hidden sm:flex bg-brand-red text-brand-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition items-center space-x-1.5 min-h-[44px] shadow-md shadow-brand-red/20 active:scale-95"
                 >
                   <span>Proceed to Salon ({state.services.length})</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -369,10 +369,10 @@ export default function AdaptiveBookingPage() {
             <div className="bg-brand-red-subtle border border-brand-red/20 rounded-2xl p-3.5 sm:p-4 shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
-                  <span className="bg-brand-red text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
+                  <span className="bg-brand-red text-brand-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
                     FAST-TRACK
                   </span>
-                  <span className="text-xs font-black uppercase tracking-wider text-black">
+                  <span className="text-xs font-black uppercase tracking-wider text-brand-black">
                     Quick Haircut Auto-Proceed
                   </span>
                 </div>
@@ -382,14 +382,14 @@ export default function AdaptiveBookingPage() {
                 <button
                   type="button"
                   onClick={() => handleQuickSelectAndProceed('men')}
-                  className="bg-white border border-brand-red/40 text-black px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap hover:bg-brand-red hover:text-white transition flex items-center space-x-1.5 shadow-sm min-h-[38px] shrink-0"
+                  className="bg-brand-white border border-brand-red/40 text-brand-black px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap hover:bg-brand-red hover:text-brand-white transition flex items-center space-x-1.5 shadow-sm min-h-[38px] shrink-0"
                 >
                   <span>✂️ Men&apos;s Classic Haircut ({formatPrice(850)})</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleQuickSelectAndProceed('women')}
-                  className="bg-white border border-brand-red/40 text-black px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap hover:bg-brand-red hover:text-white transition flex items-center space-x-1.5 shadow-sm min-h-[38px] shrink-0"
+                  className="bg-brand-white border border-brand-red/40 text-brand-black px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap hover:bg-brand-red hover:text-brand-white transition flex items-center space-x-1.5 shadow-sm min-h-[38px] shrink-0"
                 >
                   <span>💇‍♀️ Women&apos;s Creative Cut ({formatPrice(1550)})</span>
                 </button>
@@ -405,7 +405,7 @@ export default function AdaptiveBookingPage() {
                     value={serviceSearch}
                     onChange={(e) => setServiceSearch(e.target.value)}
                     placeholder="Search services (e.g. haircut, beard, spa)..."
-                    className="w-full bg-brand-subtle border border-brand-border rounded-xl pl-3.5 pr-4 py-2 text-xs text-black placeholder:text-neutral-400 focus:outline-none focus:border-brand-red"
+                    className="w-full bg-brand-subtle border border-brand-border rounded-xl pl-3.5 pr-4 py-2 text-xs text-brand-black placeholder:text-brand-muted/70 focus:outline-none focus:border-brand-red"
                   />
                 </div>
                 <div className="flex space-x-1 bg-brand-surface border border-brand-border p-1 rounded-xl shrink-0">
@@ -416,8 +416,8 @@ export default function AdaptiveBookingPage() {
                       onClick={() => setServiceAudience(aud)}
                       className={`px-3 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wider transition ${
                         serviceAudience === aud
-                          ? 'bg-brand-red text-white shadow-sm'
-                          : 'text-neutral-600 hover:text-black'
+                          ? 'bg-brand-red text-brand-white shadow-sm'
+                          : 'text-brand-muted hover:text-brand-black'
                       }`}
                     >
                       {aud === 'all' ? 'All' : aud}
@@ -433,8 +433,8 @@ export default function AdaptiveBookingPage() {
                   onClick={() => setServiceCategory('all')}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition ${
                     serviceCategory === 'all'
-                      ? 'bg-brand-red text-white shadow-sm'
-                      : 'bg-white border border-brand-border text-neutral-600 hover:border-black'
+                      ? 'bg-brand-red text-brand-white shadow-sm'
+                      : 'bg-brand-white border border-brand-border text-brand-muted hover:border-brand-black'
                   }`}
                 >
                   All ({MOCK_SERVICES.length})
@@ -446,8 +446,8 @@ export default function AdaptiveBookingPage() {
                     onClick={() => setServiceCategory(cat.id)}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition ${
                       serviceCategory === cat.id
-                        ? 'bg-brand-red text-white shadow-sm'
-                        : 'bg-white border border-brand-border text-neutral-600 hover:border-black'
+                        ? 'bg-brand-red text-brand-white shadow-sm'
+                        : 'bg-brand-white border border-brand-border text-brand-muted hover:border-brand-black'
                     }`}
                   >
                     {cat.name}
@@ -464,7 +464,7 @@ export default function AdaptiveBookingPage() {
                 const isExpanded = expandedCategories[cat.id] ?? false;
 
                 return (
-                  <div key={cat.id} className="bg-white border border-brand-border rounded-2xl overflow-hidden shadow-sm">
+                  <div key={cat.id} className="bg-brand-white border border-brand-border rounded-2xl overflow-hidden shadow-sm">
                     {/* Category Accordion Header */}
                     <button
                       type="button"
@@ -472,10 +472,10 @@ export default function AdaptiveBookingPage() {
                       className="w-full bg-brand-subtle px-4 py-3 flex items-center justify-between border-b border-brand-border text-left"
                     >
                       <div className="flex items-center space-x-2">
-                        <span className="text-xs font-black uppercase tracking-wider text-black">
+                        <span className="text-xs font-black uppercase tracking-wider text-brand-black">
                           {cat.name}
                         </span>
-                        <span className="bg-neutral-200 text-neutral-700 text-[10px] font-extrabold px-2 py-0.2 rounded-full">
+                        <span className="bg-brand-border text-brand-black text-[10px] font-extrabold px-2 py-0.2 rounded-full">
                           {catServices.length}
                         </span>
                       </div>
@@ -487,7 +487,7 @@ export default function AdaptiveBookingPage() {
 
                     {/* Accordion Body */}
                     {isExpanded && (
-                      <div className="p-2 space-y-2 bg-white">
+                      <div className="p-2 space-y-2 bg-brand-white">
                         {catServices.map((srv: Service) => {
                           const selected = state.services.some((s: Service) => s.id === srv.id);
                           return (
@@ -497,19 +497,19 @@ export default function AdaptiveBookingPage() {
                               className={`cursor-pointer border rounded-xl p-3 flex items-center justify-between gap-3 transition-all shadow-sm ${
                                 selected
                                   ? 'border-brand-red ring-1 ring-brand-red bg-brand-red-subtle/50'
-                                  : 'border-brand-border bg-white'
+                                  : 'border-brand-border bg-brand-white'
                               }`}
                             >
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center space-x-1.5 mb-0.5">
-                                  <h3 className="text-xs font-extrabold text-black truncate">{srv.name}</h3>
+                                  <h3 className="text-xs font-extrabold text-brand-black truncate">{srv.name}</h3>
                                   {srv.popular && (
-                                    <span className="text-[9px] font-black uppercase bg-brand-red text-white px-1.5 py-0.2 rounded shrink-0">
+                                    <span className="text-[9px] font-black uppercase bg-brand-red text-brand-white px-1.5 py-0.2 rounded shrink-0">
                                       🔥 Popular
                                     </span>
                                   )}
                                 </div>
-                                <div className="text-black font-black text-xs mt-0.5">
+                                <div className="text-brand-black font-black text-xs mt-0.5">
                                   {formatPrice(srv.price)}
                                 </div>
                               </div>
@@ -517,8 +517,8 @@ export default function AdaptiveBookingPage() {
                               <div
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shrink-0 transition flex items-center space-x-1 min-h-[38px] ${
                                   selected
-                                    ? 'bg-brand-red text-white'
-                                    : 'border border-brand-red text-brand-red bg-white'
+                                    ? 'bg-brand-red text-brand-white'
+                                    : 'border border-brand-red text-brand-red bg-brand-white'
                                 }`}
                               >
                                 {selected ? (
@@ -554,21 +554,21 @@ export default function AdaptiveBookingPage() {
                     className={`cursor-pointer border rounded-xl p-5 flex flex-col justify-between transition-all min-h-[120px] ${
                       selected
                         ? 'border-brand-red ring-1 ring-brand-red bg-brand-red-subtle/50'
-                        : 'border-brand-border hover:border-neutral-400 bg-white'
+                        : 'border-brand-border hover:border-brand-black bg-brand-white'
                     }`}
                   >
                     <div>
-                      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1">
+                      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-brand-muted mb-1">
                         <span>{srv.categoryName}</span>
                         {selected && <Check className="w-4 h-4 text-brand-red shrink-0" />}
                       </div>
-                      <h3 className="text-sm font-bold text-black">{srv.name}</h3>
+                      <h3 className="text-sm font-bold text-brand-black">{srv.name}</h3>
                       <p className="text-xs text-brand-muted mt-1.5 leading-relaxed">{srv.description}</p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between">
-                      <span className="text-xs text-neutral-400">{formatDuration(srv.durationMinutes)}</span>
-                      <span className="text-sm font-black text-black">{formatPrice(srv.price)}</span>
+                    <div className="mt-4 pt-3 border-t border-brand-border/60 flex items-center justify-between">
+                      <span className="text-xs text-brand-muted">{formatDuration(srv.durationMinutes)}</span>
+                      <span className="text-sm font-black text-brand-black">{formatPrice(srv.price)}</span>
                     </div>
                   </div>
                 );
@@ -577,18 +577,18 @@ export default function AdaptiveBookingPage() {
 
             {/* Mobile Sticky Action Bar for Step 1 */}
             {state.services.length > 0 && (
-              <div className="sm:hidden fixed bottom-16 left-3 right-3 z-50 bg-black text-white p-3 rounded-2xl shadow-2xl border border-neutral-800 flex items-center justify-between gap-2 animate-fade-in">
+              <div className="sm:hidden fixed bottom-16 left-3 right-3 z-50 bg-brand-black text-brand-white p-3 rounded-2xl shadow-2xl border border-neutral-800 flex items-center justify-between gap-2 animate-fade-in">
                 <div className="min-w-0">
                   <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-300 whitespace-nowrap truncate">
                     {state.services.length} Service{state.services.length > 1 ? 's' : ''} Selected
                   </div>
                   <div className="text-xs text-neutral-300 whitespace-nowrap truncate">
-                    Total: <strong className="text-white font-black">{formatPrice(state.totalPrice)}</strong>
+                    Total: <strong className="text-brand-white font-black">{formatPrice(state.totalPrice)}</strong>
                   </div>
                 </div>
                 <button
                   onClick={() => setActiveStepTab('outlet')}
-                  className="bg-brand-red text-white px-3.5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center space-x-1.5 shrink-0 shadow-md shadow-red-900/30"
+                  className="bg-brand-red text-brand-white px-3.5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center space-x-1.5 shrink-0 shadow-md shadow-brand-red/20 active:scale-95"
                 >
                   <span>Select Salon &amp; Slot</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -605,7 +605,7 @@ export default function AdaptiveBookingPage() {
           <div className="space-y-5 animate-fade-in pb-16 md:pb-0">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-brand-border gap-2">
               <div>
-                <h2 className="text-2xl font-black uppercase tracking-tight text-black flex items-center space-x-2">
+                <h2 className="text-2xl font-black uppercase tracking-tight text-brand-black flex items-center space-x-2">
                   <span>Step 2: Choose Salon Location</span>
                 </h2>
                 <p className="text-xs text-brand-muted mt-0.5">
@@ -616,7 +616,7 @@ export default function AdaptiveBookingPage() {
               {state.outlet && (
                 <button
                   onClick={() => setActiveStepTab('datetime')}
-                  className="hidden sm:flex bg-brand-red text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition items-center space-x-1.5 min-h-[44px] shadow-md shadow-red-900/15"
+                  className="hidden sm:flex bg-brand-red text-brand-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition items-center space-x-1.5 min-h-[44px] shadow-md shadow-brand-red/20 active:scale-95"
                 >
                   <span>Proceed to Date &amp; Time</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -627,11 +627,11 @@ export default function AdaptiveBookingPage() {
             {/* City Selection Header & Prominent Buttons */}
             <div className="bg-brand-subtle border border-brand-border p-3.5 rounded-2xl space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-black uppercase tracking-wider text-black flex items-center space-x-1.5">
+                <span className="text-xs font-black uppercase tracking-wider text-brand-black flex items-center space-x-1.5">
                   <MapPin className="w-4 h-4 text-brand-red" />
                   <span>Select Your City</span>
                 </span>
-                <span className="text-[10px] font-bold text-neutral-400">
+                <span className="text-[10px] font-bold text-brand-muted">
                   {MOCK_OUTLETS.filter((o) => selectedCity === 'all' || o.city === selectedCity).length} Salons Available
                 </span>
               </div>
@@ -644,8 +644,8 @@ export default function AdaptiveBookingPage() {
                     onClick={() => setSelectedCity(city)}
                     className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider whitespace-nowrap transition min-h-[40px] shadow-sm ${
                       selectedCity === city || (selectedCity === 'all' && city === 'all')
-                        ? 'bg-brand-red text-white'
-                        : 'bg-white border border-brand-border text-neutral-700 hover:border-black'
+                        ? 'bg-brand-red text-brand-white'
+                        : 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-black'
                     }`}
                   >
                     {city === 'all' ? 'All Cities' : city}
@@ -668,7 +668,7 @@ export default function AdaptiveBookingPage() {
                     className={`cursor-pointer border rounded-2xl p-3 sm:p-5 flex flex-col justify-between transition-all shadow-sm ${
                       selected
                         ? 'border-brand-red ring-1 ring-brand-red bg-brand-red-subtle/50'
-                        : 'border-brand-border hover:border-black bg-white'
+                        : 'border-brand-border hover:border-brand-black bg-brand-white'
                     }`}
                   >
                     <div>
@@ -678,7 +678,7 @@ export default function AdaptiveBookingPage() {
                         </span>
                         {selected && <Check className="w-4 h-4 text-brand-red shrink-0" />}
                       </div>
-                      <h3 className="text-xs sm:text-base font-black text-black leading-tight line-clamp-2">
+                      <h3 className="text-xs sm:text-base font-black text-brand-black leading-tight line-clamp-2">
                         {outlet.name}
                       </h3>
                       <p className="text-[10px] sm:text-xs text-brand-muted mt-1 line-clamp-2 leading-tight">
@@ -686,9 +686,9 @@ export default function AdaptiveBookingPage() {
                       </p>
                     </div>
 
-                    <div className="mt-3 pt-2 sm:pt-3 border-t border-neutral-100 flex flex-col sm:flex-row sm:items-center justify-between text-[10px] sm:text-xs text-neutral-500 gap-1">
+                    <div className="mt-3 pt-2 sm:pt-3 border-t border-brand-border/60 flex flex-col sm:flex-row sm:items-center justify-between text-[10px] sm:text-xs text-brand-muted gap-1">
                       <span className="truncate">{outlet.openingHours.open} - {outlet.openingHours.close}</span>
-                      <span className={`font-black uppercase tracking-wider text-[10px] ${selected ? 'text-brand-red' : 'text-black'}`}>
+                      <span className={`font-black uppercase tracking-wider text-[10px] ${selected ? 'text-brand-red' : 'text-brand-black'}`}>
                         {selected ? 'Selected ✓' : 'Select Salon →'}
                       </span>
                     </div>
@@ -699,7 +699,7 @@ export default function AdaptiveBookingPage() {
 
             {/* Mobile Sticky Action Bar for Step 2 */}
             {state.outlet && (
-              <div className="sm:hidden fixed bottom-14 left-0 right-0 z-30 bg-black text-white p-3.5 shadow-2xl border-t border-neutral-800 flex items-center justify-between animate-fade-in">
+              <div className="sm:hidden fixed bottom-14 left-0 right-0 z-30 bg-brand-black text-brand-white p-3.5 shadow-2xl border-t border-neutral-800 flex items-center justify-between animate-fade-in">
                 <div>
                   <div className="text-[11px] font-bold uppercase tracking-wider truncate max-w-[200px]">
                     Outlet: {state.outlet.name}
@@ -708,7 +708,7 @@ export default function AdaptiveBookingPage() {
                 </div>
                 <button
                   onClick={() => setActiveStepTab('datetime')}
-                  className="bg-brand-red text-white px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider flex items-center space-x-1.5 min-h-[44px] shadow-lg shadow-red-900/30"
+                  className="bg-brand-red text-brand-white px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider flex items-center space-x-1.5 min-h-[44px] shadow-lg shadow-brand-red/20 active:scale-95"
                 >
                   <span>Select Slot</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -724,7 +724,7 @@ export default function AdaptiveBookingPage() {
         {activeStepTab === 'datetime' && (
           <div className="space-y-8 animate-fade-in pb-16 md:pb-0">
             <div className="pb-4 border-b border-brand-border">
-              <h2 className="text-2xl font-black uppercase tracking-tight text-black">
+              <h2 className="text-2xl font-black uppercase tracking-tight text-brand-black">
                 Step 3: Select Date &amp; Available Slot
               </h2>
               <p className="text-xs text-brand-muted mt-1">
@@ -734,8 +734,8 @@ export default function AdaptiveBookingPage() {
 
             {/* Stylist Selection Optional Pill Bar */}
             {currentOutletStaff.length > 0 && (
-              <div className="bg-brand-subtle p-4 rounded-xl border border-neutral-200">
-                <div className="text-xs font-bold uppercase tracking-wider text-neutral-700 mb-2">
+              <div className="bg-brand-subtle p-4 rounded-xl border border-brand-border">
+                <div className="text-xs font-bold uppercase tracking-wider text-brand-muted mb-2">
                   Stylist Preference (Optional)
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -743,8 +743,8 @@ export default function AdaptiveBookingPage() {
                     onClick={() => dispatch({ type: 'SET_STYLIST_PREFERENCE', payload: 'any' })}
                     className={`px-3 py-2 rounded-lg text-xs font-semibold transition min-h-[40px] ${
                       state.stylistPreference === 'any' && !state.selectedStaff
-                        ? 'bg-black text-white'
-                        : 'bg-white border border-neutral-300 text-neutral-700 hover:border-black'
+                        ? 'bg-brand-black text-brand-white'
+                        : 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-black'
                     }`}
                   >
                     Any Certified Stylist
@@ -755,8 +755,8 @@ export default function AdaptiveBookingPage() {
                       onClick={() => dispatch({ type: 'SELECT_STAFF', payload: staff })}
                       className={`px-3 py-2 rounded-lg text-xs font-semibold transition min-h-[40px] ${
                         state.selectedStaff?.id === staff.id
-                          ? 'bg-black text-white'
-                          : 'bg-white border border-neutral-300 text-neutral-700 hover:border-black'
+                          ? 'bg-brand-black text-brand-white'
+                          : 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-black'
                       }`}
                     >
                       {staff.name} ({staff.role})
@@ -768,7 +768,7 @@ export default function AdaptiveBookingPage() {
 
             {/* Horizontal Scrollable Date Ribbon on Mobile */}
             <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-neutral-700 mb-3">
+              <div className="text-xs font-bold uppercase tracking-wider text-brand-muted mb-3">
                 Choose Date (Swipe to view 14 days)
               </div>
               <div className="flex space-x-2.5 overflow-x-auto pb-2 scrollbar-none sm:grid sm:grid-cols-7 sm:gap-2 sm:space-x-0">
@@ -780,8 +780,8 @@ export default function AdaptiveBookingPage() {
                       onClick={() => dispatch({ type: 'SET_DATE', payload: item.iso })}
                       className={`p-3 rounded-xl text-center border transition shrink-0 min-w-[76px] sm:min-w-0 min-h-[72px] flex flex-col justify-center ${
                         isSelected
-                          ? 'bg-black text-white border-black ring-1 ring-black'
-                          : 'bg-white border-brand-border text-neutral-800 hover:border-black'
+                          ? 'bg-brand-black text-brand-white border-brand-black ring-1 ring-brand-black'
+                          : 'bg-brand-white border-brand-border text-brand-black hover:border-brand-black'
                       }`}
                     >
                       <div className="text-[10px] font-bold uppercase tracking-wider opacity-80">{item.dayName}</div>
@@ -798,7 +798,7 @@ export default function AdaptiveBookingPage() {
               <div>
                 {/* Concierge Auto-Match Banner */}
                 {state.timePreference && state.selectedSlot && (
-                  <div className="bg-brand-red-subtle border border-brand-red/20 p-3.5 rounded-2xl flex items-center justify-between text-xs text-neutral-800 animate-fade-in mb-4">
+                  <div className="bg-brand-red-subtle border border-brand-red/20 p-3.5 rounded-2xl flex items-center justify-between text-xs text-brand-black animate-fade-in mb-4">
                     <div className="flex items-center space-x-2">
                       <Clock className="w-4 h-4 text-brand-red shrink-0" />
                       <span>
@@ -809,7 +809,7 @@ export default function AdaptiveBookingPage() {
                 )}
 
                 <div className="flex items-center justify-between mb-3">
-                  <div className="text-xs font-bold uppercase tracking-wider text-neutral-700">
+                  <div className="text-xs font-bold uppercase tracking-wider text-brand-muted">
                     Available Time Slots for {state.date}
                   </div>
                   <div className="text-[11px] text-neutral-400">
@@ -830,10 +830,10 @@ export default function AdaptiveBookingPage() {
                         }}
                         className={`p-3 rounded-xl text-xs font-bold transition flex flex-col items-center justify-center min-h-[48px] ${
                           isSelected
-                            ? 'bg-black text-white ring-2 ring-black'
+                            ? 'bg-brand-black text-brand-white ring-2 ring-brand-black'
                             : slot.available
-                            ? 'bg-white border border-brand-border text-neutral-900 hover:border-black'
-                            : 'bg-neutral-100 text-neutral-300 border border-neutral-100 cursor-not-allowed line-through'
+                            ? 'bg-brand-white border border-brand-border text-brand-black hover:border-brand-black'
+                            : 'bg-brand-subtle text-neutral-300 border border-brand-border/40 cursor-not-allowed line-through'
                         }`}
                       >
                         <span>{slot.displayTime}</span>
@@ -856,7 +856,7 @@ export default function AdaptiveBookingPage() {
               <div className="pt-4 flex justify-end">
                 <button
                   onClick={() => setActiveStepTab('details')}
-                  className="w-full sm:w-auto bg-black text-white px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition flex items-center justify-center space-x-2 min-h-[44px] shadow-md"
+                  className="w-full sm:w-auto bg-brand-black text-brand-white px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition flex items-center justify-center space-x-2 min-h-[44px] shadow-md"
                 >
                   <span>Proceed to Guest Information ({state.selectedSlot.displayTime})</span>
                   <ArrowRight className="w-4 h-4" />
@@ -872,7 +872,7 @@ export default function AdaptiveBookingPage() {
         {activeStepTab === 'details' && (
           <div className="max-w-xl mx-auto space-y-6 animate-fade-in pb-16 md:pb-0">
             <div className="pb-4 border-b border-brand-border">
-              <h2 className="text-2xl font-black uppercase tracking-tight text-black">
+              <h2 className="text-2xl font-black uppercase tracking-tight text-brand-black">
                 Step 4: Guest Information
               </h2>
               <p className="text-xs text-brand-muted mt-1">
@@ -882,7 +882,7 @@ export default function AdaptiveBookingPage() {
 
             <form onSubmit={handleSaveCustomerDetails} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-black mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-black mb-1.5">
                   Full Name *
                 </label>
                 <input
@@ -892,12 +892,12 @@ export default function AdaptiveBookingPage() {
                   value={customerForm.name}
                   onChange={(e) => setCustomerForm({ ...customerForm, name: e.target.value })}
                   placeholder="E.g. Siddharth Verma"
-                  className="w-full bg-white border border-brand-border rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-black text-black min-h-[44px]"
+                  className="w-full bg-brand-white border border-brand-border rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-brand-black text-brand-black min-h-[44px]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-black mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-black mb-1.5">
                   Mobile Number (for SMS confirmation) *
                 </label>
                 <input
@@ -908,12 +908,12 @@ export default function AdaptiveBookingPage() {
                   value={customerForm.phone}
                   onChange={(e) => setCustomerForm({ ...customerForm, phone: e.target.value })}
                   placeholder="E.g. +91 98400 12345"
-                  className="w-full bg-white border border-brand-border rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-black text-black min-h-[44px]"
+                  className="w-full bg-brand-white border border-brand-border rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-brand-black text-brand-black min-h-[44px]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-black mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-black mb-1.5">
                   Email Address (Optional)
                 </label>
                 <input
@@ -922,12 +922,12 @@ export default function AdaptiveBookingPage() {
                   value={customerForm.email}
                   onChange={(e) => setCustomerForm({ ...customerForm, email: e.target.value })}
                   placeholder="E.g. siddharth@example.com"
-                  className="w-full bg-white border border-brand-border rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-black text-black min-h-[44px]"
+                  className="w-full bg-brand-white border border-brand-border rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-brand-black text-brand-black min-h-[44px]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-black mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-brand-black mb-1.5">
                   Special Notes or Stylist Requests (Optional)
                 </label>
                 <textarea
@@ -935,7 +935,7 @@ export default function AdaptiveBookingPage() {
                   value={customerForm.notes}
                   onChange={(e) => setCustomerForm({ ...customerForm, notes: e.target.value })}
                   placeholder="Any hair condition, beverage preference, or specific timing request..."
-                  className="w-full bg-white border border-brand-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black text-black"
+                  className="w-full bg-brand-white border border-brand-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-black text-brand-black"
                 />
               </div>
 
@@ -943,7 +943,7 @@ export default function AdaptiveBookingPage() {
                 <button
                   type="button"
                   onClick={() => setActiveStepTab('datetime')}
-                  className="w-full sm:w-auto text-xs font-semibold text-neutral-500 hover:text-black flex items-center justify-center space-x-1 min-h-[44px]"
+                  className="w-full sm:w-auto text-xs font-semibold text-brand-muted hover:text-brand-black flex items-center justify-center space-x-1 min-h-[44px]"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Back to Time Selection</span>
@@ -951,7 +951,7 @@ export default function AdaptiveBookingPage() {
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto bg-black text-white px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition min-h-[44px]"
+                  className="w-full sm:w-auto bg-brand-black text-brand-white px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition min-h-[44px]"
                 >
                   Proceed to Final Review
                 </button>
@@ -966,7 +966,7 @@ export default function AdaptiveBookingPage() {
         {activeStepTab === 'review' && (
           <div className="max-w-2xl mx-auto space-y-6 animate-fade-in pb-16 md:pb-0">
             <div className="pb-4 border-b border-brand-border">
-              <h2 className="text-2xl font-black uppercase tracking-tight text-black">
+              <h2 className="text-2xl font-black uppercase tracking-tight text-brand-black">
                 Step 5: Review &amp; Confirm
               </h2>
               <p className="text-xs text-brand-muted mt-1">
@@ -974,17 +974,17 @@ export default function AdaptiveBookingPage() {
               </p>
             </div>
 
-            <div className="bg-white border border-brand-border rounded-2xl p-5 sm:p-8 space-y-6 shadow-sm">
+            <div className="bg-brand-white border border-brand-border rounded-2xl p-5 sm:p-8 space-y-6 shadow-brand-card">
               {/* Salon Details with inline edit */}
-              <div className="flex items-start justify-between pb-4 border-b border-neutral-100">
+              <div className="flex items-start justify-between pb-4 border-b border-brand-border/60">
                 <div>
                   <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Salon Location</div>
-                  <div className="text-base font-bold text-black mt-0.5">{state.outlet?.name}</div>
-                  <div className="text-xs text-neutral-500 mt-0.5">{state.outlet?.address}, {state.outlet?.city}</div>
+                  <div className="text-base font-bold text-brand-black mt-0.5">{state.outlet?.name}</div>
+                  <div className="text-xs text-brand-muted mt-0.5">{state.outlet?.address}, {state.outlet?.city}</div>
                 </div>
                 <button
                   onClick={() => setActiveStepTab('outlet')}
-                  className="text-xs text-neutral-500 hover:text-black font-semibold flex items-center space-x-1 p-2 rounded-lg hover:bg-neutral-100 min-h-[44px]"
+                  className="text-xs text-brand-muted hover:text-brand-black font-semibold flex items-center space-x-1 p-2 rounded-lg hover:bg-brand-subtle min-h-[44px]"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
                   <span>Edit</span>
@@ -992,19 +992,19 @@ export default function AdaptiveBookingPage() {
               </div>
 
               {/* Date & Time with inline edit */}
-              <div className="flex items-start justify-between pb-4 border-b border-neutral-100">
+              <div className="flex items-start justify-between pb-4 border-b border-brand-border/60">
                 <div>
                   <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Date &amp; Time</div>
-                  <div className="text-base font-bold text-black mt-0.5">
+                  <div className="text-base font-bold text-brand-black mt-0.5">
                     {state.date} at {state.selectedSlot?.displayTime}
                   </div>
-                  <div className="text-xs text-neutral-500 mt-0.5">
+                  <div className="text-xs text-brand-muted mt-0.5">
                     Stylist: {state.selectedStaff ? state.selectedStaff.name : state.selectedSlot?.staffName || 'Any Certified Stylist'}
                   </div>
                 </div>
                 <button
                   onClick={() => setActiveStepTab('datetime')}
-                  className="text-xs text-neutral-500 hover:text-black font-semibold flex items-center space-x-1 p-2 rounded-lg hover:bg-neutral-100 min-h-[44px]"
+                  className="text-xs text-brand-muted hover:text-brand-black font-semibold flex items-center space-x-1 p-2 rounded-lg hover:bg-brand-subtle min-h-[44px]"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
                   <span>Edit</span>
@@ -1012,12 +1012,12 @@ export default function AdaptiveBookingPage() {
               </div>
 
               {/* Services with inline edit */}
-              <div className="pb-4 border-b border-neutral-100">
+              <div className="pb-4 border-b border-brand-border/60">
                 <div className="flex items-center justify-between mb-3">
                   <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Selected Services</div>
                   <button
                     onClick={() => setActiveStepTab('services')}
-                    className="text-xs text-neutral-500 hover:text-black font-semibold flex items-center space-x-1 p-2 rounded-lg hover:bg-neutral-100 min-h-[44px]"
+                    className="text-xs text-brand-muted hover:text-brand-black font-semibold flex items-center space-x-1 p-2 rounded-lg hover:bg-brand-subtle min-h-[44px]"
                   >
                     <Edit3 className="w-3.5 h-3.5" />
                     <span>Edit</span>
@@ -1026,12 +1026,12 @@ export default function AdaptiveBookingPage() {
                 <div className="space-y-2">
                   {state.services.map((srv: Service) => (
                     <div key={srv.id} className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="font-medium text-neutral-800">{srv.name} ({formatDuration(srv.durationMinutes)})</span>
-                      <span className="font-bold text-black">{formatPrice(srv.price)}</span>
+                      <span className="font-medium text-brand-black">{srv.name} ({formatDuration(srv.durationMinutes)})</span>
+                      <span className="font-bold text-brand-black">{formatPrice(srv.price)}</span>
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between text-base font-black text-black">
+                <div className="mt-4 pt-3 border-t border-brand-border/60 flex items-center justify-between text-base font-black text-brand-black">
                   <span>Total Estimated Cost</span>
                   <span>{formatPrice(state.totalPrice)}</span>
                 </div>
@@ -1041,12 +1041,12 @@ export default function AdaptiveBookingPage() {
               <div className="flex items-start justify-between">
                 <div>
                   <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Guest Details</div>
-                  <div className="text-sm font-bold text-black mt-0.5">{state.customer?.name}</div>
-                  <div className="text-xs text-neutral-500">{state.customer?.phone}</div>
+                  <div className="text-sm font-bold text-brand-black mt-0.5">{state.customer?.name}</div>
+                  <div className="text-xs text-brand-muted">{state.customer?.phone}</div>
                 </div>
                 <button
                   onClick={() => setActiveStepTab('details')}
-                  className="text-xs text-neutral-500 hover:text-black font-semibold flex items-center space-x-1 p-2 rounded-lg hover:bg-neutral-100 min-h-[44px]"
+                  className="text-xs text-brand-muted hover:text-brand-black font-semibold flex items-center space-x-1 p-2 rounded-lg hover:bg-brand-subtle min-h-[44px]"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
                   <span>Edit</span>
@@ -1058,7 +1058,7 @@ export default function AdaptiveBookingPage() {
                 <button
                   disabled={isSubmitting}
                   onClick={handleConfirmAppointment}
-                  className="w-full bg-brand-red text-white py-4 rounded-full text-xs font-black uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center justify-center space-x-2 shadow-lg shadow-red-900/20 min-h-[50px]"
+                  className="w-full bg-brand-red text-brand-white py-4 rounded-full text-xs font-black uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center justify-center space-x-2 shadow-brand-cta min-h-[50px]"
                 >
                   <ShieldCheck className="w-4 h-4" />
                   <span>{isSubmitting ? 'Confirming with Salon...' : 'Confirm Appointment'}</span>

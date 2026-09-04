@@ -45,7 +45,7 @@ export default function ConsultationPage() {
       {/* Header Banner */}
       <div className="bg-brand-surface border-b border-brand-border py-8 sm:py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-500">
+          <span className="text-[11px] font-bold uppercase tracking-widest text-brand-muted">
             Bespoke Diagnostic Protocol
           </span>
           <h1 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-brand-black mt-2">
@@ -60,27 +60,27 @@ export default function ConsultationPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         {submitted ? (
           <div className="bg-brand-subtle border border-brand-border rounded-2xl p-6 sm:p-8 text-center animate-fade-in">
-            <div className="w-12 h-12 bg-brand-black text-brand-white rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-brand-black text-brand-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
               <Check className="w-6 h-6" />
             </div>
             <h2 className="text-xl sm:text-2xl font-black uppercase text-brand-black tracking-tight">
               Diagnostic Summary Recorded
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-600 mt-2 max-w-lg mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-brand-muted mt-2 max-w-lg mx-auto leading-relaxed">
               Your consultation profile for <strong>{concern}</strong> is safely linked to your session. Let&apos;s schedule your appointment with a certified Creative Director.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
               <button
                 onClick={handleBookWithConsultation}
-                className="bg-brand-black text-brand-white px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition flex items-center justify-center space-x-2 min-h-[44px]"
+                className="bg-brand-black text-brand-white px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-800 transition flex items-center justify-center space-x-2 min-h-[44px] shadow-sm"
               >
                 <span>Proceed to Appointment Booking</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setSubmitted(false)}
-                className="border border-neutral-300 text-neutral-700 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-neutral-100 transition min-h-[44px]"
+                className="border border-brand-border text-brand-black px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-subtle transition min-h-[44px]"
               >
                 Edit Consultation Notes
               </button>
@@ -102,7 +102,7 @@ export default function ConsultationPage() {
                     className={`text-left p-3.5 rounded-lg text-xs font-medium border transition min-h-[44px] flex items-center ${
                       concern === item
                         ? 'bg-brand-black text-brand-white border-brand-black font-semibold'
-                        : 'bg-brand-surface text-neutral-800 border-brand-border hover:border-brand-black'
+                        : 'bg-brand-surface text-brand-black border-brand-border hover:border-brand-black'
                     }`}
                   >
                     {item}
@@ -116,7 +116,7 @@ export default function ConsultationPage() {
               <label className="block text-xs font-bold uppercase tracking-wider text-brand-black mb-2">
                 2. Describe your current hair or skin condition
               </label>
-              <p className="text-[11px] text-neutral-500 mb-3">
+              <p className="text-[11px] text-brand-muted mb-3">
                 E.g., &quot;Medium-length dark brown hair, dry ends, frizzy in humid weather.&quot;
               </p>
               <textarea
@@ -133,7 +133,7 @@ export default function ConsultationPage() {
               <label className="block text-xs font-bold uppercase tracking-wider text-brand-black mb-2">
                 3. Have you had any chemical treatments in the last 12 months?
               </label>
-              <p className="text-[11px] text-neutral-500 mb-3">
+              <p className="text-[11px] text-brand-muted mb-3">
                 E.g., Global colour, bleaching, keratin, cysteine, botox, or henna/box dye.
               </p>
               <input
@@ -150,7 +150,7 @@ export default function ConsultationPage() {
               <label className="block text-xs font-bold uppercase tracking-wider text-brand-black mb-2">
                 4. What is your desired aesthetic result?
               </label>
-              <p className="text-[11px] text-neutral-500 mb-3">
+              <p className="text-[11px] text-brand-muted mb-3">
                 E.g., &quot;Subtle sun-kissed caramel balayage that blends seamlessly with regrowth.&quot;
               </p>
               <input
@@ -182,7 +182,7 @@ export default function ConsultationPage() {
                       className={`w-full text-left p-3 rounded-lg text-xs font-medium border transition min-h-[44px] flex items-center ${
                         maintenance === m.id
                           ? 'bg-brand-black text-brand-white border-brand-black font-semibold'
-                          : 'bg-brand-surface text-neutral-800 border-brand-border hover:border-brand-black'
+                          : 'bg-brand-surface text-brand-black border-brand-border hover:border-brand-black'
                       }`}
                     >
                       {m.label}
@@ -196,7 +196,7 @@ export default function ConsultationPage() {
                   <label className="block text-xs font-bold uppercase tracking-wider text-brand-black mb-2">
                     6. Preferred Salon
                   </label>
-                  <p className="text-[11px] text-neutral-500 mb-3">
+                  <p className="text-[11px] text-brand-muted mb-3">
                     Choose which salon should prepare your diagnostic notes.
                   </p>
                   <select
@@ -212,7 +212,7 @@ export default function ConsultationPage() {
                   </select>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center space-x-2 text-[11px] text-neutral-500">
+                <div className="mt-6 pt-4 border-t border-brand-border/60 flex items-center space-x-2 text-[11px] text-brand-muted">
                   <ShieldCheck className="w-4 h-4 text-brand-black shrink-0" />
                   <span>Confidential pre-consultation saved to your session</span>
                 </div>
@@ -223,7 +223,7 @@ export default function ConsultationPage() {
             <div className="pt-4 flex justify-end">
               <button
                 type="submit"
-                className="w-full sm:w-auto bg-brand-red text-brand-white px-8 py-3.5 rounded-full text-xs font-black uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center justify-center space-x-2 shadow-lg shadow-red-900/20 min-h-[44px]"
+                className="w-full sm:w-auto bg-brand-red text-brand-white px-8 py-3.5 rounded-full text-xs font-black uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center justify-center space-x-2 shadow-brand-cta min-h-[44px]"
               >
                 <span>Save Consultation &amp; Plan Visit</span>
                 <ArrowRight className="w-4 h-4" />
