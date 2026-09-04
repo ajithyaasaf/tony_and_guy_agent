@@ -11,26 +11,10 @@ interface WelcomeSplashProps {
 
 export function WelcomeSplash({ onStartBooking, onOpenChat }: WelcomeSplashProps) {
   const router = useRouter();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
-    const checkVisibility = () => {
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const forceWelcome = urlParams.get('welcome') === 'true';
-        const hasSeen = sessionStorage.getItem('toniguy_has_seen_welcome');
-        
-        if (forceWelcome || !hasSeen) {
-          setIsVisible(true);
-        }
-      } catch {
-        setIsVisible(true);
-      }
-    };
-
-    checkVisibility();
-
     // Listen for custom event to reopen welcome splash anytime
     const handleReopen = () => {
       setIsVisible(true);
@@ -42,9 +26,6 @@ export function WelcomeSplash({ onStartBooking, onOpenChat }: WelcomeSplashProps
 
   const handleDismiss = () => {
     setIsClosing(true);
-    try {
-      sessionStorage.setItem('toniguy_has_seen_welcome', 'true');
-    } catch {}
     setTimeout(() => {
       setIsVisible(false);
       setIsClosing(false);
