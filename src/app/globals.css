@@ -2,25 +2,48 @@
 
 @theme {
   --font-sans: var(--font-poppins), 'Poppins', sans-serif;
+
+  /* === TONI&GUY Editorial Core Palette === */
+  --color-brand-black: #000000;
+  --color-brand-white: #ffffff;
+  --color-brand-dark: #111111;
+  --color-brand-surface: #f7f7f7;
+  --color-brand-subtle: #fafafa;
+  --color-brand-border: #e5e5e5;
+  --color-brand-muted: #666666;
+
+  /* === Signature Brand Accent (Vermilion Red) === */
+  --color-brand-red: #d92d20;
+  --color-brand-red-hover: #b91c1c;
+  --color-brand-red-subtle: #fef2f2;
+
+  /* === Operational & Status Tokens === */
+  --color-brand-green: #15803d;
+  --color-brand-green-subtle: #f0fdf4;
+  --color-brand-amber: #d97706;
+  --color-brand-amber-subtle: #fffbeb;
 }
 
 @layer base {
   :root {
     --brand-black: #000000;
     --brand-white: #ffffff;
-    --brand-surface: #f9f9f9;
+    --brand-dark: #111111;
+    --brand-surface: #f7f7f7;
+    --brand-subtle: #fafafa;
     --brand-border: #e5e5e5;
-    --brand-muted: #737373;
-    --brand-subtle: #a3a3a3;
-    --brand-accent: #000000;
-    --brand-accent-red: #d92d20;
+    --brand-muted: #666666;
+    --brand-red: #d92d20;
+    --brand-red-hover: #b91c1c;
+    --brand-red-subtle: #fef2f2;
     --brand-green: #15803d;
+    --brand-amber: #d97706;
   }
 }
 
 body {
-  background-color: #ffffff;
-  color: #111111;
+  background-color: var(--brand-white);
+  color: var(--brand-dark);
   font-family: var(--font-poppins), 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -32,14 +55,14 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--brand-surface);
 }
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: var(--brand-border);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #999;
+  background: var(--brand-muted);
 }
 
 /* Luxury animation utilities */

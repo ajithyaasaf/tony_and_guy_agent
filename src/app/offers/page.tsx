@@ -20,18 +20,18 @@ export default function OffersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-brand-white pb-20">
       {/* Header Banner */}
-      <div className="bg-[#F7F7F7] border-b border-[#E5E5E5] py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
+      <div className="bg-brand-surface border-b border-brand-border py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#D92D20]">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-brand-red">
               Exclusive Salon Combinations
             </span>
-            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black mt-2">
+            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-brand-black mt-2">
               Offers &amp; Curated Combos
             </h1>
-            <p className="text-sm text-[#666666] mt-2 leading-relaxed">
+            <p className="text-sm text-brand-muted mt-2 leading-relaxed">
               Experience harmonized beauty rituals at exclusive bundled pricing. Valid across all 64 TONI&amp;GUY salons in India.
             </p>
           </div>
@@ -44,11 +44,11 @@ export default function OffersPage() {
           {MOCK_OFFERS.map((offer) => (
             <div
               key={offer.id}
-              className="bg-white border border-[#E5E5E5] rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-black hover:shadow-lg transition-all group relative overflow-hidden"
+              className="bg-brand-white border border-brand-border rounded-2xl p-6 sm:p-8 flex flex-col justify-between hover:border-brand-black hover:shadow-lg transition-all group relative overflow-hidden"
             >
               {/* Savings Badge */}
               <div className="flex items-center justify-between mb-4">
-                <span className="bg-[#D92D20] text-white text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full">
+                <span className="bg-brand-red text-brand-white text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full">
                   Save {formatPrice(offer.savings)}
                 </span>
                 <span className="text-xs text-neutral-500 flex items-center space-x-1 font-medium">
@@ -58,10 +58,10 @@ export default function OffersPage() {
               </div>
 
               <div>
-                <h2 className="text-xl sm:text-2xl font-black text-black uppercase tracking-tight leading-snug">
+                <h2 className="text-xl sm:text-2xl font-black text-brand-black uppercase tracking-tight leading-snug">
                   {offer.name}
                 </h2>
-                <p className="text-xs sm:text-sm text-[#666666] mt-3 leading-relaxed">
+                <p className="text-xs sm:text-sm text-brand-muted mt-3 leading-relaxed">
                   {offer.description}
                 </p>
 
@@ -72,7 +72,7 @@ export default function OffersPage() {
                   </div>
                   {offer.includedServices.map((srv, idx) => (
                     <div key={idx} className="flex items-center space-x-2.5 text-xs text-neutral-800 font-medium">
-                      <Check className="w-4 h-4 text-black shrink-0" />
+                      <Check className="w-4 h-4 text-brand-black shrink-0" />
                       <span>{srv}</span>
                     </div>
                   ))}
@@ -86,19 +86,19 @@ export default function OffersPage() {
               </div>
 
               {/* Price & Book Action */}
-              <div className="mt-8 pt-6 border-t border-[#E5E5E5] flex items-center justify-between">
+              <div className="mt-8 pt-6 border-t border-brand-border flex items-center justify-between">
                 <div>
                   <div className="text-xs text-neutral-400 line-through">
                     Standard: {formatPrice(offer.originalPrice)}
                   </div>
-                  <div className="text-2xl font-black text-black">
+                  <div className="text-2xl font-black text-brand-black">
                     {formatPrice(offer.offerPrice)}
                   </div>
                 </div>
 
                 <button
                   onClick={() => handleBookOffer(offer)}
-                  className="bg-[#D92D20] text-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full hover:bg-[#B91C1C] transition-all flex items-center space-x-2 shadow-md shadow-red-900/15"
+                  className="bg-brand-red text-brand-white text-xs font-bold uppercase tracking-wider px-6 py-3 rounded-full hover:bg-brand-red-hover transition-all flex items-center space-x-2 shadow-md shadow-red-900/15"
                 >
                   <span>Book This Combo</span>
                   <ArrowRight className="w-4 h-4" />

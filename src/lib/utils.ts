@@ -43,3 +43,12 @@ export function calculateDistanceKm(
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return Math.round(R * c * 10) / 10;
 }
+
+export function formatDisplayTime(time24: string): string {
+  if (!time24 || !time24.includes(':')) return time24;
+  const [hStr, mStr] = time24.split(':');
+  const h = parseInt(hStr, 10);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${h12.toString().padStart(2, '0')}:${mStr} ${period}`;
+}

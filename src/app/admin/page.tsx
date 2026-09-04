@@ -174,13 +174,13 @@ export default function SalonAdminPortalPage() {
   const completedCount = appointments.filter((a) => a.status === 'Completed').length;
 
   return (
-    <div className="min-h-screen bg-[#F4F4F5] font-sans flex flex-col">
+    <div className="min-h-screen bg-brand-surface font-sans flex flex-col">
       {/* Top Admin Navigation Header */}
-      <header className="bg-black text-white sticky top-0 z-50 shadow-md">
+      <header className="bg-brand-black text-brand-white sticky top-0 z-50 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <span className="text-xl font-black tracking-widest uppercase">TONI&amp;GUY</span>
-            <span className="bg-[#D92D20] text-white text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded">
+            <span className="bg-brand-red text-brand-white text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded">
               Manager Portal
             </span>
           </div>
@@ -191,7 +191,7 @@ export default function SalonAdminPortalPage() {
             </span>
             <Link
               href="/"
-              className="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition"
+              className="bg-white/10 hover:bg-white/20 text-brand-white text-xs font-bold px-3 py-1.5 rounded-lg transition"
             >
               View Mobile App →
             </Link>
@@ -202,16 +202,16 @@ export default function SalonAdminPortalPage() {
       {/* Main Admin Dashboard */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Title Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E5E5]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-brand-border">
           <div>
-            <div className="flex items-center space-x-2 text-xs font-black uppercase tracking-wider text-[#D92D20] mb-1">
+            <div className="flex items-center space-x-2 text-xs font-black uppercase tracking-wider text-brand-red mb-1">
               <ShieldCheck className="w-4 h-4" />
               <span>Real-Time Salon Appointments Feed</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black">
+            <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-brand-black">
               Incoming Salon Orders &amp; Bookings
             </h1>
-            <p className="text-xs text-[#666666] mt-0.5">
+            <p className="text-xs text-brand-muted mt-0.5">
               Monitor guest check-ins, manage stylist allocations, and track salon branch revenue.
             </p>
           </div>
@@ -228,7 +228,7 @@ export default function SalonAdminPortalPage() {
                   }
                 }
               }}
-              className="bg-white border border-[#E5E5E5] text-black px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:border-black transition flex items-center space-x-1.5 shadow-sm min-h-[40px]"
+              className="bg-brand-white border border-brand-border text-brand-black px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:border-brand-black transition flex items-center space-x-1.5 shadow-sm min-h-[40px]"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Sync Feed</span>
@@ -236,7 +236,7 @@ export default function SalonAdminPortalPage() {
 
             <Link
               href="/book"
-              className="bg-[#D92D20] text-white px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-[#B91C1C] transition flex items-center space-x-1.5 shadow-md min-h-[40px]"
+              className="bg-brand-red text-brand-white px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center space-x-1.5 shadow-md min-h-[40px]"
             >
               <Scissors className="w-3.5 h-3.5" />
               <span>+ New Walk-In</span>
@@ -246,45 +246,45 @@ export default function SalonAdminPortalPage() {
 
         {/* KPI Metrics Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E5E5] shadow-sm">
+          <div className="bg-brand-white p-4 rounded-2xl border border-brand-border shadow-sm">
             <div className="flex items-center justify-between text-neutral-400 text-xs mb-1">
               <span className="font-bold uppercase tracking-wider text-[10px]">Total Bookings</span>
-              <Calendar className="w-4 h-4 text-black" />
+              <Calendar className="w-4 h-4 text-brand-black" />
             </div>
-            <div className="text-2xl font-black text-black">{appointments.length}</div>
+            <div className="text-2xl font-black text-brand-black">{appointments.length}</div>
             <div className="text-[10px] text-neutral-400 mt-1">Across all salon branches</div>
           </div>
 
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E5E5] shadow-sm">
+          <div className="bg-brand-white p-4 rounded-2xl border border-brand-border shadow-sm">
             <div className="flex items-center justify-between text-neutral-400 text-xs mb-1">
-              <span className="font-bold uppercase tracking-wider text-[10px] text-[#D92D20]">Confirmed Guests</span>
-              <Clock className="w-4 h-4 text-[#D92D20]" />
+              <span className="font-bold uppercase tracking-wider text-[10px] text-brand-red">Confirmed Guests</span>
+              <Clock className="w-4 h-4 text-brand-red" />
             </div>
-            <div className="text-2xl font-black text-[#D92D20]">{confirmedCount}</div>
+            <div className="text-2xl font-black text-brand-red">{confirmedCount}</div>
             <div className="text-[10px] text-neutral-400 mt-1">Scheduled for arrival</div>
           </div>
 
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E5E5] shadow-sm">
+          <div className="bg-brand-white p-4 rounded-2xl border border-brand-border shadow-sm">
             <div className="flex items-center justify-between text-neutral-400 text-xs mb-1">
-              <span className="font-bold uppercase tracking-wider text-[10px] text-amber-600">In-Service Now</span>
-              <UserCheck className="w-4 h-4 text-amber-600" />
+              <span className="font-bold uppercase tracking-wider text-[10px] text-brand-amber">In-Service Now</span>
+              <UserCheck className="w-4 h-4 text-brand-amber" />
             </div>
-            <div className="text-2xl font-black text-amber-600">{inServiceCount}</div>
+            <div className="text-2xl font-black text-brand-amber">{inServiceCount}</div>
             <div className="text-[10px] text-neutral-400 mt-1">Currently in styling chair</div>
           </div>
 
-          <div className="bg-white p-4 rounded-2xl border border-[#E5E5E5] shadow-sm">
+          <div className="bg-brand-white p-4 rounded-2xl border border-brand-border shadow-sm">
             <div className="flex items-center justify-between text-neutral-400 text-xs mb-1">
-              <span className="font-bold uppercase tracking-wider text-[10px] text-emerald-600">Expected Revenue</span>
-              <DollarSign className="w-4 h-4 text-emerald-600" />
+              <span className="font-bold uppercase tracking-wider text-[10px] text-brand-green">Expected Revenue</span>
+              <DollarSign className="w-4 h-4 text-brand-green" />
             </div>
-            <div className="text-2xl font-black text-emerald-600">{formatPrice(totalRevenue)}</div>
+            <div className="text-2xl font-black text-brand-green">{formatPrice(totalRevenue)}</div>
             <div className="text-[10px] text-neutral-400 mt-1">Total revenue value</div>
           </div>
         </div>
 
         {/* Filters Bar: Branch, Status, & Search */}
-        <div className="bg-white p-4 rounded-2xl border border-[#E5E5E5] shadow-sm space-y-3">
+        <div className="bg-brand-white p-4 rounded-2xl border border-brand-border shadow-sm space-y-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             {/* Branch Filter Pills */}
             <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
@@ -296,8 +296,8 @@ export default function SalonAdminPortalPage() {
                 onClick={() => setSelectedOutlet('all')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition ${
                   selectedOutlet === 'all'
-                    ? 'bg-black text-white'
-                    : 'bg-[#FAFAFA] border border-[#E5E5E5] text-neutral-600 hover:border-black'
+                    ? 'bg-brand-black text-brand-white'
+                    : 'bg-brand-subtle border border-brand-border text-neutral-600 hover:border-brand-black'
                 }`}
               >
                 All Salons ({appointments.length})
@@ -309,8 +309,8 @@ export default function SalonAdminPortalPage() {
                   onClick={() => setSelectedOutlet(outlet.id)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider whitespace-nowrap transition ${
                     selectedOutlet === outlet.id
-                      ? 'bg-black text-white'
-                      : 'bg-[#FAFAFA] border border-[#E5E5E5] text-neutral-600 hover:border-black'
+                      ? 'bg-brand-black text-brand-white'
+                      : 'bg-brand-subtle border border-brand-border text-neutral-600 hover:border-brand-black'
                   }`}
                 >
                   {outlet.area}
@@ -326,7 +326,7 @@ export default function SalonAdminPortalPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search ref, guest name, phone..."
-                className="w-full bg-[#FAFAFA] border border-[#E5E5E5] rounded-xl pl-9 pr-4 py-2 text-xs text-black placeholder:text-neutral-400 focus:outline-none focus:border-[#D92D20]"
+                className="w-full bg-brand-subtle border border-brand-border rounded-xl pl-9 pr-4 py-2 text-xs text-brand-black placeholder:text-neutral-400 focus:outline-none focus:border-brand-red"
               />
             </div>
           </div>
@@ -340,8 +340,8 @@ export default function SalonAdminPortalPage() {
                 onClick={() => setSelectedStatus(st)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition whitespace-nowrap ${
                   selectedStatus === st
-                    ? 'bg-[#D92D20] text-white shadow-sm'
-                    : 'bg-neutral-50 text-neutral-600 hover:text-black'
+                    ? 'bg-brand-red text-brand-white shadow-sm'
+                    : 'bg-neutral-50 text-neutral-600 hover:text-brand-black'
                 }`}
               >
                 {st === 'all' ? 'All Status' : st}
@@ -353,30 +353,30 @@ export default function SalonAdminPortalPage() {
         {/* Incoming Appointments Cards / Table */}
         <div className="space-y-4">
           {filteredAppointments.length === 0 ? (
-            <div className="bg-white border border-dashed border-[#E5E5E5] rounded-2xl p-12 text-center space-y-2">
+            <div className="bg-brand-white border border-dashed border-brand-border rounded-2xl p-12 text-center space-y-2">
               <Building className="w-10 h-10 text-neutral-300 mx-auto" />
-              <div className="text-sm font-bold text-black">No incoming appointments match the selected branch or status</div>
+              <div className="text-sm font-bold text-brand-black">No incoming appointments match the selected branch or status</div>
               <p className="text-xs text-neutral-500">Try switching your branch or status filters above.</p>
             </div>
           ) : (
             filteredAppointments.map((apt) => (
               <div
                 key={apt.id}
-                className={`bg-white border rounded-2xl p-5 space-y-4 shadow-sm transition ${
+                className={`bg-brand-white border rounded-2xl p-5 space-y-4 shadow-sm transition ${
                   apt.status === 'In-Service'
-                    ? 'border-amber-400 ring-1 ring-amber-400 bg-amber-50/10'
+                    ? 'border-brand-amber ring-1 ring-brand-amber bg-brand-amber-subtle'
                     : apt.status === 'Confirmed'
-                    ? 'border-[#E5E5E5] hover:border-black'
-                    : 'border-[#E5E5E5] opacity-80'
+                    ? 'border-brand-border hover:border-brand-black'
+                    : 'border-brand-border opacity-80'
                 }`}
               >
                 {/* Top Card Row */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-neutral-100 gap-2">
                   <div className="flex items-center space-x-3">
-                    <span className="font-mono text-xs font-black bg-black text-white px-3 py-1 rounded-md">
+                    <span className="font-mono text-xs font-black bg-brand-black text-brand-white px-3 py-1 rounded-md">
                       {apt.bookingRef}
                     </span>
-                    <span className="text-xs font-extrabold text-[#D92D20] flex items-center space-x-1">
+                    <span className="text-xs font-extrabold text-brand-red flex items-center space-x-1">
                       <Building className="w-3.5 h-3.5" />
                       <span>{apt.outletName}</span>
                     </span>
@@ -411,18 +411,18 @@ export default function SalonAdminPortalPage() {
                   {/* Guest Info */}
                   <div className="space-y-1">
                     <div className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400">Guest Information</div>
-                    <div className="text-sm font-black text-black flex items-center space-x-1.5">
-                      <User className="w-3.5 h-3.5 text-black" />
+                    <div className="text-sm font-black text-brand-black flex items-center space-x-1.5">
+                      <User className="w-3.5 h-3.5 text-brand-black" />
                       <span>{apt.customerName}</span>
                     </div>
                     <div className="text-xs font-bold text-neutral-600 flex items-center space-x-1.5">
                       <Phone className="w-3 h-3 text-neutral-400" />
-                      <a href={`tel:${apt.customerPhone}`} className="hover:underline text-[#D92D20]">
+                      <a href={`tel:${apt.customerPhone}`} className="hover:underline text-brand-red">
                         {apt.customerPhone}
                       </a>
                     </div>
                     {apt.notes && (
-                      <p className="text-[11px] text-neutral-500 bg-[#FAFAFA] border border-neutral-200/70 p-2 rounded-lg mt-1 italic">
+                      <p className="text-[11px] text-neutral-500 bg-brand-subtle border border-neutral-200/70 p-2 rounded-lg mt-1 italic">
                         &quot;{apt.notes}&quot;
                       </p>
                     )}
@@ -431,8 +431,8 @@ export default function SalonAdminPortalPage() {
                   {/* Scheduled Slot & Stylist */}
                   <div className="space-y-1">
                     <div className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400">Schedule &amp; Stylist</div>
-                    <div className="text-xs font-black text-black flex items-center space-x-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-[#D92D20]" />
+                    <div className="text-xs font-black text-brand-black flex items-center space-x-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-brand-red" />
                       <span>{apt.date} at {apt.time}</span>
                     </div>
                     <div className="text-xs text-neutral-600 flex items-center space-x-1.5 mt-0.5">
@@ -442,16 +442,16 @@ export default function SalonAdminPortalPage() {
                   </div>
 
                   {/* Services & Revenue */}
-                  <div className="bg-[#FAFAFA] border border-neutral-200/60 p-3 rounded-xl flex flex-col justify-between">
+                  <div className="bg-brand-subtle border border-neutral-200/60 p-3 rounded-xl flex flex-col justify-between">
                     <div>
                       <div className="text-[10px] font-extrabold uppercase tracking-wider text-neutral-400 mb-1">
                         Booked Rituals
                       </div>
-                      <ul className="space-y-1 text-xs text-black font-medium">
+                      <ul className="space-y-1 text-xs text-brand-black font-medium">
                         {apt.services.map((s, i) => (
                           <li key={i} className="flex justify-between items-center">
                             <span>{s.name}</span>
-                            <strong className="text-black font-bold">{formatPrice(s.price)}</strong>
+                            <strong className="text-brand-black font-bold">{formatPrice(s.price)}</strong>
                           </li>
                         ))}
                       </ul>
@@ -459,7 +459,7 @@ export default function SalonAdminPortalPage() {
 
                     <div className="mt-2 pt-2 border-t border-neutral-200 flex justify-between items-center text-xs">
                       <span className="text-neutral-500 font-bold uppercase text-[10px]">Total Order Value</span>
-                      <span className="text-sm font-black text-[#D92D20]">{formatPrice(apt.totalPrice)}</span>
+                      <span className="text-sm font-black text-brand-red">{formatPrice(apt.totalPrice)}</span>
                     </div>
                   </div>
                 </div>
@@ -475,7 +475,7 @@ export default function SalonAdminPortalPage() {
                       <button
                         type="button"
                         onClick={() => handleUpdateStatus(apt.id, 'In-Service')}
-                        className="bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center space-x-1"
+                        className="bg-brand-amber hover:bg-amber-700 text-brand-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center space-x-1"
                       >
                         <UserCheck className="w-3.5 h-3.5" />
                         <span>Check-In Guest</span>
@@ -486,7 +486,7 @@ export default function SalonAdminPortalPage() {
                       <button
                         type="button"
                         onClick={() => handleUpdateStatus(apt.id, 'Completed')}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center space-x-1"
+                        className="bg-brand-green hover:bg-emerald-700 text-brand-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center space-x-1"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Complete &amp; Bill Order</span>

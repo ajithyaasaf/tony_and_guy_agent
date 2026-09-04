@@ -1,4 +1,4 @@
-import { TimeSlot, Staff } from '@/types';
+import { TimeSlot, Staff, TimePreference } from '@/types';
 import { MOCK_STAFF } from './staff';
 
 export function generateSlotsForDate(
@@ -60,4 +60,34 @@ export function generateSlotsForDate(
       staffName: staff.name,
     };
   });
+}
+
+export function matchSlotToPreference(
+  slots: TimeSlot[],
+  pref: TimePreference | null
+): TimeSlot | undefined {
+  if (!pref || slots.length === 0) return undefined;
+
+  if (pref.type === 'EXACT' && pref.time) {
+    return slots.find((s) => s.time === pref.time && s.available);
+  }
+  if (pref.type === 'AFTER' && pref.time) {
+    return slots.find((s) => s.time >= pref.time! && s.available);
+  }
+  if (pref.type === 'BEFORE' && pref.time) {
+    return [...slots].reverse().find((s) => s.time <= pref.time! && s.available);
+  }
+  if (pref.type === 'MORNING') {
+    return slots.find((s) => s.time < '12:00' && s.available);
+  }
+  if (pref.type === 'AFTERNOON') {
+    return slots.find((s) => s.time >= '12:00' && s.time < '16:00' && s.available);
+  }
+  if (pref.type === 'EVENING') {
+    return slots.find((s) => s.time >= '16:00' && s.available);
+  }
+  if (pref.type === 'ANY') {
+    return slots.find((s) => s.available);
+  }
+  return undefined;
 }

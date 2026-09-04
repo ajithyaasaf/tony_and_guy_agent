@@ -225,7 +225,9 @@ export function parseNaturalLanguageInput(input: string, today: Date = new Date(
   // 6. Dynamic Regex Time Extraction (e.g., 7 pm, 11:30 am, 4pm, 19:00, evening)
   let timePreference: TimePreference | null = null;
   const timeRegex = /\b(1[0-2]|0?[1-9])(?::([0-5][0-9]))?\s*(am|pm)\b/i;
+  const militaryRegex = /\b([01]?[0-9]|2[0-3]):([0-5][0-9])\b/;
   const match = text.match(timeRegex);
+  const militaryMatch = !match ? text.match(militaryRegex) : null;
 
   if (match) {
     let hour = parseInt(match[1], 10);
@@ -238,12 +240,24 @@ export function parseNaturalLanguageInput(input: string, today: Date = new Date(
     const formattedHour = hour.toString().padStart(2, '0');
     const formattedTime = `${formattedHour}:${minute}`;
 
-    let category: TimePreference['type'] = 'EXACT';
-    if (hour < 12) category = 'MORNING';
-    else if (hour < 16) category = 'AFTERNOON';
-    else category = 'EVENING';
+    const isAfter = /\b(?:after|post)\b/i.test(text);
+    const isBefore = /\b(?:before|by|prior to)\b/i.test(text);
 
-    timePreference = { type: category, time: formattedTime };
+    let prefType: TimePreference['type'] = 'EXACT';
+    if (isAfter) prefType = 'AFTER';
+    else if (isBefore) prefType = 'BEFORE';
+
+    timePreference = { type: prefType, time: formattedTime };
+  } else if (militaryMatch) {
+    const formattedTime = `${militaryMatch[1].padStart(2, '0')}:${militaryMatch[2]}`;
+    const isAfter = /\b(?:after|post)\b/i.test(text);
+    const isBefore = /\b(?:before|by|prior to)\b/i.test(text);
+
+    let prefType: TimePreference['type'] = 'EXACT';
+    if (isAfter) prefType = 'AFTER';
+    else if (isBefore) prefType = 'BEFORE';
+
+    timePreference = { type: prefType, time: formattedTime };
   } else if (text.includes('evening') || text.includes('night') || text.includes('after 6')) {
     timePreference = { type: 'EVENING', time: '18:00' };
   } else if (text.includes('morning')) {
@@ -266,7 +280,16 @@ export function parseNaturalLanguageInput(input: string, today: Date = new Date(
   } else if (matchedServices.length > 0) {
     const srvNames = matchedServices.map((s) => s.name).join(' and ');
     if (matchedOutlet && extractedDate && timePreference) {
-      responseMessage = `Understood! **${srvNames}** at **${matchedOutlet.name}** for **${dateLabel || extractedDate}** around **${timePreference.time || 'your preferred time'}**. Checking availability now...`;
+      let formattedTimeDisplay = timePreference.time || 'your preferred time';
+      if (timePreference.time) {
+        const [h, m] = timePreference.time.split(':');
+        const hourNum = parseInt(h, 10);
+        const period = hourNum >= 12 ? 'PM' : 'AM';
+        const displayHour = hourNum % 12 === 0 ? 12 : hourNum % 12;
+        const prefix = timePreference.type === 'AFTER' ? 'after ' : timePreference.type === 'BEFORE' ? 'before ' : '';
+        formattedTimeDisplay = `${prefix}${displayHour}:${m} ${period}`;
+      }
+      responseMessage = `Understood! **${srvNames}** at **${matchedOutlet.name}** for **${dateLabel || extractedDate}** around **${formattedTimeDisplay}**. Checking availability now...`;
     } else if (matchedOutlet && extractedDate) {
       responseMessage = `Great! Setting up **${srvNames}** at **${matchedOutlet.name}** on **${dateLabel || extractedDate}**. Please choose your preferred time slot below.`;
     } else if (matchedOutlet) {

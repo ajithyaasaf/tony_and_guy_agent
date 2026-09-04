@@ -7,7 +7,7 @@ import { useBooking } from '@/features/booking/context/BookingContext';
 import { MOCK_SERVICES, SERVICE_CATEGORIES } from '@/data/services';
 import { MOCK_OUTLETS } from '@/data/outlets';
 import { MOCK_STAFF } from '@/data/staff';
-import { generateSlotsForDate } from '@/data/availability';
+import { generateSlotsForDate, matchSlotToPreference } from '@/data/availability';
 import { Service, Outlet, Staff, TimeSlot, CustomerInfo } from '@/types';
 import { formatPrice, formatDuration } from '@/lib/utils';
 import { format, addDays } from 'date-fns';
@@ -90,7 +90,7 @@ export default function AdaptiveBookingPage() {
       setActiveStepTab('services');
     } else if (!state.outlet) {
       setActiveStepTab('outlet');
-    } else if (!state.date || !state.selectedSlot) {
+    } else if (!state.date || (!state.selectedSlot && !state.timePreference)) {
       setActiveStepTab('datetime');
     } else if (!state.customer?.name || !state.customer?.phone) {
       setActiveStepTab('details');
@@ -104,6 +104,15 @@ export default function AdaptiveBookingPage() {
     if (!state.outlet || !state.date) return [];
     return generateSlotsForDate(state.outlet.id, state.date, state.selectedStaff?.id);
   }, [state.outlet, state.date, state.selectedStaff]);
+
+  // Auto-match timePreference to an available slot if customer arrived from Concierge
+  useEffect(() => {
+    if (!state.timePreference || state.selectedSlot || computedSlots.length === 0) return;
+    const matchedSlot = matchSlotToPreference(computedSlots, state.timePreference);
+    if (matchedSlot) {
+      dispatch({ type: 'SELECT_SLOT', payload: matchedSlot });
+    }
+  }, [state.timePreference, state.selectedSlot, computedSlots, dispatch]);
 
   // Handle service toggle
   const handleToggleService = (service: Service) => {
@@ -174,11 +183,11 @@ export default function AdaptiveBookingPage() {
   // If already confirmed, render the luxury confirmation voucher
   if (bookingConfirmed) {
     return (
-      <div className="min-h-screen bg-[#F7F7F7] py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div className="max-w-2xl w-full bg-white border border-[#E5E5E5] rounded-3xl shadow-xl overflow-hidden animate-fade-in">
+      <div className="min-h-screen bg-brand-surface py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div className="max-w-2xl w-full bg-white border border-brand-border rounded-3xl shadow-xl overflow-hidden animate-fade-in">
           <div className="bg-black text-white p-8 text-center relative">
             <div className="w-14 h-14 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-3">
-              <Check className="w-7 h-7 text-[#D92D20]" />
+              <Check className="w-7 h-7 text-brand-red" />
             </div>
             <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-400">
               Appointment Confirmed
@@ -228,7 +237,7 @@ export default function AdaptiveBookingPage() {
             </div>
 
             {/* Customer Details */}
-            <div className="bg-[#FAFAFA] p-4 rounded-xl border border-neutral-200/70 text-xs space-y-1">
+            <div className="bg-brand-subtle p-4 rounded-xl border border-neutral-200/70 text-xs space-y-1">
               <div className="font-bold text-black">Guest: {state.customer?.name} ({state.customer?.phone})</div>
               {state.customer?.email && <div className="text-neutral-500">Email: {state.customer.email}</div>}
               <div className="text-neutral-500">An instant SMS confirmation has been scheduled for your visit.</div>
@@ -237,7 +246,7 @@ export default function AdaptiveBookingPage() {
             <div className="pt-2 flex flex-col sm:flex-row gap-3">
               <Link
                 href="/orders"
-                className="flex-1 bg-[#D92D20] text-white text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#B91C1C] transition shadow-md shadow-red-900/20"
+                className="flex-1 bg-brand-red text-white text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition shadow-md shadow-red-900/20"
               >
                 View My Orders &amp; Appointments
               </Link>
@@ -258,7 +267,7 @@ export default function AdaptiveBookingPage() {
   return (
     <div className="min-h-screen bg-white pb-24">
       {/* Top Breadcrumb / Stepper */}
-      <div className="bg-[#F7F7F7] border-b border-[#E5E5E5] py-4 px-4 sm:px-6 lg:px-8 sticky top-16 sm:top-20 z-30">
+      <div className="bg-brand-surface border-b border-brand-border py-4 px-4 sm:px-6 lg:px-8 sticky top-16 sm:top-20 z-30">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           
           {/* Stepper Tabs */}
@@ -317,14 +326,14 @@ export default function AdaptiveBookingPage() {
         
         {/* Applied Offer Banner */}
         {state.selectedOffer && (
-          <div className="bg-red-50 border border-[#D92D20]/30 rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs animate-fade-in">
+          <div className="bg-brand-red-subtle border border-brand-red/30 rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs animate-fade-in">
             <div className="flex items-center space-x-2.5">
-              <span className="bg-[#D92D20] text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shrink-0 shadow-sm">
+              <span className="bg-brand-red text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shrink-0 shadow-sm">
                 EXCLUSIVE OFFER APPLIED
               </span>
               <span className="font-extrabold text-black">{state.selectedOffer.name}</span>
             </div>
-            <div className="text-[11px] font-extrabold text-[#D92D20] bg-white border border-[#D92D20]/20 px-3 py-1 rounded-lg">
+            <div className="text-[11px] font-extrabold text-brand-red bg-white border border-brand-red/20 px-3 py-1 rounded-lg">
               Bundle Savings: You Save {formatPrice(state.selectedOffer.savings)}!
             </div>
           </div>
@@ -335,12 +344,12 @@ export default function AdaptiveBookingPage() {
            ========================================================================= */}
         {activeStepTab === 'services' && (
           <div className="space-y-6 animate-fade-in pb-16 md:pb-0">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#E5E5E5] gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-brand-border gap-3">
               <div>
                 <h2 className="text-2xl font-black uppercase tracking-tight text-black flex items-center space-x-2">
                   <span>Step 1: Choose Your Services</span>
                 </h2>
-                <p className="text-xs text-[#666666] mt-1">
+                <p className="text-xs text-brand-muted mt-1">
                   Select one or multiple precision services, or use Fast-Track for 1-tap booking.
                 </p>
               </div>
@@ -348,7 +357,7 @@ export default function AdaptiveBookingPage() {
               {state.services.length > 0 && (
                 <button
                   onClick={() => setActiveStepTab('outlet')}
-                  className="hidden sm:flex bg-[#D92D20] text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#B91C1C] transition items-center space-x-1.5 min-h-[44px] shadow-md shadow-red-900/15"
+                  className="hidden sm:flex bg-brand-red text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition items-center space-x-1.5 min-h-[44px] shadow-md shadow-red-900/15"
                 >
                   <span>Proceed to Salon ({state.services.length})</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -357,30 +366,30 @@ export default function AdaptiveBookingPage() {
             </div>
 
             {/* Fast-Track 1-Tap Haircut & Proceed Strip */}
-            <div className="bg-red-50/70 border border-[#D92D20]/20 rounded-2xl p-3.5 sm:p-4 shadow-sm">
+            <div className="bg-brand-red-subtle border border-brand-red/20 rounded-2xl p-3.5 sm:p-4 shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
-                  <span className="bg-[#D92D20] text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
+                  <span className="bg-brand-red text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
                     FAST-TRACK
                   </span>
                   <span className="text-xs font-black uppercase tracking-wider text-black">
                     Quick Haircut Auto-Proceed
                   </span>
                 </div>
-                <span className="text-[10px] font-extrabold text-[#D92D20]">Selects &amp; Opens Step 2 👉</span>
+                <span className="text-[10px] font-extrabold text-brand-red">Selects &amp; Opens Step 2 👉</span>
               </div>
               <div className="flex space-x-2 overflow-x-auto scrollbar-none pb-1">
                 <button
                   type="button"
                   onClick={() => handleQuickSelectAndProceed('men')}
-                  className="bg-white border border-[#D92D20]/40 text-black px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap hover:bg-[#D92D20] hover:text-white transition flex items-center space-x-1.5 shadow-sm min-h-[38px] shrink-0"
+                  className="bg-white border border-brand-red/40 text-black px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap hover:bg-brand-red hover:text-white transition flex items-center space-x-1.5 shadow-sm min-h-[38px] shrink-0"
                 >
                   <span>✂️ Men&apos;s Classic Haircut ({formatPrice(850)})</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleQuickSelectAndProceed('women')}
-                  className="bg-white border border-[#D92D20]/40 text-black px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap hover:bg-[#D92D20] hover:text-white transition flex items-center space-x-1.5 shadow-sm min-h-[38px] shrink-0"
+                  className="bg-white border border-brand-red/40 text-black px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap hover:bg-brand-red hover:text-white transition flex items-center space-x-1.5 shadow-sm min-h-[38px] shrink-0"
                 >
                   <span>💇‍♀️ Women&apos;s Creative Cut ({formatPrice(1550)})</span>
                 </button>
@@ -396,10 +405,10 @@ export default function AdaptiveBookingPage() {
                     value={serviceSearch}
                     onChange={(e) => setServiceSearch(e.target.value)}
                     placeholder="Search services (e.g. haircut, beard, spa)..."
-                    className="w-full bg-[#FAFAFA] border border-[#E5E5E5] rounded-xl pl-3.5 pr-4 py-2 text-xs text-black placeholder:text-neutral-400 focus:outline-none focus:border-[#D92D20]"
+                    className="w-full bg-brand-subtle border border-brand-border rounded-xl pl-3.5 pr-4 py-2 text-xs text-black placeholder:text-neutral-400 focus:outline-none focus:border-brand-red"
                   />
                 </div>
-                <div className="flex space-x-1 bg-[#F7F7F7] border border-[#E5E5E5] p-1 rounded-xl shrink-0">
+                <div className="flex space-x-1 bg-brand-surface border border-brand-border p-1 rounded-xl shrink-0">
                   {(['all', 'women', 'men'] as const).map((aud) => (
                     <button
                       key={aud}
@@ -407,7 +416,7 @@ export default function AdaptiveBookingPage() {
                       onClick={() => setServiceAudience(aud)}
                       className={`px-3 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wider transition ${
                         serviceAudience === aud
-                          ? 'bg-[#D92D20] text-white shadow-sm'
+                          ? 'bg-brand-red text-white shadow-sm'
                           : 'text-neutral-600 hover:text-black'
                       }`}
                     >
@@ -424,8 +433,8 @@ export default function AdaptiveBookingPage() {
                   onClick={() => setServiceCategory('all')}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition ${
                     serviceCategory === 'all'
-                      ? 'bg-[#D92D20] text-white shadow-sm'
-                      : 'bg-white border border-[#E5E5E5] text-neutral-600 hover:border-black'
+                      ? 'bg-brand-red text-white shadow-sm'
+                      : 'bg-white border border-brand-border text-neutral-600 hover:border-black'
                   }`}
                 >
                   All ({MOCK_SERVICES.length})
@@ -437,8 +446,8 @@ export default function AdaptiveBookingPage() {
                     onClick={() => setServiceCategory(cat.id)}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition ${
                       serviceCategory === cat.id
-                        ? 'bg-[#D92D20] text-white shadow-sm'
-                        : 'bg-white border border-[#E5E5E5] text-neutral-600 hover:border-black'
+                        ? 'bg-brand-red text-white shadow-sm'
+                        : 'bg-white border border-brand-border text-neutral-600 hover:border-black'
                     }`}
                   >
                     {cat.name}
@@ -455,12 +464,12 @@ export default function AdaptiveBookingPage() {
                 const isExpanded = expandedCategories[cat.id] ?? false;
 
                 return (
-                  <div key={cat.id} className="bg-white border border-[#E5E5E5] rounded-2xl overflow-hidden shadow-sm">
+                  <div key={cat.id} className="bg-white border border-brand-border rounded-2xl overflow-hidden shadow-sm">
                     {/* Category Accordion Header */}
                     <button
                       type="button"
                       onClick={() => toggleCategoryExpand(cat.id)}
-                      className="w-full bg-[#FAFAFA] px-4 py-3 flex items-center justify-between border-b border-[#E5E5E5] text-left"
+                      className="w-full bg-brand-subtle px-4 py-3 flex items-center justify-between border-b border-brand-border text-left"
                     >
                       <div className="flex items-center space-x-2">
                         <span className="text-xs font-black uppercase tracking-wider text-black">
@@ -470,7 +479,7 @@ export default function AdaptiveBookingPage() {
                           {catServices.length}
                         </span>
                       </div>
-                      <div className="flex items-center space-x-1.5 text-xs text-[#D92D20] font-bold">
+                      <div className="flex items-center space-x-1.5 text-xs text-brand-red font-bold">
                         <span>{isExpanded ? 'Collapse' : 'Expand'}</span>
                         {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                       </div>
@@ -487,15 +496,15 @@ export default function AdaptiveBookingPage() {
                               onClick={() => handleToggleService(srv)}
                               className={`cursor-pointer border rounded-xl p-3 flex items-center justify-between gap-3 transition-all shadow-sm ${
                                 selected
-                                  ? 'border-[#D92D20] ring-1 ring-[#D92D20] bg-red-50/20'
-                                  : 'border-[#E5E5E5] bg-white'
+                                  ? 'border-brand-red ring-1 ring-brand-red bg-brand-red-subtle/50'
+                                  : 'border-brand-border bg-white'
                               }`}
                             >
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center space-x-1.5 mb-0.5">
                                   <h3 className="text-xs font-extrabold text-black truncate">{srv.name}</h3>
                                   {srv.popular && (
-                                    <span className="text-[9px] font-black uppercase bg-[#D92D20] text-white px-1.5 py-0.2 rounded shrink-0">
+                                    <span className="text-[9px] font-black uppercase bg-brand-red text-white px-1.5 py-0.2 rounded shrink-0">
                                       🔥 Popular
                                     </span>
                                   )}
@@ -508,8 +517,8 @@ export default function AdaptiveBookingPage() {
                               <div
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shrink-0 transition flex items-center space-x-1 min-h-[38px] ${
                                   selected
-                                    ? 'bg-[#D92D20] text-white'
-                                    : 'border border-[#D92D20] text-[#D92D20] bg-white'
+                                    ? 'bg-brand-red text-white'
+                                    : 'border border-brand-red text-brand-red bg-white'
                                 }`}
                               >
                                 {selected ? (
@@ -544,17 +553,17 @@ export default function AdaptiveBookingPage() {
                     onClick={() => handleToggleService(srv)}
                     className={`cursor-pointer border rounded-xl p-5 flex flex-col justify-between transition-all min-h-[120px] ${
                       selected
-                        ? 'border-[#D92D20] ring-1 ring-[#D92D20] bg-red-50/20'
-                        : 'border-[#E5E5E5] hover:border-neutral-400 bg-white'
+                        ? 'border-brand-red ring-1 ring-brand-red bg-brand-red-subtle/50'
+                        : 'border-brand-border hover:border-neutral-400 bg-white'
                     }`}
                   >
                     <div>
                       <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1">
                         <span>{srv.categoryName}</span>
-                        {selected && <Check className="w-4 h-4 text-[#D92D20] shrink-0" />}
+                        {selected && <Check className="w-4 h-4 text-brand-red shrink-0" />}
                       </div>
                       <h3 className="text-sm font-bold text-black">{srv.name}</h3>
-                      <p className="text-xs text-[#666666] mt-1.5 leading-relaxed">{srv.description}</p>
+                      <p className="text-xs text-brand-muted mt-1.5 leading-relaxed">{srv.description}</p>
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between">
@@ -579,7 +588,7 @@ export default function AdaptiveBookingPage() {
                 </div>
                 <button
                   onClick={() => setActiveStepTab('outlet')}
-                  className="bg-[#D92D20] text-white px-3.5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center space-x-1.5 shrink-0 shadow-md shadow-red-900/30"
+                  className="bg-brand-red text-white px-3.5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider flex items-center space-x-1.5 shrink-0 shadow-md shadow-red-900/30"
                 >
                   <span>Select Salon &amp; Slot</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -594,12 +603,12 @@ export default function AdaptiveBookingPage() {
            ========================================================================= */}
         {activeStepTab === 'outlet' && (
           <div className="space-y-5 animate-fade-in pb-16 md:pb-0">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#E5E5E5] gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-brand-border gap-2">
               <div>
                 <h2 className="text-2xl font-black uppercase tracking-tight text-black flex items-center space-x-2">
                   <span>Step 2: Choose Salon Location</span>
                 </h2>
-                <p className="text-xs text-[#666666] mt-0.5">
+                <p className="text-xs text-brand-muted mt-0.5">
                   Select your city first, then pick your preferred TONI&amp;GUY salon outlet.
                 </p>
               </div>
@@ -607,7 +616,7 @@ export default function AdaptiveBookingPage() {
               {state.outlet && (
                 <button
                   onClick={() => setActiveStepTab('datetime')}
-                  className="hidden sm:flex bg-[#D92D20] text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#B91C1C] transition items-center space-x-1.5 min-h-[44px] shadow-md shadow-red-900/15"
+                  className="hidden sm:flex bg-brand-red text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-brand-red-hover transition items-center space-x-1.5 min-h-[44px] shadow-md shadow-red-900/15"
                 >
                   <span>Proceed to Date &amp; Time</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -616,10 +625,10 @@ export default function AdaptiveBookingPage() {
             </div>
 
             {/* City Selection Header & Prominent Buttons */}
-            <div className="bg-[#FAFAFA] border border-[#E5E5E5] p-3.5 rounded-2xl space-y-2.5">
+            <div className="bg-brand-subtle border border-brand-border p-3.5 rounded-2xl space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black uppercase tracking-wider text-black flex items-center space-x-1.5">
-                  <MapPin className="w-4 h-4 text-[#D92D20]" />
+                  <MapPin className="w-4 h-4 text-brand-red" />
                   <span>Select Your City</span>
                 </span>
                 <span className="text-[10px] font-bold text-neutral-400">
@@ -635,8 +644,8 @@ export default function AdaptiveBookingPage() {
                     onClick={() => setSelectedCity(city)}
                     className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider whitespace-nowrap transition min-h-[40px] shadow-sm ${
                       selectedCity === city || (selectedCity === 'all' && city === 'all')
-                        ? 'bg-[#D92D20] text-white'
-                        : 'bg-white border border-[#E5E5E5] text-neutral-700 hover:border-black'
+                        ? 'bg-brand-red text-white'
+                        : 'bg-white border border-brand-border text-neutral-700 hover:border-black'
                     }`}
                   >
                     {city === 'all' ? 'All Cities' : city}
@@ -658,28 +667,28 @@ export default function AdaptiveBookingPage() {
                     }}
                     className={`cursor-pointer border rounded-2xl p-3 sm:p-5 flex flex-col justify-between transition-all shadow-sm ${
                       selected
-                        ? 'border-[#D92D20] ring-1 ring-[#D92D20] bg-red-50/20'
-                        : 'border-[#E5E5E5] hover:border-black bg-white'
+                        ? 'border-brand-red ring-1 ring-brand-red bg-brand-red-subtle/50'
+                        : 'border-brand-border hover:border-black bg-white'
                     }`}
                   >
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider text-[#D92D20] truncate">
+                        <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider text-brand-red truncate">
                           {outlet.area}
                         </span>
-                        {selected && <Check className="w-4 h-4 text-[#D92D20] shrink-0" />}
+                        {selected && <Check className="w-4 h-4 text-brand-red shrink-0" />}
                       </div>
                       <h3 className="text-xs sm:text-base font-black text-black leading-tight line-clamp-2">
                         {outlet.name}
                       </h3>
-                      <p className="text-[10px] sm:text-xs text-[#666666] mt-1 line-clamp-2 leading-tight">
+                      <p className="text-[10px] sm:text-xs text-brand-muted mt-1 line-clamp-2 leading-tight">
                         {outlet.address}
                       </p>
                     </div>
 
                     <div className="mt-3 pt-2 sm:pt-3 border-t border-neutral-100 flex flex-col sm:flex-row sm:items-center justify-between text-[10px] sm:text-xs text-neutral-500 gap-1">
                       <span className="truncate">{outlet.openingHours.open} - {outlet.openingHours.close}</span>
-                      <span className={`font-black uppercase tracking-wider text-[10px] ${selected ? 'text-[#D92D20]' : 'text-black'}`}>
+                      <span className={`font-black uppercase tracking-wider text-[10px] ${selected ? 'text-brand-red' : 'text-black'}`}>
                         {selected ? 'Selected ✓' : 'Select Salon →'}
                       </span>
                     </div>
@@ -699,7 +708,7 @@ export default function AdaptiveBookingPage() {
                 </div>
                 <button
                   onClick={() => setActiveStepTab('datetime')}
-                  className="bg-[#D92D20] text-white px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider flex items-center space-x-1.5 min-h-[44px] shadow-lg shadow-red-900/30"
+                  className="bg-brand-red text-white px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider flex items-center space-x-1.5 min-h-[44px] shadow-lg shadow-red-900/30"
                 >
                   <span>Select Slot</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -714,18 +723,18 @@ export default function AdaptiveBookingPage() {
            ========================================================================= */}
         {activeStepTab === 'datetime' && (
           <div className="space-y-8 animate-fade-in pb-16 md:pb-0">
-            <div className="pb-4 border-b border-[#E5E5E5]">
+            <div className="pb-4 border-b border-brand-border">
               <h2 className="text-2xl font-black uppercase tracking-tight text-black">
                 Step 3: Select Date &amp; Available Slot
               </h2>
-              <p className="text-xs text-[#666666] mt-1">
+              <p className="text-xs text-brand-muted mt-1">
                 Checking live capacity for <strong>{state.outlet?.name || 'Selected Salon'}</strong> ({formatDuration(state.totalDuration || 45)} estimated duration).
               </p>
             </div>
 
             {/* Stylist Selection Optional Pill Bar */}
             {currentOutletStaff.length > 0 && (
-              <div className="bg-[#FAFAFA] p-4 rounded-xl border border-neutral-200">
+              <div className="bg-brand-subtle p-4 rounded-xl border border-neutral-200">
                 <div className="text-xs font-bold uppercase tracking-wider text-neutral-700 mb-2">
                   Stylist Preference (Optional)
                 </div>
@@ -772,7 +781,7 @@ export default function AdaptiveBookingPage() {
                       className={`p-3 rounded-xl text-center border transition shrink-0 min-w-[76px] sm:min-w-0 min-h-[72px] flex flex-col justify-center ${
                         isSelected
                           ? 'bg-black text-white border-black ring-1 ring-black'
-                          : 'bg-white border-[#E5E5E5] text-neutral-800 hover:border-black'
+                          : 'bg-white border-brand-border text-neutral-800 hover:border-black'
                       }`}
                     >
                       <div className="text-[10px] font-bold uppercase tracking-wider opacity-80">{item.dayName}</div>
@@ -787,6 +796,18 @@ export default function AdaptiveBookingPage() {
             {/* Time Slot Grid */}
             {state.date && (
               <div>
+                {/* Concierge Auto-Match Banner */}
+                {state.timePreference && state.selectedSlot && (
+                  <div className="bg-brand-red-subtle border border-brand-red/20 p-3.5 rounded-2xl flex items-center justify-between text-xs text-neutral-800 animate-fade-in mb-4">
+                    <div className="flex items-center space-x-2">
+                      <Clock className="w-4 h-4 text-brand-red shrink-0" />
+                      <span>
+                        Auto-matched your preferred time: <strong>{state.selectedSlot.displayTime}</strong>. You can switch to any other available slot below anytime.
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between mb-3">
                   <div className="text-xs font-bold uppercase tracking-wider text-neutral-700">
                     Available Time Slots for {state.date}
@@ -799,6 +820,7 @@ export default function AdaptiveBookingPage() {
                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
                   {computedSlots.map((slot) => {
                     const isSelected = state.selectedSlot?.time === slot.time;
+                    const isConciergeMatch = isSelected && Boolean(state.timePreference);
                     return (
                       <button
                         key={slot.time}
@@ -810,14 +832,18 @@ export default function AdaptiveBookingPage() {
                           isSelected
                             ? 'bg-black text-white ring-2 ring-black'
                             : slot.available
-                            ? 'bg-white border border-[#E5E5E5] text-neutral-900 hover:border-black'
+                            ? 'bg-white border border-brand-border text-neutral-900 hover:border-black'
                             : 'bg-neutral-100 text-neutral-300 border border-neutral-100 cursor-not-allowed line-through'
                         }`}
                       >
                         <span>{slot.displayTime}</span>
-                        {slot.available && (
+                        {isConciergeMatch ? (
+                          <span className="text-[9px] font-bold text-brand-red mt-0.5">Concierge Pick ✓</span>
+                        ) : isSelected ? (
+                          <span className="text-[9px] font-bold text-brand-white mt-0.5">Selected ✓</span>
+                        ) : slot.available ? (
                           <span className="text-[9px] font-normal opacity-70 mt-0.5">Available</span>
-                        )}
+                        ) : null}
                       </button>
                     );
                   })}
@@ -845,11 +871,11 @@ export default function AdaptiveBookingPage() {
            ========================================================================= */}
         {activeStepTab === 'details' && (
           <div className="max-w-xl mx-auto space-y-6 animate-fade-in pb-16 md:pb-0">
-            <div className="pb-4 border-b border-[#E5E5E5]">
+            <div className="pb-4 border-b border-brand-border">
               <h2 className="text-2xl font-black uppercase tracking-tight text-black">
                 Step 4: Guest Information
               </h2>
-              <p className="text-xs text-[#666666] mt-1">
+              <p className="text-xs text-brand-muted mt-1">
                 We need only your basic contact details to confirm your slot with the salon.
               </p>
             </div>
@@ -866,7 +892,7 @@ export default function AdaptiveBookingPage() {
                   value={customerForm.name}
                   onChange={(e) => setCustomerForm({ ...customerForm, name: e.target.value })}
                   placeholder="E.g. Siddharth Verma"
-                  className="w-full bg-white border border-[#E5E5E5] rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-black text-black min-h-[44px]"
+                  className="w-full bg-white border border-brand-border rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-black text-black min-h-[44px]"
                 />
               </div>
 
@@ -882,7 +908,7 @@ export default function AdaptiveBookingPage() {
                   value={customerForm.phone}
                   onChange={(e) => setCustomerForm({ ...customerForm, phone: e.target.value })}
                   placeholder="E.g. +91 98400 12345"
-                  className="w-full bg-white border border-[#E5E5E5] rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-black text-black min-h-[44px]"
+                  className="w-full bg-white border border-brand-border rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-black text-black min-h-[44px]"
                 />
               </div>
 
@@ -896,7 +922,7 @@ export default function AdaptiveBookingPage() {
                   value={customerForm.email}
                   onChange={(e) => setCustomerForm({ ...customerForm, email: e.target.value })}
                   placeholder="E.g. siddharth@example.com"
-                  className="w-full bg-white border border-[#E5E5E5] rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-black text-black min-h-[44px]"
+                  className="w-full bg-white border border-brand-border rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-black text-black min-h-[44px]"
                 />
               </div>
 
@@ -909,7 +935,7 @@ export default function AdaptiveBookingPage() {
                   value={customerForm.notes}
                   onChange={(e) => setCustomerForm({ ...customerForm, notes: e.target.value })}
                   placeholder="Any hair condition, beverage preference, or specific timing request..."
-                  className="w-full bg-white border border-[#E5E5E5] rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black text-black"
+                  className="w-full bg-white border border-brand-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black text-black"
                 />
               </div>
 
@@ -939,16 +965,16 @@ export default function AdaptiveBookingPage() {
            ========================================================================= */}
         {activeStepTab === 'review' && (
           <div className="max-w-2xl mx-auto space-y-6 animate-fade-in pb-16 md:pb-0">
-            <div className="pb-4 border-b border-[#E5E5E5]">
+            <div className="pb-4 border-b border-brand-border">
               <h2 className="text-2xl font-black uppercase tracking-tight text-black">
                 Step 5: Review &amp; Confirm
               </h2>
-              <p className="text-xs text-[#666666] mt-1">
+              <p className="text-xs text-brand-muted mt-1">
                 Please verify all appointment details before final confirmation.
               </p>
             </div>
 
-            <div className="bg-white border border-[#E5E5E5] rounded-2xl p-5 sm:p-8 space-y-6 shadow-sm">
+            <div className="bg-white border border-brand-border rounded-2xl p-5 sm:p-8 space-y-6 shadow-sm">
               {/* Salon Details with inline edit */}
               <div className="flex items-start justify-between pb-4 border-b border-neutral-100">
                 <div>
@@ -1032,7 +1058,7 @@ export default function AdaptiveBookingPage() {
                 <button
                   disabled={isSubmitting}
                   onClick={handleConfirmAppointment}
-                  className="w-full bg-[#D92D20] text-white py-4 rounded-full text-xs font-black uppercase tracking-wider hover:bg-[#B91C1C] transition flex items-center justify-center space-x-2 shadow-lg shadow-red-900/20 min-h-[50px]"
+                  className="w-full bg-brand-red text-white py-4 rounded-full text-xs font-black uppercase tracking-wider hover:bg-brand-red-hover transition flex items-center justify-center space-x-2 shadow-lg shadow-red-900/20 min-h-[50px]"
                 >
                   <ShieldCheck className="w-4 h-4" />
                   <span>{isSubmitting ? 'Confirming with Salon...' : 'Confirm Appointment'}</span>

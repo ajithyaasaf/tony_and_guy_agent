@@ -95,18 +95,18 @@ export default function SalonsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-brand-white pb-20">
       {/* Header Banner */}
-      <div className="bg-[#F7F7F7] border-b border-[#E5E5E5] py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
+      <div className="bg-brand-surface border-b border-brand-border py-10 sm:py-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl">
             <span className="text-[11px] font-bold uppercase tracking-widest text-neutral-500">
               National Salon Network
             </span>
-            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black mt-2">
+            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-brand-black mt-2">
               Find a TONI&amp;GUY Salon ({MOCK_OUTLETS.length} Outlets)
             </h1>
-            <p className="text-sm text-[#666666] mt-2 leading-relaxed">
+            <p className="text-sm text-brand-muted mt-2 leading-relaxed">
               Locate the nearest luxury salon by current GPS proximity, city, area, or PIN code. Every salon features certified stylists and deterministic live slot scheduling.
             </p>
           </div>
@@ -120,7 +120,7 @@ export default function SalonsPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by area, salon name, city, or PIN (e.g. Anna Nagar, Indiranagar, Bandra, 600040)..."
-                className="w-full bg-white border border-[#E5E5E5] rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-black text-black placeholder:text-neutral-400"
+                className="w-full bg-brand-white border border-brand-border rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-brand-black text-brand-black placeholder:text-neutral-400"
               />
             </div>
 
@@ -129,8 +129,8 @@ export default function SalonsPage() {
               disabled={locating}
               className={`px-5 py-3 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center space-x-2 transition ${
                 userCoords
-                  ? 'bg-black text-white'
-                  : 'bg-white border border-black text-black hover:bg-neutral-50'
+                  ? 'bg-brand-black text-brand-white'
+                  : 'bg-brand-white border border-brand-black text-brand-black hover:bg-neutral-50'
               }`}
             >
               <Navigation className="w-3.5 h-3.5" />
@@ -151,8 +151,8 @@ export default function SalonsPage() {
               onClick={() => setSelectedCity('all')}
               className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition ${
                 selectedCity === 'all'
-                  ? 'bg-black text-white'
-                  : 'bg-white border border-[#E5E5E5] text-neutral-700 hover:border-black'
+                  ? 'bg-brand-black text-brand-white'
+                  : 'bg-brand-white border border-brand-border text-neutral-700 hover:border-brand-black'
               }`}
             >
               All Cities ({MOCK_OUTLETS.length})
@@ -165,8 +165,8 @@ export default function SalonsPage() {
                   onClick={() => setSelectedCity(city)}
                   className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider whitespace-nowrap transition ${
                     selectedCity === city
-                      ? 'bg-black text-white'
-                      : 'bg-white border border-[#E5E5E5] text-neutral-700 hover:border-black'
+                      ? 'bg-brand-black text-brand-white'
+                      : 'bg-brand-white border border-brand-border text-neutral-700 hover:border-brand-black'
                   }`}
                 >
                   {city} ({count})
@@ -185,15 +185,15 @@ export default function SalonsPage() {
           </div>
           {state.outlet && (
             <div className="text-xs font-semibold text-neutral-800">
-              Selected in booking: <strong className="text-black">{state.outlet.name}</strong>
+              Selected in booking: <strong className="text-brand-black">{state.outlet.name}</strong>
             </div>
           )}
         </div>
 
         {processedOutlets.length === 0 ? (
-          <div className="text-center py-16 border border-dashed border-[#E5E5E5] rounded-2xl">
+          <div className="text-center py-16 border border-dashed border-brand-border rounded-2xl">
             <MapPin className="w-8 h-8 text-neutral-300 mx-auto mb-3" />
-            <div className="text-sm font-bold text-black">No salons match your search</div>
+            <div className="text-sm font-bold text-brand-black">No salons match your search</div>
             <p className="text-xs text-neutral-500 mt-1">Try selecting another city or clearing your search term.</p>
           </div>
         ) : (
@@ -203,10 +203,10 @@ export default function SalonsPage() {
               return (
                 <div
                   key={outlet.id}
-                  className={`bg-white border rounded-2xl p-6 flex flex-col justify-between transition-all ${
+                  className={`bg-brand-white border rounded-2xl p-6 flex flex-col justify-between transition-all ${
                     isSelected
-                      ? 'border-black ring-1 ring-black bg-[#FAFAFA]'
-                      : 'border-[#E5E5E5] hover:border-black hover:shadow-md'
+                      ? 'border-brand-black ring-1 ring-brand-black bg-brand-subtle'
+                      : 'border-brand-border hover:border-brand-black hover:shadow-md'
                   }`}
                 >
                   <div>
@@ -215,14 +215,14 @@ export default function SalonsPage() {
                         {outlet.city} · {outlet.area}
                       </span>
                       {outlet.distance !== undefined && (
-                        <span className="text-xs font-extrabold text-black bg-neutral-200/70 px-2 py-0.5 rounded-full">
+                        <span className="text-xs font-extrabold text-brand-black bg-neutral-200/70 px-2 py-0.5 rounded-full">
                           {outlet.distance} km away
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-lg font-black text-black tracking-tight">{outlet.name}</h3>
-                    <p className="text-xs text-[#666666] mt-2 leading-relaxed">
+                    <h3 className="text-lg font-black text-brand-black tracking-tight">{outlet.name}</h3>
+                    <p className="text-xs text-brand-muted mt-2 leading-relaxed">
                       {outlet.address}, {outlet.city} - {outlet.pinCode}
                     </p>
 
@@ -235,7 +235,7 @@ export default function SalonsPage() {
                         <Phone className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
                         <a
                           href={`tel:${outlet.phone.replace(/[^0-9+]/g, '')}`}
-                          className="hover:underline text-black font-semibold flex items-center space-x-1 py-1"
+                          className="hover:underline text-brand-black font-semibold flex items-center space-x-1 py-1"
                         >
                           <span>{outlet.phone}</span>
                         </a>
@@ -245,7 +245,7 @@ export default function SalonsPage() {
                     {/* Features pills */}
                     <div className="mt-4 flex flex-wrap gap-1.5">
                       {outlet.features.map((feat, i) => (
-                        <span key={i} className="text-[10px] bg-[#F7F7F7] border border-[#E5E5E5] text-neutral-700 px-2 py-0.5 rounded">
+                        <span key={i} className="text-[10px] bg-brand-surface border border-brand-border text-neutral-700 px-2 py-0.5 rounded">
                           {feat}
                         </span>
                       ))}
@@ -253,8 +253,8 @@ export default function SalonsPage() {
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between min-h-[44px]">
-                    <div className="flex items-center space-x-1 text-xs font-semibold text-black">
-                      <Star className="w-3.5 h-3.5 fill-black text-black" />
+                    <div className="flex items-center space-x-1 text-xs font-semibold text-brand-black">
+                      <Star className="w-3.5 h-3.5 fill-brand-black text-brand-black" />
                       <span>{outlet.rating}</span>
                       <span className="text-neutral-400 font-normal">({outlet.reviewCount})</span>
                     </div>
@@ -263,8 +263,8 @@ export default function SalonsPage() {
                       onClick={() => handleSelectOutlet(outlet)}
                       className={`px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition min-h-[44px] ${
                         isSelected
-                          ? 'bg-black text-white'
-                          : 'border border-black text-black hover:bg-black hover:text-white'
+                          ? 'bg-brand-black text-brand-white'
+                          : 'border border-brand-black text-brand-black hover:bg-brand-black hover:text-brand-white'
                       }`}
                     >
                       {isSelected ? (
