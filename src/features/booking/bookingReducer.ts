@@ -87,10 +87,18 @@ export function bookingReducer(state: BookingState, action: BookingAction): Book
 
   switch (action.type) {
     case 'SET_SERVICES': {
-      const { totalDuration, totalPrice } = recalculateTotals(action.payload, state.selectedOffer);
+      // If setting an empty list or a list of services directly, clear any active bundle offer unless matching
+      const isMatchingOffer = Boolean(
+        state.selectedOffer &&
+        action.payload.length === state.selectedOffer.serviceIds.length &&
+        state.selectedOffer.serviceIds.every(id => action.payload.some(s => s.id === id))
+      );
+      const activeOffer = isMatchingOffer ? state.selectedOffer : null;
+      const { totalDuration, totalPrice } = recalculateTotals(action.payload, activeOffer);
       newState = {
         ...state,
         services: action.payload,
+        selectedOffer: activeOffer,
         totalDuration,
         totalPrice,
         // Reset selected slot since duration might change
